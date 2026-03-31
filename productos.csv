@@ -1,0 +1,26 @@
+id;nombre;categoria;compra;venta
+P001;Gaseosa Inca Kola 600ml;Gaseosas;3.5;3.5
+P002;Gaseosa Coca Kola 600ml;Gaseosas;3.5;3.5
+P003;Azúcar Rubia 1kg;Abarrotes;2.9;4
+P004;Leche Gloria Evaporada 400g;Abarrotes;3.1;4.2
+P005;Fideos Don Vittorio 500g;Abarrotes;2.4;3.5
+P006;Detergente Ariel 500g;Limpieza;7.5;10.9
+P007;Jabón Marsella x3;Limpieza;4.2;6
+P008;Lejía Clorox 900ml;Limpieza;5.6;7.9
+P009;Escoba Plástica Profesional;Limpieza;12;18
+P010;Trapeador Microfibra 360°;Limpieza;22;35
+P011;Cuaderno Universitario 100 hojas;Útiles;5.5;8.5
+P012;Lapicero BIC Cristal x12;Útiles;8;12
+P013;Corrector Faber-Castell Líquido;Útiles;2.8;4.5
+P014;"Tijera Acero Inox 8""";Útiles;4.5;7
+P015;Folder Manila A4 x25;Útiles;7;11
+P016;Gaseosa Inca Kola 1.5L;Bebidas;4.2;6
+P017;Agua San Luis 625ml;Bebidas;0.9;1.5
+P018;Jugo Cifrut Naranja 1L;Bebidas;3.5;5
+P019;Yogurt Gloria Fresa 1kg;Bebidas;8.5;12.5
+P020;Café Nescafé Clásico 200g;Bebidas;14;20
+P021;Cemento Sol 42.5kg;Ferretería;22;30
+P022;Pintura Tekno Látex 4L;Ferretería;55;75
+P023;"Cinta Maskintape 1""";Ferretería;1.8;3
+P024;Silicona Transparente 280ml;Ferretería;9.5;15
+P025;Foco LED 9W E27 Frío;Ferretería;5.5;9
