@@ -320,43 +320,55 @@
 <div class="grid" id="grid"></div>
 
 <script>
-const productos = [
-  { id:'P001', nombre:'Arroz Costeño Extra 1kg',         categoria:'Abarrotes',   compra:3.20,  venta:4.50  },
-  { id:'P002', nombre:'Aceite Primor 1L',                 categoria:'Abarrotes',   compra:6.80,  venta:9.50  },
-  { id:'P003', nombre:'Azúcar Rubia 1kg',                 categoria:'Abarrotes',   compra:2.90,  venta:4.00  },
-  { id:'P004', nombre:'Leche Gloria Evaporada 400g',      categoria:'Abarrotes',   compra:3.10,  venta:4.20  },
-  { id:'P005', nombre:'Fideos Don Vittorio 500g',         categoria:'Abarrotes',   compra:2.40,  venta:3.50  },
-  { id:'P006', nombre:'Detergente Ariel 500g',            categoria:'Limpieza',    compra:7.50,  venta:10.90 },
-  { id:'P007', nombre:'Jabón Marsella x3',                categoria:'Limpieza',    compra:4.20,  venta:6.00  },
-  { id:'P008', nombre:'Lejía Clorox 900ml',               categoria:'Limpieza',    compra:5.60,  venta:7.90  },
-  { id:'P009', nombre:'Escoba Plástica Profesional',      categoria:'Limpieza',    compra:12.00, venta:18.00 },
-  { id:'P010', nombre:'Trapeador Microfibra 360°',        categoria:'Limpieza',    compra:22.00, venta:35.00 },
-  { id:'P011', nombre:'Cuaderno Universitario 100 hojas', categoria:'Útiles',      compra:5.50,  venta:8.50  },
-  { id:'P012', nombre:'Lapicero BIC Cristal x12',         categoria:'Útiles',      compra:8.00,  venta:12.00 },
-  { id:'P013', nombre:'Corrector Faber-Castell Líquido',  categoria:'Útiles',      compra:2.80,  venta:4.50  },
-  { id:'P014', nombre:'Tijera Acero Inox 8"',             categoria:'Útiles',      compra:4.50,  venta:7.00  },
-  { id:'P015', nombre:'Folder Manila A4 x25',             categoria:'Útiles',      compra:7.00,  venta:11.00 },
-  { id:'P016', nombre:'Gaseosa Inca Kola 1.5L',           categoria:'Bebidas',     compra:4.20,  venta:6.00  },
-  { id:'P017', nombre:'Agua San Luis 625ml',              categoria:'Bebidas',     compra:0.90,  venta:1.50  },
-  { id:'P018', nombre:'Jugo Cifrut Naranja 1L',           categoria:'Bebidas',     compra:3.50,  venta:5.00  },
-  { id:'P019', nombre:'Yogurt Gloria Fresa 1kg',          categoria:'Bebidas',     compra:8.50,  venta:12.50 },
-  { id:'P020', nombre:'Café Nescafé Clásico 200g',        categoria:'Bebidas',     compra:14.00, venta:20.00 },
-  { id:'P021', nombre:'Cemento Sol 42.5kg',               categoria:'Ferretería',  compra:22.00, venta:30.00 },
-  { id:'P022', nombre:'Pintura Tekno Látex 4L',           categoria:'Ferretería',  compra:55.00, venta:75.00 },
-  { id:'P023', nombre:'Cinta Maskintape 1"',              categoria:'Ferretería',  compra:1.80,  venta:3.00  },
-  { id:'P024', nombre:'Silicona Transparente 280ml',      categoria:'Ferretería',  compra:9.50,  venta:15.00 },
-  { id:'P025', nombre:'Foco LED 9W E27 Frío',             categoria:'Ferretería',  compra:5.50,  venta:9.00  },
-];
-
-// Build category filters
-const cats = ['all', ...new Set(productos.map(p => p.categoria))];
-const filtersEl = document.getElementById('filters');
-filtersEl.innerHTML = cats.map(c =>
-  `<button class="filter-btn${c==='all'?' active':''}" data-cat="${c}">${c==='all'?'Todos':c}</button>`
-).join('');
-
+let productos = [];
 let currentQuery = '';
 let currentCat   = 'all';
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+  const sep = lines[0].includes(';') ? ';' : ',';
+  return lines.slice(1).map(line => {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === sep && !inQ) { cols.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur);
+    return {
+      id:        cols[0].trim(),
+      nombre:    cols[1].trim(),
+      categoria: cols[2].trim(),
+      compra:    parseFloat(cols[3]),
+      venta:     parseFloat(cols[4]),
+    };
+  });
+}
+
+function buildFilters() {
+  const cats = ['all', ...new Set(productos.map(p => p.categoria))];
+  const filtersEl = document.getElementById('filters');
+  filtersEl.innerHTML = cats.map(c =>
+    `<button class="filter-btn${c==='all'?' active':''}" data-cat="${c}">${c==='all'?'Todos':c}</button>`
+  ).join('');
+  filtersEl.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    render();
+  });
+}
+
+fetch('productos.csv')
+  .then(r => { if (!r.ok) throw new Error('No se pudo cargar productos.csv'); return r.text(); })
+  .then(text => { productos = parseCSV(text); buildFilters(); render(); })
+  .catch(err => {
+    document.getElementById('grid').innerHTML =
+      `<p style="color:var(--terra);padding:20px">Error: ${err.message}</p>`;
+  });
 
 function fmt(n) {
   return n.toLocaleString('es-PE', { minimumFractionDigits:2, maximumFractionDigits:2 });
@@ -435,17 +447,6 @@ document.getElementById('search').addEventListener('input', e => {
   }, 120);
 });
 
-// Filters
-filtersEl.addEventListener('click', e => {
-  const btn = e.target.closest('.filter-btn');
-  if (!btn) return;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentCat = btn.dataset.cat;
-  render();
-});
-
-render();
 </script>
 </body>
 </html>

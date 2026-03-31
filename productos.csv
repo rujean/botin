@@ -1,6 +1,6 @@
 id;nombre;categoria;compra;venta
-P001;Gaseosa Inca Kola 600ml;Gaseosas;3.5;3.5
-P002;Gaseosa Coca Kola 600ml;Gaseosas;3.5;3.5
+P001;Gaseosa Inca Kola 600ml;Bebidas;3.5;3.5
+P002;Gaseosa Coca Kola 600ml;Bebidas;3.5;3.5
 P003;Azúcar Rubia 1kg;Abarrotes;2.9;4
 P004;Leche Gloria Evaporada 400g;Abarrotes;3.1;4.2
 P005;Fideos Don Vittorio 500g;Abarrotes;2.4;3.5
