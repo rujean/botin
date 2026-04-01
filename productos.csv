@@ -1,26 +1,73 @@
 id;nombre;categoria;compra;venta
-P001;Gaseosa Inca Kola 600ml;Bebidas;3.5;3.5
-P002;Gaseosa Coca Kola 600ml;Bebidas;3.5;3.5
-P003;Azúcar Rubia 1kg;Abarrotes;2.9;4
-P004;Leche Gloria Evaporada 400g;Abarrotes;3.1;4.2
-P005;Fideos Don Vittorio 500g;Abarrotes;2.4;3.5
-P006;Detergente Ariel 500g;Limpieza;7.5;10.9
-P007;Jabón Marsella x3;Limpieza;4.2;6
-P008;Lejía Clorox 900ml;Limpieza;5.6;7.9
-P009;Escoba Plástica Profesional;Limpieza;12;18
-P010;Trapeador Microfibra 360°;Limpieza;22;35
-P011;Cuaderno Universitario 100 hojas;Útiles;5.5;8.5
-P012;Lapicero BIC Cristal x12;Útiles;8;12
-P013;Corrector Faber-Castell Líquido;Útiles;2.8;4.5
-P014;"Tijera Acero Inox 8""";Útiles;4.5;7
-P015;Folder Manila A4 x25;Útiles;7;11
-P016;Gaseosa Inca Kola 1.5L;Bebidas;4.2;6
-P017;Agua San Luis 625ml;Bebidas;0.9;1.5
-P018;Jugo Cifrut Naranja 1L;Bebidas;3.5;5
-P019;Yogurt Gloria Fresa 1kg;Bebidas;8.5;12.5
-P020;Café Nescafé Clásico 200g;Bebidas;14;20
-P021;Cemento Sol 42.5kg;Ferretería;22;30
-P022;Pintura Tekno Látex 4L;Ferretería;55;75
-P023;"Cinta Maskintape 1""";Ferretería;1.8;3
-P024;Silicona Transparente 280ml;Ferretería;9.5;15
-P025;Foco LED 9W E27 Frío;Ferretería;5.5;9
+P001;7up;Bebidas;1.2;1.2
+P002;Alfajor;Pasteles;0.59;1
+P003;Alka 28g;Masticables;1.5;1.5
+P004;Barrilete 8g;Masticables;0.25;0.25
+P005;BigBen 5.5g;Masticables;0.2;0.2
+P006;BigBen barra 36g;Chocolates;2;2
+P007;BlackOut 60g;Galletas;1.3;1.3
+P008;Boogie caja 13.6g;Masticables;1.5;1.5
+P009;Casino 43g;Galletas;1.2;1.2
+P010;Charada 36g;Galletas;1;1
+P011;Chicle Bolita;Masticables;0.25;0.25
+P012;Chinchin bolsa 16g;Chocolates;1;1
+P013;Chinchin caja 30g;Chocolates;2;2
+P014;Chips Ahoy 37g;Galletas;1.5;1.5
+P015;Choco Donuts;Galletas;1;1
+P016;Choco Soda 36g;Galletas;1.5;1.5
+P017;Chupetin;Masticables;0.7;0.7
+P018;Cielo 625ml;Bebidas;0.77;1.5
+P019;Cieo chupon 1lt;Bebidas;3;3
+P020;Coca Kola 300ml;Bebidas;2;2
+P021;Coca Kola 600ml;Bebidas;3.5;3.5
+P022;Concordia 355;Bebidas;1.2;1.2
+P023;Coronita 36g;Galletas;1;1
+P024;Fanta 500ml;Bebidas;2.5;2.5
+P025;Gansito;Pasteles;2.5;2.5
+P026;Gatorade 500ml;Bebidas;2.5;2.5
+P027;Grosso;Masticables;0.17;0.25
+P028;Halls 25.2g;Masticables;1.17;1.5
+P029;Halls 3g;Masticables;0.2;0.2
+P030;Inka Kola 300ml;Bebidas;2;2
+P031;Inka Kola 600ml;Bebidas;3.5;3.5
+P032;Lentejas caja 30g;Chocolates;2;2
+P033;Mini Cuacua;Galletas;1.29;2
+P034;Mini Fruit Bites;Masticables;0.25;0.25
+P035;Mini Travesuras;Galletas;1.29;2
+P036;Mogul 35g;Masticables;0.96;1.5
+P037;Next 14g;Masticables;1;1
+P038;Next 30.8g;Masticables;1.5;1.5
+P039;Nik chica 27g;Galletas;1;1
+P040;Nik grande 72g;Galletas;2;2
+P041;Pepsi 600ml;Bebidas;2;2
+P042;Pepsi 750ml;Bebidas;2.5;2.5
+P043;Picaras 38g;Galletas;1.3;1.3
+P044;Princesa 28g;Chocolates;2.5;2.5
+P045;Pulp caja 250ml;Bebidas;1.5;1.5
+P046;Queque;Pasteles;0.79;1.2
+P047;Ritz peque�o 20g;Galletas;1;1
+P048;Ritz Taco 70g;Galletas;2;2
+P049;San Carlos 500ml;Bebidas;1;1
+P050;San Carlos 750ml;Bebidas;1.5;1.5
+P051;Soda Field 32g;Galletas;1;1
+P052;Sublime Sonrisa37g;Chocolates;3;3
+P053;Toalla Nocturna;Higiene;1.5;1.5
+P054;Toalla Normal;Higiene;1;1
+P055;Triangulo 30g;Chocolates;2.5;2.5
+P056;Trident 5.2g;Masticables;0.5;0.5
+P057;Trident 8.5g;Masticables;1.17;1.5
+P058;Trululu gomitas 80g;Masticables;3;3
+P059;Vainilla Field 37g;Galletas;1.2;1.2
+P060;Vizzio 19.2g;Chocolates;1.7;1.7
+P061;Volt 300ml;Bebidas;2.5;2.5
+P062;San Luis chupon 1lt;Bebidas;;
+P063;Piqueo Snax 55g;Piqueos;2.4;2.4
+P064;Cheetos picante 34g;Piqueos;1.7;1.7
+P065;Papas Onda picante 37g;Piqueos;2.2;2.2
+P066;Doritos;Piqueos;2.2;2.2
+P067;BigBen 4g;Masticables;0.1;0.1
+P068;Chicle Chiste 4g;Masticables;0.1;0.1
+P069;Free Tea 500ml;Bebidas;2.5;2.5
+P070;Mecano 19g;Chocolates;;
+P071;Full 22.5g;Masticables;;
+P072;Ca�onazo 19g;Chocolates;;
