@@ -12,12 +12,12 @@ P010;Charada 36g;Galletas;1;1
 P011;Chicle Bolita;Masticables;0.25;0.25
 P012;Chinchin bolsa 16g;Chocolates;1;1
 P013;Chinchin caja 30g;Chocolates;2;2
-P014;Chips Ahoy 37g;Galletas;1.5;1.5
+P014;Chips Ahoy 37g;Galletas;1.11;1.5
 P015;Choco Donuts;Galletas;1;1
-P016;Choco Soda 36g;Galletas;1.5;1.5
+P016;Choco Soda 36g;Galletas;1.12;1.5
 P017;Chupetin;Masticables;0.7;0.7
 P018;Cielo 625ml;Bebidas;0.77;1.5
-P019;Cieo chupon 1lt;Bebidas;3;3
+P019;Cielo chupon 1lt;Bebidas;3;3
 P020;Coca Kola 300ml;Bebidas;2;2
 P021;Coca Kola 600ml;Bebidas;3.5;3.5
 P022;Concordia 355;Bebidas;1.2;1.2
@@ -45,33 +45,41 @@ P043;Picaras 38g;Galletas;1.3;1.3
 P044;Princesa 28g;Chocolates;2.5;2.5
 P045;Pulp caja 250ml;Bebidas;1.5;1.5
 P046;Queque;Pasteles;0.79;1.2
-P047;Ritz pequeño 20g;Galletas;1;1
+P047;Ritz pequeño 20g;Galletas;0.77;1
 P048;Ritz Taco 70g;Galletas;2;2
 P049;San Carlos 500ml;Bebidas;1;1
 P050;San Carlos 750ml;Bebidas;1.5;1.5
-P051;Soda Field 32g;Galletas;1;1
-P052;Sublime Sonrisa37g;Chocolates;3;3
-P053;Toalla Nocturna;Higiene;1.5;1.5
-P054;Toalla Normal;Higiene;1;1
-P055;Triangulo 30g;Chocolates;2.5;2.5
-P056;Trident 5.2g;Masticables;0.5;0.5
-P057;Trident 8.5g;Masticables;1.17;1.5
-P058;Trululu gomitas 80g;Masticables;3;3
-P059;Vainilla Field 37g;Galletas;1.2;1.2
-P060;Vizzio 19.2g;Chocolates;1.7;1.7
-P061;Volt 300ml;Bebidas;2.5;2.5
-P062;San Luis chupon 1lt;Bebidas;3;3
-P063;Piqueo Snax 55g;Piqueos;2.4;2.4
-P064;Cheetos picante 34g;Piqueos;1.28;1.7
-P065;Papas Onda picante 37g;Piqueos;2.2;2.2
-P066;Doritos;Piqueos;2.2;2.2
-P067;BigBen 4g;Masticables;0.1;0.1
-P068;Chicle Chiste 4g;Masticables;0.1;0.1
-P069;Free Tea 500ml;Bebidas;2.5;2.5
-P070;Mecano 19g;Chocolates;1;1
-P071;Full 22.5g;Masticables;1;1
-P072;Cañonazo 19g;Chocolates;1;1
-P073;Cheetos 34g;Piqueos;1.28;1.7
-P074;Cuates picante 42g;Piqueos;0.83;1.2
-P075;Chuzitos 35g;Piqueos;0.83;1.2
-P076;Lay's Clasica 39g;Piqueos;1.7;2.2
+P051;Soda Field 32g;Galletas;0.59;1
+P052;Sublime Sonrisa 37g;Chocolates;2.55;3
+P053;Sublime Blanco 38g;Chocolates;2.47;3
+P054;Toalla Nocturna;Higiene;1.5;1.5
+P055;Toalla Normal;Higiene;1;1
+P056;Triangulo 30g;Chocolates;2.5;2.5
+P057;Trident 5.2g;Masticables;0.33;0.5
+P058;Trident 8.5g;Masticables;1.17;1.5
+P059;Trululu gomitas 80g;Masticables;3;3
+P060;Vainilla Field 37g;Galletas;1.2;1.2
+P061;Vizzio 19.2g;Chocolates;1.7;1.7
+P062;Volt 300ml;Bebidas;2.5;2.5
+P063;San Luis chupon 1lt;Bebidas;3;3
+P064;Piqueo Snax 55g;Piqueos;2.4;2.4
+P065;Cheetos picante 34g;Piqueos;1.28;1.7
+P066;Papas Onda picante 37g;Piqueos;2.2;2.2
+P067;Doritos;Piqueos;2.2;2.2
+P068;BigBen 4g;Masticables;0.1;0.1
+P069;Chicle Chiste 4g;Masticables;0.1;0.1
+P070;Free Tea 500ml;Bebidas;2.5;2.5
+P071;Mecano 19g;Chocolates;1;1
+P072;Full 22.5g;Masticables;1;1
+P073;Canonazo 19g;Chocolates;1;1
+P074;Cheetos 34g;Piqueos;1.28;1.7
+P075;Cuates picante 42g;Piqueos;0.83;1.2
+P076;Chuzitos 35g;Piqueos;0.83;1.2
+P077;Lay's Clasica 39g;Piqueos;1.7;2.2
+P078;Morochas taco 75g;Galletas;2.1;2.5
+P079;Bon o Bon Leche 15g;Chocolates;0.81;1
+P080;Bon o Bon Chocolinas 15g;Chocolates;0.81;1
+P081;Oreo chico 36g;Galletas;0.8;1
+P082;Dona Pepa 23g;Galletas;0.8;1
+P083;Cua Cua 18g;Galletas;0.72;1
+P084;Oreo taco 108g;Galletas;2.2;3
