@@ -416,71 +416,31 @@
     }
 
     /* ── NAV ── */
-    .topnav {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 100;
-    }
-    .nav-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .nav-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--gold);
-      white-space: nowrap;
-      text-decoration: none;
-    }
-    .nav-links { display: flex; gap: 4px; flex: 1; }
-    .nav-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 14px;
-      border-radius: 50px;
-      transition: color .2s, background .2s;
-    }
-    .nav-link:hover { color: var(--text); background: rgba(var(--accent-rgb),.07); }
-    .nav-link.active { color: var(--gold); background: rgba(var(--accent-rgb),.1); }
-
-    /* ── THEME SWITCHER ── */
-    .theme-switcher {
-      display: flex;
-      gap: 7px;
-      align-items: center;
-    }
-
-    .theme-dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      cursor: pointer;
-      padding: 0;
-      transition: transform .2s, box-shadow .2s, border-color .2s;
-      opacity: .6;
-    }
-
-    .theme-dot:hover {
-      transform: scale(1.2);
-      opacity: 1;
-    }
-
-    .theme-dot.active {
-      border-color: var(--text);
-      opacity: 1;
-      transform: scale(1.15);
-      box-shadow: 0 0 0 2px rgba(var(--accent-rgb), .4);
-    }
+    .topnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+    .nav-inner{max-width:960px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px;}
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--gold);white-space:nowrap;text-decoration:none;flex:1;}
+    .nav-links{display:flex;gap:2px;}
+    .nav-link{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:50px;transition:color .2s,background .2s;white-space:nowrap;}
+    .nav-link:hover{color:var(--text);background:rgba(var(--accent-rgb),.07);}
+    .nav-link.active{color:var(--gold);background:rgba(var(--accent-rgb),.1);}
+    .theme-switcher{display:flex;gap:6px;align-items:center;}
+    .theme-dot{width:18px;height:18px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;transition:transform .2s,border-color .2s;opacity:.55;}
+    .theme-dot:hover{transform:scale(1.2);opacity:1;}
+    .theme-dot.active{border-color:var(--text);opacity:1;transform:scale(1.15);}
+    .menu-btn{display:none;background:none;border:1.5px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s,color .2s;}
+    .menu-btn:hover{border-color:var(--gold);color:var(--gold);}
+    .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .drawer-overlay.open{opacity:1;pointer-events:all;}
+    .drawer{position:fixed;top:0;right:0;bottom:0;width:230px;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:20px 16px;display:flex;flex-direction:column;gap:4px;}
+    .drawer.open{transform:translateX(0);}
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+    .drawer-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);}
+    .drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:2px 6px;}
+    .drawer-close:hover{color:var(--text);}
+    .drawer-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);border:1px solid transparent;transition:all .2s;}
+    .drawer-link:hover{background:rgba(var(--accent-rgb),.07);border-color:var(--border);color:var(--text);}
+    .drawer-link.active{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);color:var(--gold);}
+    @media(max-width:600px){.nav-links{display:none;}.menu-btn{display:flex;}}
 
     /* search highlight animation */
     .card.highlight-in {
@@ -519,8 +479,23 @@
         <button class="theme-dot"        data-theme="indigo"    title="Índigo"    style="background:#a78bfa"></button>
         <button class="theme-dot"        data-theme="sage"      title="Sage"      style="background:#7d9b76"></button>
       </div>
+      <button class="menu-btn" id="open-drawer" aria-label="Menú">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </div>
   </nav>
+  <div class="drawer-overlay" id="overlay"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">Menú</span>
+      <button class="drawer-close" id="close-drawer">✕</button>
+    </div>
+    <a class="drawer-link" href="index.html">Lista de Precios</a>
+    <a class="drawer-link" href="dashboard.html">Dashboard</a>
+    <a class="drawer-link active" href="catalogo.html">Catálogo</a>
+  </div>
 
   <header>
     <p class="eyebrow">Sistema de Inventario</p>
@@ -687,6 +662,16 @@
         else document.documentElement.setAttribute('data-theme', t);
       });
     });
+
+    // Drawer
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+    document.getElementById('open-drawer').addEventListener('click', () => {
+      drawer.classList.add('open'); overlay.classList.add('open');
+    });
+    function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
+    document.getElementById('close-drawer').addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
 
     // Search input
     let debounce;
