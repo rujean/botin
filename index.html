@@ -17,65 +17,69 @@
       padding: 0;
     }
 
+    /* ── OBSIDIANA (default) ── */
     :root {
-      --bg: #1a1208;
-      --surface: #251b0d;
-      --card: #2e2010;
-      --border: #4a3418;
-      --gold: #c9933a;
-      --gold-lt: #e8b96a;
-      --terra: #b85c38;
-      --text: #f0e4cc;
-      --muted: #9a8060;
-      --tag-bg: #3a2814;
-      --shadow: 0 8px 40px rgba(0, 0, 0, .55);
-      --radius: 14px;
-      --accent-rgb: 201, 147, 58;
+      --bg:         #0d0d0d;
+      --surface:    #161616;
+      --card:       #1c1c1c;
+      --border:     #2e2a1a;
+      --gold:       #d4af37;
+      --gold-lt:    #f0d060;
+      --terra:      #c4922a;
+      --text:       #f5f0e8;
+      --muted:      #8a7a5a;
+      --tag-bg:     #221e0e;
+      --shadow:     0 8px 40px rgba(0,0,0,.75);
+      --radius:     14px;
+      --accent-rgb: 212,175,55;
     }
 
-    [data-theme="candy"] {
-      --bg: #12011a;
-      --surface: #1e0429;
-      --card: #250532;
-      --border: #61166e;
-      --gold: #f72585;
-      --gold-lt: #ff85c8;
-      --terra: #7209b7;
-      --text: #ffe8f8;
-      --muted: #b06090;
-      --tag-bg: #38084a;
-      --shadow: 0 8px 40px rgba(247, 37, 133, .2);
-      --accent-rgb: 247, 37, 133;
+    /* ── MÁRMOL ── */
+    [data-theme="marmol"] {
+      --bg:         #faf9f7;
+      --surface:    #ffffff;
+      --card:       #ffffff;
+      --border:     #e4dbd0;
+      --gold:       #8b1a3a;
+      --gold-lt:    #6b1230;
+      --terra:      #c4572a;
+      --text:       #1a1a1a;
+      --muted:      #9a8878;
+      --tag-bg:     #f2ece4;
+      --shadow:     0 4px 20px rgba(0,0,0,.08);
+      --accent-rgb: 139,26,58;
     }
 
-    [data-theme="neon"] {
-      --bg: #020c14;
-      --surface: #071525;
-      --card: #0a1c30;
-      --border: #0d4f72;
-      --gold: #00d4ff;
-      --gold-lt: #80eeff;
-      --terra: #00ff88;
-      --text: #d0f5ff;
-      --muted: #4a8fa8;
-      --tag-bg: #041220;
-      --shadow: 0 8px 40px rgba(0, 0, 0, .7);
-      --accent-rgb: 0, 212, 255;
+    /* ── ÍNDIGO ── */
+    [data-theme="indigo"] {
+      --bg:         #0e0e1f;
+      --surface:    #141428;
+      --card:       #1a1a32;
+      --border:     #2e2e55;
+      --gold:       #a78bfa;
+      --gold-lt:    #c4b0fc;
+      --terra:      #60a5fa;
+      --text:       #e2e8f0;
+      --muted:      #6b7ab0;
+      --tag-bg:     #1e1e3c;
+      --shadow:     0 8px 40px rgba(0,0,0,.65);
+      --accent-rgb: 167,139,250;
     }
 
-    [data-theme="fresh"] {
-      --bg: #edf8f3;
-      --surface: #ffffff;
-      --card: #ffffff;
-      --border: #b8e4ce;
-      --gold: #0d9e6e;
-      --gold-lt: #0a7a55;
-      --terra: #e05c2a;
-      --text: #132e22;
-      --muted: #5a9a7a;
-      --tag-bg: #daf0e8;
-      --shadow: 0 4px 24px rgba(0, 0, 0, .1);
-      --accent-rgb: 13, 158, 110;
+    /* ── SAGE ── */
+    [data-theme="sage"] {
+      --bg:         #f4f4f0;
+      --surface:    #fafafa;
+      --card:       #ffffff;
+      --border:     #d4dace;
+      --gold:       #7d9b76;
+      --gold-lt:    #556e50;
+      --terra:      #b85c38;
+      --text:       #1c1c1c;
+      --muted:      #8a9a88;
+      --tag-bg:     #e8ede6;
+      --shadow:     0 4px 20px rgba(0,0,0,.07);
+      --accent-rgb: 125,155,118;
     }
 
     html {
@@ -469,10 +473,10 @@
 
   <header>
     <div class="theme-switcher">
-      <button class="theme-dot active" data-theme="clasico" title="Clásico" style="background:#c9933a"></button>
-      <button class="theme-dot" data-theme="candy" title="Candy" style="background:#f72585"></button>
-      <button class="theme-dot" data-theme="neon" title="Neon" style="background:#00d4ff"></button>
-      <button class="theme-dot" data-theme="fresh" title="Fresh" style="background:#0d9e6e"></button>
+      <button class="theme-dot active" data-theme="obsidiana" title="Obsidiana" style="background:#d4af37"></button>
+      <button class="theme-dot"        data-theme="marmol"    title="Mármol"    style="background:#8b1a3a"></button>
+      <button class="theme-dot"        data-theme="indigo"    title="Índigo"    style="background:#a78bfa"></button>
+      <button class="theme-dot"        data-theme="sage"      title="Sage"      style="background:#7d9b76"></button>
     </div>
     <p class="eyebrow">Sistema de Inventario</p>
     <h1>Catálogo de Productos <span>Botín de Oro</span></h1>
@@ -634,7 +638,8 @@
         document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const t = btn.dataset.theme;
-        document.documentElement.setAttribute('data-theme', t === 'clasico' ? '' : t);
+        if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', t);
       });
     });
 
