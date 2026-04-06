@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard — Botín de Oro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0d0d0d;--surface:#161616;--card:#1c1c1c;--border:#2e2a1a;
+  --gold:#d4af37;--gold-lt:#f0d060;--terra:#c4922a;
+  --text:#f5f0e8;--muted:#8a7a5a;--tag-bg:#221e0e;
+  --shadow:0 8px 40px rgba(0,0,0,.75);--radius:14px;--accent-rgb:212,175,55;
+}
+[data-theme="marmol"]{
+  --bg:#faf9f7;--surface:#ffffff;--card:#ffffff;--border:#e4dbd0;
+  --gold:#8b1a3a;--gold-lt:#6b1230;--terra:#c4572a;
+  --text:#1a1a1a;--muted:#9a8878;--tag-bg:#f2ece4;
+  --shadow:0 4px 20px rgba(0,0,0,.08);--accent-rgb:139,26,58;
+}
+[data-theme="indigo"]{
+  --bg:#0e0e1f;--surface:#141428;--card:#1a1a32;--border:#2e2e55;
+  --gold:#a78bfa;--gold-lt:#c4b0fc;--terra:#60a5fa;
+  --text:#e2e8f0;--muted:#6b7ab0;--tag-bg:#1e1e3c;
+  --shadow:0 8px 40px rgba(0,0,0,.65);--accent-rgb:167,139,250;
+}
+[data-theme="sage"]{
+  --bg:#f4f4f0;--surface:#fafafa;--card:#ffffff;--border:#d4dace;
+  --gold:#7d9b76;--gold-lt:#556e50;--terra:#b85c38;
+  --text:#1c1c1c;--muted:#8a9a88;--tag-bg:#e8ede6;
+  --shadow:0 4px 20px rgba(0,0,0,.07);--accent-rgb:125,155,118;
+}
+
+html{font-family:'DM Sans',sans-serif;font-size:16px;}
+body{
+  background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(var(--accent-rgb),.15),transparent);
+  transition:background .4s,color .4s;
+}
+*,*::before,*::after{transition:background-color .3s,border-color .3s,color .3s;}
+
+/* NAV */
+.topnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:24px;}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--gold);white-space:nowrap;text-decoration:none;}
+.nav-links{display:flex;gap:4px;flex:1;}
+.nav-link{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:50px;transition:color .2s,background .2s;}
+.nav-link:hover{color:var(--text);background:rgba(var(--accent-rgb),.07);}
+.nav-link.active{color:var(--gold);background:rgba(var(--accent-rgb),.1);}
+.theme-switcher{display:flex;gap:7px;align-items:center;}
+.theme-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;transition:transform .2s,box-shadow .2s,border-color .2s;opacity:.6;}
+.theme-dot:hover{transform:scale(1.2);opacity:1;}
+.theme-dot.active{border-color:var(--text);opacity:1;transform:scale(1.15);box-shadow:0 0 0 2px rgba(var(--accent-rgb),.4);}
+
+/* HEADER */
+header{text-align:center;padding:48px 24px 16px;position:relative;}
+header::after{content:'';display:block;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto 0;}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.1;color:var(--text);}
+h1 span{color:var(--gold-lt);}
+
+/* WRAP */
+.wrap{max-width:900px;margin:0 auto;padding:32px 20px 0;}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:32px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;right:0;width:70px;height:70px;background:radial-gradient(circle at top right,rgba(var(--accent-rgb),.1),transparent 70%);pointer-events:none;}
+.kpi-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.kpi-value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold-lt);line-height:1;}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:6px;}
+.kpi.alert .kpi-value{color:#ef5350;}
+.kpi.good  .kpi-value{color:#81c784;}
+
+/* SECTION TITLE */
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+
+/* CATEGORY TABLE */
+.section{margin-bottom:36px;}
+.cat-table{width:100%;border-collapse:collapse;}
+.cat-table th{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);}
+.cat-table td{padding:12px 12px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle;}
+.cat-table tr:last-child td{border-bottom:none;}
+.cat-table tr:hover td{background:rgba(var(--accent-rgb),.04);}
+.bar-wrap{width:120px;height:6px;background:var(--tag-bg);border-radius:50px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px;}
+.bar-fill{height:100%;border-radius:50px;background:var(--gold);}
+.pill{display:inline-block;padding:2px 10px;border-radius:50px;font-size:11px;font-weight:500;}
+.pill.bajo {background:rgba(239,83,80,.12);color:#ef5350;border:1px solid rgba(239,83,80,.25);}
+.pill.medio{background:rgba(255,167,38,.12);color:#ffa726;border:1px solid rgba(255,167,38,.25);}
+.pill.alto {background:rgba(129,199,132,.12);color:#81c784;border:1px solid rgba(129,199,132,.2);}
+.pill.zero {background:rgba(158,158,158,.12);color:#9e9e9e;border:1px solid rgba(158,158,158,.2);}
+
+/* TOP LISTS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+.rank-list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.rank-header{padding:14px 18px;border-bottom:1px solid var(--border);font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.rank-item{display:flex;align-items:center;padding:11px 18px;border-bottom:1px solid var(--border);gap:12px;}
+.rank-item:last-child{border-bottom:none;}
+.rank-num{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--muted);min-width:20px;}
+.rank-name{flex:1;font-size:13px;color:var(--text);line-height:1.3;}
+.rank-pct{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;}
+.rank-pct.alto{color:#81c784;}
+.rank-pct.bajo{color:#ef5350;}
+.rank-pct.zero{color:var(--muted);}
+
+/* DISTRIBUCIÓN */
+.dist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px;}
+.dist-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;}
+.dist-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;}
+.dist-card.d-zero ::after,.dist-card.d-zero::after{background:#9e9e9e;}
+.dist-card.d-bajo::after {background:#ef5350;}
+.dist-card.d-medio::after{background:#ffa726;}
+.dist-card.d-alto::after {background:#81c784;}
+.dist-icon{font-size:1.4rem;line-height:1;}
+.dist-count{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;line-height:1;}
+.dist-card.d-zero  .dist-count{color:#9e9e9e;}
+.dist-card.d-bajo  .dist-count{color:#ef5350;}
+.dist-card.d-medio .dist-count{color:#ffa726;}
+.dist-card.d-alto  .dist-count{color:#81c784;}
+.dist-label{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.dist-sub{font-size:11px;color:var(--muted);}
+.dist-pct{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--muted);}
+
+/* ALERT BOX */
+.alert-box{background:rgba(239,83,80,.06);border:1px solid rgba(239,83,80,.2);border-radius:var(--radius);padding:18px 20px;margin-bottom:32px;}
+.alert-title{font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#ef5350;margin-bottom:10px;}
+.alert-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.alert-chip{background:rgba(239,83,80,.1);color:#ef5350;border:1px solid rgba(239,83,80,.2);padding:4px 12px;border-radius:50px;font-size:12px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Botín de Oro</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Lista de Precios</a>
+      <a class="nav-link active" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="catalogo.html">Catálogo</a>
+    </div>
+    <div class="theme-switcher">
+      <button class="theme-dot active" data-theme="obsidiana" title="Obsidiana" style="background:#d4af37"></button>
+      <button class="theme-dot"        data-theme="marmol"    title="Mármol"    style="background:#8b1a3a"></button>
+      <button class="theme-dot"        data-theme="indigo"    title="Índigo"    style="background:#a78bfa"></button>
+      <button class="theme-dot"        data-theme="sage"      title="Sage"      style="background:#7d9b76"></button>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <p class="eyebrow">Resumen General</p>
+  <h1>Panel de <span>Control</span></h1>
+</header>
+
+<div class="wrap" id="main" style="display:none">
+
+  <!-- KPIs -->
+  <div class="kpi-grid" id="kpis"></div>
+
+  <!-- Distribución de márgenes -->
+  <div class="section">
+    <div class="sec-title">Distribución de Márgenes</div>
+    <div class="dist-grid" id="dist-grid"></div>
+  </div>
+
+  <!-- Alerta sin margen -->
+  <div class="alert-box" id="alert-box" style="display:none">
+    <div class="alert-title">⚠ Productos sin margen (compra = venta)</div>
+    <div class="alert-chips" id="alert-chips"></div>
+  </div>
+
+  <!-- Por categoría -->
+  <div class="section">
+    <div class="sec-title">Rendimiento por Categoría</div>
+    <table class="cat-table" id="cat-table">
+      <thead><tr>
+        <th>Categoría</th><th>Productos</th><th>Margen promedio</th><th>Estado</th>
+      </tr></thead>
+      <tbody id="cat-body"></tbody>
+    </table>
+  </div>
+
+  <!-- Top listas -->
+  <div class="two-col">
+    <div class="rank-list">
+      <div class="rank-header">Mejor margen</div>
+      <div id="top-best"></div>
+    </div>
+    <div class="rank-list">
+      <div class="rank-header">Menor margen</div>
+      <div id="top-worst"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function parseCSV(text) {
+  const lines = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+  const sep = lines[0].includes(';') ? ';' : ',';
+  return lines.slice(1).map(line => {
+    const cols = []; let cur = '', inQ = false;
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === sep && !inQ) { cols.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur);
+    return { id:cols[0].trim(), nombre:cols[1].trim(), categoria:cols[2].trim(),
+             compra:parseFloat(cols[3]), venta:parseFloat(cols[4]) };
+  });
+}
+
+function margin(p) { return ((p.venta - p.compra) / p.compra) * 100; }
+function fmt(n) { return n.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function pillClass(m) { return m === 0 ? 'zero' : m < 20 ? 'bajo' : m <= 30 ? 'medio' : 'alto'; }
+function pillLabel(m) { return m === 0 ? 'Sin margen' : m < 20 ? 'Bajo' : m <= 30 ? 'Medio' : 'Alto'; }
+
+fetch('productos.csv')
+  .then(r => r.text())
+  .then(text => {
+    const prods = parseCSV(text);
+    const total = prods.length;
+    const conMargen = prods.filter(p => margin(p) > 0);
+    const sinMargen = prods.filter(p => margin(p) === 0);
+    const avgMargen = conMargen.length
+      ? conMargen.reduce((s,p) => s + margin(p), 0) / conMargen.length : 0;
+
+    // KPIs
+    const cats = [...new Set(prods.map(p => p.categoria))];
+    document.getElementById('kpis').innerHTML = `
+      <div class="kpi">
+        <div class="kpi-label">Total Productos</div>
+        <div class="kpi-value">${total}</div>
+        <div class="kpi-sub">${cats.length} categorías</div>
+      </div>
+      <div class="kpi good">
+        <div class="kpi-label">Margen Promedio</div>
+        <div class="kpi-value">${avgMargen.toFixed(1)}%</div>
+        <div class="kpi-sub">Productos con ganancia</div>
+      </div>
+      <div class="kpi ${sinMargen.length > 0 ? 'alert':'good'}">
+        <div class="kpi-label">Sin margen</div>
+        <div class="kpi-value">${sinMargen.length}</div>
+        <div class="kpi-sub">Compra = venta</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Con margen</div>
+        <div class="kpi-value">${conMargen.length}</div>
+        <div class="kpi-sub">Generan ganancia</div>
+      </div>`;
+
+    // Distribución de márgenes
+    const bands = [
+      { key:'d-zero',  label:'Sin margen',   sub:'Compra = venta', icon:'⚪', items: prods.filter(p => margin(p) === 0) },
+      { key:'d-bajo',  label:'Margen bajo',  sub:'Menos del 20%',  icon:'🔴', items: prods.filter(p => margin(p) > 0 && margin(p) < 20) },
+      { key:'d-medio', label:'Margen medio', sub:'Entre 20% y 30%', icon:'🟡', items: prods.filter(p => margin(p) >= 20 && margin(p) <= 30) },
+      { key:'d-alto',  label:'Margen alto',  sub:'Más del 30%',    icon:'🟢', items: prods.filter(p => margin(p) > 30) },
+    ];
+    document.getElementById('dist-grid').innerHTML = bands.map(b => `
+      <div class="dist-card ${b.key}">
+        <span class="dist-icon">${b.icon}</span>
+        <span class="dist-count">${b.items.length}</span>
+        <span class="dist-label">${b.label}</span>
+        <span class="dist-sub">${b.sub}</span>
+        <span class="dist-pct">${((b.items.length/total)*100).toFixed(1)}% del total</span>
+      </div>`).join('');
+
+    // Alerta sin margen
+    if (sinMargen.length > 0) {
+      document.getElementById('alert-box').style.display = 'block';
+      document.getElementById('alert-chips').innerHTML =
+        sinMargen.map(p => `<span class="alert-chip">${p.nombre}</span>`).join('');
+    }
+
+    // Por categoría
+    const catStats = cats.map(cat => {
+      const items = prods.filter(p => p.categoria === cat);
+      const withM  = items.filter(p => margin(p) > 0);
+      const avg    = withM.length ? withM.reduce((s,p)=>s+margin(p),0)/withM.length : 0;
+      return { cat, count: items.length, avg };
+    }).sort((a,b) => b.avg - a.avg);
+
+    const maxAvg = Math.max(...catStats.map(c => c.avg), 1);
+    document.getElementById('cat-body').innerHTML = catStats.map(c => `
+      <tr>
+        <td><strong>${c.cat}</strong></td>
+        <td>${c.count}</td>
+        <td>
+          <span class="bar-wrap"><span class="bar-fill" style="width:${(c.avg/maxAvg*100).toFixed(1)}%"></span></span>
+          ${c.avg.toFixed(1)}%
+        </td>
+        <td><span class="pill ${pillClass(c.avg)}">${pillLabel(c.avg)}</span></td>
+      </tr>`).join('');
+
+    // Top 5 mejor / menor margen (solo con margen > 0)
+    const sorted = [...conMargen].sort((a,b) => margin(b)-margin(a));
+    const best  = sorted.slice(0, 5);
+    const worst = sorted.slice(-5).reverse();
+
+    document.getElementById('top-best').innerHTML = best.map((p,i) => {
+      const m = margin(p);
+      return `<div class="rank-item">
+        <span class="rank-num">${i+1}</span>
+        <span class="rank-name">${p.nombre}<br><small style="color:var(--muted);font-size:11px">${p.categoria}</small></span>
+        <span class="rank-pct alto">+${m.toFixed(1)}%</span>
+      </div>`;
+    }).join('');
+
+    document.getElementById('top-worst').innerHTML = worst.map((p,i) => {
+      const m = margin(p);
+      const cls = m < 20 ? 'bajo' : m <= 30 ? 'medio' : 'alto';
+      return `<div class="rank-item">
+        <span class="rank-num">${i+1}</span>
+        <span class="rank-name">${p.nombre}<br><small style="color:var(--muted);font-size:11px">${p.categoria}</small></span>
+        <span class="rank-pct ${cls}">+${m.toFixed(1)}%</span>
+      </div>`;
+    }).join('');
+
+    document.getElementById('main').style.display = 'block';
+  })
+  .catch(() => {
+    document.getElementById('main').style.display = 'block';
+    document.getElementById('main').innerHTML = '<p style="color:#ef5350;padding:20px">Error al cargar productos.csv</p>';
+  });
+
+// Theme switcher
+document.querySelectorAll('.theme-dot').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.theme;
+    if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', t);
+  });
+});
+</script>
+</body>
+</html>

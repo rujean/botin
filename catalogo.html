@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Productos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── OBSIDIANA (default) ── */
+    :root {
+      --bg:         #0d0d0d;
+      --surface:    #161616;
+      --card:       #1c1c1c;
+      --border:     #2e2a1a;
+      --gold:       #d4af37;
+      --gold-lt:    #f0d060;
+      --terra:      #c4922a;
+      --text:       #f5f0e8;
+      --muted:      #8a7a5a;
+      --tag-bg:     #221e0e;
+      --shadow:     0 8px 40px rgba(0,0,0,.75);
+      --radius:     14px;
+      --accent-rgb: 212,175,55;
+    }
+
+    /* ── MÁRMOL ── */
+    [data-theme="marmol"] {
+      --bg:         #faf9f7;
+      --surface:    #ffffff;
+      --card:       #ffffff;
+      --border:     #e4dbd0;
+      --gold:       #8b1a3a;
+      --gold-lt:    #6b1230;
+      --terra:      #c4572a;
+      --text:       #1a1a1a;
+      --muted:      #9a8878;
+      --tag-bg:     #f2ece4;
+      --shadow:     0 4px 20px rgba(0,0,0,.08);
+      --accent-rgb: 139,26,58;
+    }
+
+    /* ── ÍNDIGO ── */
+    [data-theme="indigo"] {
+      --bg:         #0e0e1f;
+      --surface:    #141428;
+      --card:       #1a1a32;
+      --border:     #2e2e55;
+      --gold:       #a78bfa;
+      --gold-lt:    #c4b0fc;
+      --terra:      #60a5fa;
+      --text:       #e2e8f0;
+      --muted:      #6b7ab0;
+      --tag-bg:     #1e1e3c;
+      --shadow:     0 8px 40px rgba(0,0,0,.65);
+      --accent-rgb: 167,139,250;
+    }
+
+    /* ── SAGE ── */
+    [data-theme="sage"] {
+      --bg:         #f4f4f0;
+      --surface:    #fafafa;
+      --card:       #ffffff;
+      --border:     #d4dace;
+      --gold:       #7d9b76;
+      --gold-lt:    #556e50;
+      --terra:      #b85c38;
+      --text:       #1c1c1c;
+      --muted:      #8a9a88;
+      --tag-bg:     #e8ede6;
+      --shadow:     0 4px 20px rgba(0,0,0,.07);
+      --accent-rgb: 125,155,118;
+    }
+
+    html {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 80px;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(var(--accent-rgb), .15), transparent);
+      transition: background .4s, color .4s;
+    }
+
+    *,
+    *::before,
+    *::after {
+      transition: background-color .3s, border-color .3s, color .3s;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 56px 24px 20px;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 20px auto 0;
+    }
+
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    h1 span {
+      color: var(--gold-lt);
+    }
+
+    /* ── SEARCH BOX ── */
+    .search-wrap {
+      max-width: 620px;
+      margin: 36px auto 0;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 38px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      transition: color .2s;
+    }
+
+    #search {
+      width: 100%;
+      padding: 17px 20px 17px 52px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .25s, box-shadow .25s;
+      box-shadow: var(--shadow);
+    }
+
+    #search::placeholder {
+      color: var(--muted);
+    }
+
+    #search:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .15), var(--shadow);
+    }
+
+    #search:focus+.search-icon {
+      color: var(--gold);
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 0 20px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-btn {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      padding: 6px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg);
+    }
+
+    /* ── STATS BAR ── */
+    .stats {
+      max-width: 900px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .stats strong {
+      color: var(--gold-lt);
+    }
+
+    #no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 15px;
+      display: none;
+    }
+
+    #no-results .icon {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), border-color .25s, box-shadow .25s;
+      animation: fadeUp .35s ease both;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, .5), 0 0 0 1px rgba(var(--accent-rgb), .25);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle at top right, rgba(var(--accent-rgb), .08), transparent 70%);
+      pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-category {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(var(--accent-rgb), .1);
+      border: 1px solid rgba(var(--accent-rgb), .2);
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .card-name mark {
+      background: rgba(var(--accent-rgb), .25);
+      color: var(--gold-lt);
+      border-radius: 3px;
+      padding: 0 2px;
+    }
+
+    .card-sku {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+      margin-bottom: 18px;
+    }
+
+    .prices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .price-block {}
+
+    .price-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .price-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .price-value.venta {
+      color: var(--gold-lt);
+    }
+
+    .price-value.compra {
+      color: var(--terra);
+    }
+
+    .price-currency {
+      font-size: 13px;
+      font-weight: 400;
+      opacity: .7;
+      margin-right: 2px;
+    }
+
+    .margin-badge {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .margin-pill {
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .margin-pill.bajo {
+      background: rgba(244, 67, 54, .12);
+      color: #ef5350;
+      border: 1px solid rgba(244, 67, 54, .25);
+    }
+
+    .margin-pill.medio {
+      background: rgba(255, 152, 0, .12);
+      color: #ffa726;
+      border: 1px solid rgba(255, 152, 0, .25);
+    }
+
+    .margin-pill.alto {
+      background: rgba(76, 175, 80, .12);
+      color: #81c784;
+      border: 1px solid rgba(76, 175, 80, .2);
+    }
+
+    /* ── NAV ── */
+    .topnav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gold);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 4px; flex: 1; }
+    .nav-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 50px;
+      transition: color .2s, background .2s;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(var(--accent-rgb),.07); }
+    .nav-link.active { color: var(--gold); background: rgba(var(--accent-rgb),.1); }
+
+    /* ── THEME SWITCHER ── */
+    .theme-switcher {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .theme-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      opacity: .6;
+    }
+
+    .theme-dot:hover {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+
+    .theme-dot.active {
+      border-color: var(--text);
+      opacity: 1;
+      transform: scale(1.15);
+      box-shadow: 0 0 0 2px rgba(var(--accent-rgb), .4);
+    }
+
+    /* search highlight animation */
+    .card.highlight-in {
+      animation: pulse-gold .5s ease;
+    }
+
+    @keyframes pulse-gold {
+      0% {
+        box-shadow: 0 0 0 0 rgba(var(--accent-rgb), .5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0);
+      }
+
+      100% {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="topnav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">Botín de Oro</a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Lista de Precios</a>
+        <a class="nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav-link active" href="catalogo.html">Catálogo</a>
+      </div>
+      <div class="theme-switcher">
+        <button class="theme-dot active" data-theme="obsidiana" title="Obsidiana" style="background:#d4af37"></button>
+        <button class="theme-dot"        data-theme="marmol"    title="Mármol"    style="background:#8b1a3a"></button>
+        <button class="theme-dot"        data-theme="indigo"    title="Índigo"    style="background:#a78bfa"></button>
+        <button class="theme-dot"        data-theme="sage"      title="Sage"      style="background:#7d9b76"></button>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Sistema de Inventario</p>
+    <h1>Catálogo de <span>Productos</span></h1>
+  </header>
+
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Buscar producto, categoría o código..." autocomplete="off" />
+    <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-cat="all">Todos</button>
+  </div>
+
+  <div class="stats">
+    <span>Mostrando <strong id="count">0</strong> productos</span>
+    <span id="search-label"></span>
+  </div>
+
+  <div id="no-results">
+    <span class="icon">🔍</span>
+    No se encontraron productos para "<span id="query-echo"></span>"
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    let productos = [];
+    let currentQuery = '';
+    let currentCat = 'all';
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+      const sep = lines[0].includes(';') ? ';' : ',';
+      return lines.slice(1).map(line => {
+        const cols = [];
+        let cur = '', inQ = false;
+        for (let ch of line) {
+          if (ch === '"') { inQ = !inQ; }
+          else if (ch === sep && !inQ) { cols.push(cur); cur = ''; }
+          else { cur += ch; }
+        }
+        cols.push(cur);
+        return {
+          id: cols[0].trim(),
+          nombre: cols[1].trim(),
+          categoria: cols[2].trim(),
+          compra: parseFloat(cols[3]),
+          venta: parseFloat(cols[4]),
+        };
+      });
+    }
+
+    function buildFilters() {
+      const cats = ['all', ...new Set(productos.map(p => p.categoria))];
+      const filtersEl = document.getElementById('filters');
+      filtersEl.innerHTML = cats.map(c =>
+        `<button class="filter-btn${c === 'all' ? ' active' : ''}" data-cat="${c}">${c === 'all' ? 'Todos' : c}</button>`
+      ).join('');
+      filtersEl.addEventListener('click', e => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.dataset.cat;
+        render();
+      });
+    }
+
+    fetch('productos.csv')
+      .then(r => { if (!r.ok) throw new Error('No se pudo cargar productos.csv'); return r.text(); })
+      .then(text => { productos = parseCSV(text); buildFilters(); render(); })
+      .catch(err => {
+        document.getElementById('grid').innerHTML =
+          `<p style="color:var(--terra);padding:20px">Error: ${err.message}</p>`;
+      });
+
+    function fmt(n) {
+      return n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function margin(compra, venta) {
+      return (((venta - compra) / compra) * 100).toFixed(1);
+    }
+
+    function marginClass(compra, venta) {
+      const m = ((venta - compra) / compra) * 100;
+      if (m < 20) return 'bajo';
+      if (m <= 30) return 'medio';
+      return 'alto';
+    }
+
+    function highlight(text, query) {
+      if (!query) return text;
+      const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(re, '<mark>$1</mark>');
+    }
+
+    function render() {
+      const q = currentQuery.toLowerCase().trim();
+      const cat = currentCat;
+      const grid = document.getElementById('grid');
+      const noRes = document.getElementById('no-results');
+
+      let filtered = productos.filter(p => {
+        const matchCat = cat === 'all' || p.categoria === cat;
+        const matchQ = !q ||
+          p.nombre.toLowerCase().includes(q) ||
+          p.categoria.toLowerCase().includes(q) ||
+          p.id.toLowerCase().includes(q);
+        return matchCat && matchQ;
+      });
+
+      document.getElementById('count').textContent = filtered.length;
+      document.getElementById('search-label').textContent = q ? `"${currentQuery}"` : '';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noRes.style.display = 'block';
+        document.getElementById('query-echo').textContent = currentQuery;
+        return;
+      }
+      noRes.style.display = 'none';
+
+      grid.innerHTML = filtered.map((p, i) => `
+    <div class="card" style="animation-delay:${i * 0.04}s">
+      <span class="card-category">${p.categoria}</span>
+      <div class="card-name">${highlight(p.nombre, currentQuery)}</div>
+      <div class="card-sku">SKU: ${p.id}</div>
+      <div class="card-divider"></div>
+      <div class="prices">
+        <div class="price-block">
+          <div class="price-label">Precio Venta</div>
+          <div class="price-value venta">
+            <span class="price-currency">S/</span>${fmt(p.venta)}
+          </div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Precio Compra</div>
+          <div class="price-value compra">
+            <span class="price-currency">S/</span>${fmt(p.compra)}
+          </div>
+        </div>
+      </div>
+      <div class="margin-badge">
+        Margen: <span class="margin-pill ${marginClass(p.compra, p.venta)}">+${margin(p.compra, p.venta)}%</span>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    // Theme switcher
+    document.querySelectorAll('.theme-dot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const t = btn.dataset.theme;
+        if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', t);
+      });
+    });
+
+    // Search input
+    let debounce;
+    document.getElementById('search').addEventListener('input', e => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        currentQuery = e.target.value;
+        render();
+      }, 120);
+    });
+
+  </script>
+</body>
+
+</html>
