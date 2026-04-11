@@ -52,8 +52,8 @@ P050,San Carlos 750ml,Bebidas,1.5,1.5
 P051,Soda Field 32g,Galletas,0.59,1
 P052,Sublime Sonrisa 37g,Chocolates,2.55,3
 P053,Sublime Blanco 38g,Chocolates,2.47,3
-P054,Toalla Nocturna,Higiene,1.5,1.5
-P055,Toalla Normal,Higiene,1,1
+P054,Toalla Nocturna,Higiene,0.83,1.5
+P055,Toalla Normal,Higiene,0.3,1
 P056,Triangulo 30g,Chocolates,1.63,2.5
 P057,Trident 5.2g,Masticables,0.33,0.5
 P058,Trident 8.5g,Masticables,1.17,1.5
@@ -85,7 +85,7 @@ P083,Cua Cua 18g,Galletas,0.72,1
 P084,Oreo taco 108g,Galletas,2.2,3
 P085,Choco Chips 34g,Galletas,0.67,1
 P086,Pinguinos 80g,Pasteles,2.67,3
-P087,Sporade 500ml,Gaseosa,1.75,2.5
+P087,Sporade 500ml,Bebidas ,1.75,2.5
 P088,Papel Suave Chica,Higiene,0.73,1.2
 P089,Mini Chips Ahoy 50g,Galletas,1.26,2
 P090,Loa 625ml,Bebidas,0.79,1.2
