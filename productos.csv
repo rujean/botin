@@ -20,12 +20,12 @@ P018;Chicle Chiste 4g;Masticables;0.1;0.1
 P019;Chinchin bolsa 16g;Chocolates;1;1
 P020;Chinchin caja 30g;Chocolates;2;2
 P021;Chips Ahoy 37g;Galletas;1.14;1.5
-P022;Choco Chips 34g;Galletas;0.67;1
-P023;Choco Donuts;Galletas;1;1
-P024;Choco Punch 13g;Chocolates;0.57;1
-P025;Choco Soda 36g;Galletas;1.12;1.5
-P026;Chupetin;Masticables;0.27;0.7
-P027;Chizitos 35g;Piqueos;0.83;1.2
+P022;Chizitos 35g;Piqueos;0.83;1.2
+P023;Choco Chips 34g;Galletas;0.67;1
+P024;Choco Donuts;Galletas;1;1
+P025;Choco Punch 13g;Chocolates;0.57;1
+P026;Choco Soda 36g;Galletas;1.12;1.5
+P027;Chupetin;Masticables;0.27;0.7
 P028;Cielo 625ml;Bebidas;0.77;1.5
 P029;Cielo chupon 1lt;Bebidas;1.75;3
 P030;Coca Kola 300ml;Bebidas;1.47;2
@@ -57,41 +57,43 @@ P055;Mini Cuacua;Galletas;1.29;2
 P056;Mini Fruit Bites;Masticables;0.25;0.25
 P057;Mini Travesuras;Galletas;1.29;2
 P058;Mogul 35g;Masticables;0.96;1.5
-P059;Morochas taco 75g;Galletas;2.1;2.5
-P060;Next 14g;Masticables;1;1
-P061;Next 30.8g;Masticables;1.5;1.5
-P062;Nik chica 27g;Galletas;0.59;1
-P063;Nik grande 72g;Galletas;1.17;2
-P064;Oreo chico 36g;Galletas;0.8;1
-P065;Oreo taco 108g;Galletas;2.2;3
-P066;Papas Onda picante 37g;Piqueos;2.2;2.2
-P067;Papel Suave Chica;Higiene;0.73;1.2
-P068;Pepsi 355ml;Bebidas;0.82;1.5
-P069;Pepsi 600ml;Bebidas;2;2
-P070;Pepsi 750ml;Bebidas;2.5;2.5
-P071;Picaras 38g;Galletas;0.97;1.3
-P072;Pinguinos 80g;Pasteles;2.67;3.5
-P073;Piqueo Snax 55g;Piqueos;2.4;2.4
-P074;Princesa 28g;Chocolates;2.14;2.8
-P075;Pulp caja 250ml;Bebidas;1.5;1.5
-P076;Queque;Pasteles;0.79;1.2
-P077;Ritz chica 20g;Galletas;0.77;1
-P078;Ritz Taco 70g;Galletas;2;2
-P079;San Carlos 500ml;Bebidas;0.54;1
-P080;San Carlos 750ml;Bebidas;1.5;1.5
-P081;San Luis chupon 1lt;Bebidas;2.23;3
-P082;Soda Field 32g;Galletas;0.59;1
-P083;Soda V 35g;Galletas;0.5;1
-P084;Sporade 500ml;Bebidas ;1.75;2.5
-P085;Sublime Blanco 38g;Chocolates;2.47;3
-P086;Sublime Sonrisa 37g;Chocolates;2.55;3
-P087;Toalla Nocturna;Higiene;0.83;1.5
-P088;Toalla Normal;Higiene;0.3;1
-P089;Triangulo 30g;Chocolates;1.63;2.5
-P090;Trident 5.2g;Masticables;0.33;0.5
-P091;Trident 8.5g;Masticables;1.17;1.5
-P092;Trululu gomitas 80g;Masticables;3;3
-P093;Trululu sabores 30g;Masticables;0.77;1.5
-P094;Vainilla Field 37g;Galletas;1.2;1.2
-P095;Vizzio 19.2g;Chocolates;1.15;1.7
-P096;Volt 300ml;Bebidas;1.84;2.5
+P059;Morochas 30g;Galletas;0.84;1.2
+P060;Morochas snack 42g;Galletas;1.27;2
+P061;Morochas taco 75g;Galletas;2.1;2.5
+P062;Next 14g;Masticables;1;1
+P063;Next 30.8g;Masticables;1.5;1.5
+P064;Nik chica 27g;Galletas;0.59;1
+P065;Nik grande 72g;Galletas;1.17;2
+P066;Oreo chico 36g;Galletas;0.8;1
+P067;Oreo taco 108g;Galletas;2.2;3
+P068;Papas Onda picante 37g;Piqueos;2.2;2.2
+P069;Papel Suave Chica;Higiene;0.73;1.2
+P070;Pepsi 355ml;Bebidas;0.82;1.5
+P071;Pepsi 600ml;Bebidas;2;2
+P072;Pepsi 750ml;Bebidas;2.5;2.5
+P073;Picaras 38g;Galletas;0.97;1.3
+P074;Pinguinos 80g;Pasteles;2.67;3.5
+P075;Piqueo Snax 55g;Piqueos;2.4;2.4
+P076;Princesa 28g;Chocolates;2.14;2.8
+P077;Pulp caja 250ml;Bebidas;1.5;1.5
+P078;Queque;Pasteles;0.79;1.2
+P079;Ritz chica 20g;Galletas;0.77;1
+P080;Ritz Taco 70g;Galletas;2;2
+P081;San Carlos 500ml;Bebidas;0.54;1
+P082;San Carlos 750ml;Bebidas;1.5;1.5
+P083;San Luis chupon 1lt;Bebidas;2.23;3
+P084;Soda Field 32g;Galletas;0.59;1
+P085;Soda V 35g;Galletas;0.5;1
+P086;Sporade 500ml;Bebidas ;1.75;2.5
+P087;Sublime Blanco 38g;Chocolates;2.47;3
+P088;Sublime Sonrisa 37g;Chocolates;2.55;3
+P089;Toalla Nocturna;Higiene;0.83;1.5
+P090;Toalla Normal;Higiene;0.3;1
+P091;Triangulo 30g;Chocolates;1.63;2.5
+P092;Trident 5.2g;Masticables;0.33;0.5
+P093;Trident 8.5g;Masticables;1.17;1.5
+P094;Trululu gomitas 80g;Masticables;3;3
+P095;Trululu sabores 30g;Masticables;0.77;1.5
+P096;Vainilla Field 37g;Galletas;1.2;1.2
+P097;Vizzio 19.2g;Chocolates;1.15;1.7
+P098;Volt 300ml;Bebidas;1.84;2.5
