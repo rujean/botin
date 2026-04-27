@@ -1,4 +1,4 @@
-id;nombre;categoria;compra;venta
+﻿id;nombre;categoria;compra;venta
 P001;7up;Bebidas;0.82;1.2
 P002;Alfajor;Pasteles;0.59;1
 P003;Alka 28g;Masticables;1.5;1.5
@@ -96,3 +96,4 @@ P094;Trululu sabores 30g;Masticables;0.77;1.5
 P095;Vainilla Field 37g;Galletas;1.2;1.2
 P096;Vizzio 19.2g;Chocolates;1.15;1.7
 P097;Volt 300ml;Bebidas;1.84;2.5
+P098;Nito 60g;Pasteles;1.25;1.8
