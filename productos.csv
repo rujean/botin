@@ -1,10 +1,10 @@
 ﻿id;nombre;categoria;compra;venta
 P001;7up;Bebidas;0.82;1.2
 P002;Alfajor;Pasteles;0.59;1
-P003;Alka 28g;Masticables;1.5;1.5
-P004;Barrilete 8g;Masticables;0.25;0.25
+P003;Alka 28g;Masticables;1.05;1.5
+P004;Barrilete 8g;Masticables;0.16;0.25
 P005;BigBen 4g;Masticables;0.1;0.1
-P006;BigBen 5.5g;Masticables;0.2;0.2
+P006;BigBen 5.5g;Masticables;0.12;0.2
 P007;BigBen barra 36g;Chocolates;2;2
 P008;BlackOut 60g;Galletas;0.75;1.3
 P009;Bon o Bon Chocolinas 15g;Chocolates;0.81;1
@@ -42,8 +42,8 @@ P040;Full 22.5g;Masticables;1;1
 P041;Gansito;Pasteles;2.09;2.5
 P042;Gatorade 500ml;Bebidas;1.84;2.5
 P043;Grosso;Masticables;0.17;0.25
-P044;Halls 25.2g;Masticables;1.17;1.5
-P045;Halls 3g;Masticables;0.2;0.2
+P044;Halls 25.2g;Masticables;1.21;1.5
+P045;Halls 3g;Masticables;0.12;0.2
 P046;Inka Kola 300ml;Bebidas;1.47;2
 P047;Inka Kola 600ml;Bebidas;2.72;3.5
 P048;Lay's Clasica 39g;Piqueos;1.7;2.2
@@ -52,9 +52,9 @@ P050;Loa 625ml;Bebidas;0.79;1.2
 P051;Loa sabores 625ml;Bebidas;1.01;1.5
 P052;Mecano 19g;Chocolates;1;1
 P053;Mini Chips Ahoy 50g;Galletas;1.26;2
-P054;Mini Cuacua;Galletas;1.29;2
+P054;Mini Cuacua;Galletas;1.55;2
 P055;Mini Fruit Bites;Masticables;0.25;0.25
-P056;Mini Travesuras;Galletas;1.29;2
+P056;Mini Travesuras;Galletas;1.55;2
 P057;Mogul 35g;Masticables;0.96;1.5
 P058;Morochas 30g;Galletas;0.84;1.2
 P059;Morochas snack 42g;Galletas;1.27;2
