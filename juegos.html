@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Juegos — Botín de Oro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0d0d0d;--surface:#161616;--card:#1c1c1c;--border:#2e2a1a;
+  --gold:#d4af37;--gold-lt:#f0d060;--terra:#c4922a;
+  --text:#f5f0e8;--muted:#8a7a5a;--tag-bg:#221e0e;
+  --shadow:0 8px 40px rgba(0,0,0,.75);--radius:14px;--accent-rgb:212,175,55;
+}
+[data-theme="marmol"]{
+  --bg:#faf9f7;--surface:#ffffff;--card:#ffffff;--border:#e4dbd0;
+  --gold:#8b1a3a;--gold-lt:#6b1230;--terra:#c4572a;
+  --text:#1a1a1a;--muted:#9a8878;--tag-bg:#f2ece4;
+  --shadow:0 4px 20px rgba(0,0,0,.08);--accent-rgb:139,26,58;
+}
+[data-theme="indigo"]{
+  --bg:#0e0e1f;--surface:#141428;--card:#1a1a32;--border:#2e2e55;
+  --gold:#a78bfa;--gold-lt:#c4b0fc;--terra:#60a5fa;
+  --text:#e2e8f0;--muted:#6b7ab0;--tag-bg:#1e1e3c;
+  --shadow:0 8px 40px rgba(0,0,0,.65);--accent-rgb:167,139,250;
+}
+[data-theme="sage"]{
+  --bg:#f4f4f0;--surface:#fafafa;--card:#ffffff;--border:#d4dace;
+  --gold:#7d9b76;--gold-lt:#556e50;--terra:#b85c38;
+  --text:#1c1c1c;--muted:#8a9a88;--tag-bg:#e8ede6;
+  --shadow:0 4px 20px rgba(0,0,0,.07);--accent-rgb:125,155,118;
+}
+
+html{font-family:'DM Sans',sans-serif;font-size:16px;}
+body{
+  background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(var(--accent-rgb),.15),transparent);
+  transition:background .4s,color .4s;
+}
+*,*::before,*::after{transition:background-color .3s,border-color .3s,color .3s;}
+
+/* NAV */
+.topnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px;}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--gold);white-space:nowrap;text-decoration:none;flex:1;}
+.nav-links{display:flex;gap:2px;}
+.nav-link{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:50px;transition:color .2s,background .2s;white-space:nowrap;}
+.nav-link:hover{color:var(--text);background:rgba(var(--accent-rgb),.07);}
+.nav-link.active{color:var(--gold);background:rgba(var(--accent-rgb),.1);}
+.theme-switcher{display:flex;gap:6px;align-items:center;}
+.theme-dot{width:18px;height:18px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;transition:transform .2s,border-color .2s;opacity:.55;}
+.theme-dot:hover{transform:scale(1.2);opacity:1;}
+.theme-dot.active{border-color:var(--text);opacity:1;transform:scale(1.15);}
+.menu-btn{display:none;background:none;border:1.5px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s,color .2s;}
+.menu-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+.drawer-overlay.open{opacity:1;pointer-events:all;}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:230px;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:20px 16px;display:flex;flex-direction:column;gap:4px;}
+.drawer.open{transform:translateX(0);}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.drawer-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);}
+.drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:2px 6px;}
+.drawer-close:hover{color:var(--text);}
+.drawer-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);border:1px solid transparent;transition:all .2s;}
+.drawer-link:hover{background:rgba(var(--accent-rgb),.07);border-color:var(--border);color:var(--text);}
+.drawer-link.active{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);color:var(--gold);}
+
+@media(max-width:600px){
+  .nav-links{display:none;}
+  .menu-btn{display:flex;}
+}
+
+/* HEADER */
+header{text-align:center;padding:48px 24px 16px;}
+header::after{content:'';display:block;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto 0;}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.1;color:var(--text);}
+h1 span{color:var(--gold-lt);}
+.header-sub{color:var(--muted);font-size:13px;margin-top:8px;}
+
+/* GAME GRID */
+.wrap{max-width:860px;margin:40px auto 0;padding:0 20px;}
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+
+/* GAME CARD */
+.game-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px 28px;position:relative;overflow:hidden;cursor:pointer;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),border-color .25s,box-shadow .25s;
+}
+.game-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--gold);
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(var(--accent-rgb),.25);
+}
+.game-card::before{
+  content:'';position:absolute;top:0;right:0;width:120px;height:120px;
+  background:radial-gradient(circle at top right,rgba(var(--accent-rgb),.1),transparent 70%);
+  pointer-events:none;
+}
+.game-icon{font-size:3rem;margin-bottom:20px;display:block;line-height:1;}
+.game-tag{
+  display:inline-block;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.2);
+  padding:3px 10px;border-radius:50px;margin-bottom:14px;
+}
+.game-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;
+  color:var(--text);margin-bottom:10px;line-height:1.2;
+}
+.game-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+.game-meta{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.meta-badge{
+  font-size:11px;font-weight:500;color:var(--muted);background:var(--tag-bg);
+  border:1px solid var(--border);border-radius:50px;padding:4px 10px;
+}
+.play-btn{
+  width:100%;padding:13px;background:rgba(var(--accent-rgb),.1);border:1.5px solid rgba(var(--accent-rgb),.3);
+  color:var(--gold);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  border-radius:50px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.play-btn:hover{background:var(--gold);color:var(--bg);}
+.play-btn svg{transition:transform .2s;}
+.play-btn:hover svg{transform:scale(1.2);}
+
+/* GAME MODAL */
+.game-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+  display:flex;flex-direction:column;
+}
+.game-overlay.open{opacity:1;pointer-events:all;}
+.game-modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.game-modal-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);
+}
+.modal-close{
+  background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.25);
+  color:var(--gold);width:36px;height:36px;border-radius:8px;cursor:pointer;
+  font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.modal-close:hover{background:var(--gold);color:var(--bg);}
+.game-frame{flex:1;border:none;width:100%;display:block;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Botín de Oro</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Lista de Precios</a>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="catalogo.html">Catálogo</a>
+      <a class="nav-link active" href="juegos.html">Juegos</a>
+    </div>
+    <div class="theme-switcher">
+      <button class="theme-dot active" data-theme="obsidiana" title="Obsidiana" style="background:#d4af37"></button>
+      <button class="theme-dot" data-theme="marmol"   title="Mármol"   style="background:#8b1a3a"></button>
+      <button class="theme-dot" data-theme="indigo"   title="Índigo"   style="background:#a78bfa"></button>
+      <button class="theme-dot" data-theme="sage"     title="Sage"     style="background:#7d9b76"></button>
+    </div>
+    <button class="menu-btn" id="open-drawer" aria-label="Menú">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="3" y1="6"  x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <span class="drawer-title">Menú</span>
+    <button class="drawer-close" id="close-drawer">✕</button>
+  </div>
+  <a class="drawer-link" href="index.html">Lista de Precios</a>
+  <a class="drawer-link" href="dashboard.html">Dashboard</a>
+  <a class="drawer-link" href="catalogo.html">Catálogo</a>
+  <a class="drawer-link active" href="juegos.html">Juegos</a>
+</div>
+
+<header>
+  <p class="eyebrow">Entretenimiento</p>
+  <h1>Sala de <span>Juegos</span></h1>
+  <p class="header-sub">Desafía tu mente mientras esperas</p>
+</header>
+
+<div class="wrap">
+  <div class="game-grid">
+
+    <!-- Bulls and Cows -->
+    <div class="game-card" onclick="openGame('JUEGOS/bulls-and-cows.html','Bulls and Cows')">
+      <span class="game-icon">🎯</span>
+      <span class="game-tag">Lógica</span>
+      <div class="game-title">Bulls and Cows</div>
+      <div class="game-desc">
+        Adivina el número secreto usando pistas. Cada intento te dice cuántos dígitos
+        están en la posición correcta (Toros) y cuántos existen pero están mal ubicados (Vacas).
+      </div>
+      <div class="game-meta">
+        <span class="meta-badge">Fácil / Difícil</span>
+        <span class="meta-badge">3–4 dígitos</span>
+        <span class="meta-badge">1 jugador</span>
+      </div>
+      <button class="play-btn">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Jugar
+      </button>
+    </div>
+
+    <!-- Dungeon Math -->
+    <div class="game-card" onclick="openGame('JUEGOS/dungeon-math.html','Calabozos y Dragones')">
+      <span class="game-icon">🐉</span>
+      <span class="game-tag">Matemáticas</span>
+      <div class="game-title">Calabozos y Dragones</div>
+      <div class="game-desc">
+        Un dragón feroz custodia el tesoro legendario. Responde 10 operaciones matemáticas
+        antes de que se acabe el tiempo. Necesitas al menos 7 correctas para vencer al dragón.
+      </div>
+      <div class="game-meta">
+        <span class="meta-badge">10 preguntas</span>
+        <span class="meta-badge">30 seg/pregunta</span>
+        <span class="meta-badge">1 jugador</span>
+      </div>
+      <button class="play-btn">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Jugar
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Game modal overlay -->
+<div class="game-overlay" id="game-overlay">
+  <div class="game-modal-header">
+    <span class="game-modal-title" id="modal-game-title">Juego</span>
+    <button class="modal-close" id="close-game" title="Cerrar">✕</button>
+  </div>
+  <iframe class="game-frame" id="game-frame" src="" allowfullscreen></iframe>
+</div>
+
+<script>
+function openGame(src, title) {
+  document.getElementById('game-frame').src = src;
+  document.getElementById('modal-game-title').textContent = title;
+  document.getElementById('game-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('close-game').addEventListener('click', () => {
+  document.getElementById('game-overlay').classList.remove('open');
+  document.getElementById('game-frame').src = '';
+  document.body.style.overflow = '';
+});
+
+// Cerrar con Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('game-overlay').classList.remove('open');
+    document.getElementById('game-frame').src = '';
+    document.body.style.overflow = '';
+  }
+});
+
+// Drawer
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('overlay');
+document.getElementById('open-drawer').addEventListener('click', () => {
+  drawer.classList.add('open'); overlay.classList.add('open');
+});
+function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+document.getElementById('close-drawer').addEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+
+// Theme dots
+document.querySelectorAll('.theme-dot').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.theme;
+    if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', t);
+  });
+});
+</script>
+</body>
+</html>
