@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Juegos — Botín de Oro</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -55,8 +55,6 @@ body{
 .theme-dot.active{border-color:var(--text);opacity:1;transform:scale(1.15);}
 .menu-btn{display:none;background:none;border:1.5px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s,color .2s;}
 .menu-btn:hover{border-color:var(--gold);color:var(--gold);}
-
-/* DRAWER */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
 .drawer-overlay.open{opacity:1;pointer-events:all;}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:230px;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:20px 16px;display:flex;flex-direction:column;gap:4px;}
@@ -68,11 +66,7 @@ body{
 .drawer-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);border:1px solid transparent;transition:all .2s;}
 .drawer-link:hover{background:rgba(var(--accent-rgb),.07);border-color:var(--border);color:var(--text);}
 .drawer-link.active{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);color:var(--gold);}
-
-@media(max-width:600px){
-  .nav-links{display:none;}
-  .menu-btn{display:flex;}
-}
+@media(max-width:600px){.nav-links{display:none;}.menu-btn{display:flex;}}
 
 /* HEADER */
 header{text-align:center;padding:48px 24px 16px;}
@@ -82,74 +76,168 @@ h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-
 h1 span{color:var(--gold-lt);}
 .header-sub{color:var(--muted);font-size:13px;margin-top:8px;}
 
-/* GAME GRID */
+/* VIEWS */
 .wrap{max-width:860px;margin:40px auto 0;padding:0 20px;}
-.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+.view{display:none;}
+.view.active{display:block;}
 
-/* GAME CARD */
+/* GAME GRID */
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
 .game-card{
   background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:32px 28px;position:relative;overflow:hidden;cursor:pointer;
+  padding:32px 28px;position:relative;overflow:hidden;
   transition:transform .25s cubic-bezier(.34,1.56,.64,1),border-color .25s,box-shadow .25s;
 }
-.game-card:hover{
-  transform:translateY(-6px);
-  border-color:var(--gold);
-  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(var(--accent-rgb),.25);
-}
-.game-card::before{
-  content:'';position:absolute;top:0;right:0;width:120px;height:120px;
-  background:radial-gradient(circle at top right,rgba(var(--accent-rgb),.1),transparent 70%);
-  pointer-events:none;
-}
+.game-card:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(var(--accent-rgb),.25);}
+.game-card::before{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle at top right,rgba(var(--accent-rgb),.1),transparent 70%);pointer-events:none;}
 .game-icon{font-size:3rem;margin-bottom:20px;display:block;line-height:1;}
-.game-tag{
-  display:inline-block;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--gold);background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.2);
-  padding:3px 10px;border-radius:50px;margin-bottom:14px;
-}
-.game-title{
-  font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;
-  color:var(--text);margin-bottom:10px;line-height:1.2;
-}
+.game-tag{display:inline-block;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.2);padding:3px 10px;border-radius:50px;margin-bottom:14px;}
+.game-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.2;}
 .game-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
 .game-meta{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
-.meta-badge{
-  font-size:11px;font-weight:500;color:var(--muted);background:var(--tag-bg);
-  border:1px solid var(--border);border-radius:50px;padding:4px 10px;
-}
-.play-btn{
-  width:100%;padding:13px;background:rgba(var(--accent-rgb),.1);border:1.5px solid rgba(var(--accent-rgb),.3);
-  color:var(--gold);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
-  border-radius:50px;cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
+.meta-badge{font-size:11px;font-weight:500;color:var(--muted);background:var(--tag-bg);border:1px solid var(--border);border-radius:50px;padding:4px 10px;}
+.play-btn{width:100%;padding:13px;background:rgba(var(--accent-rgb),.1);border:1.5px solid rgba(var(--accent-rgb),.3);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;border-radius:50px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .play-btn:hover{background:var(--gold);color:var(--bg);}
-.play-btn svg{transition:transform .2s;}
-.play-btn:hover svg{transform:scale(1.2);}
 
-/* GAME MODAL */
-.game-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;
-  opacity:0;pointer-events:none;transition:opacity .3s;
-  display:flex;flex-direction:column;
-}
-.game-overlay.open{opacity:1;pointer-events:all;}
-.game-modal-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
-.game-modal-title{
-  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text);
-}
-.modal-close{
-  background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.25);
-  color:var(--gold);width:36px;height:36px;border-radius:8px;cursor:pointer;
-  font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;
-}
-.modal-close:hover{background:var(--gold);color:var(--bg);}
-.game-frame{flex:1;border:none;width:100%;display:block;}
+/* BACK BUTTON */
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:8px 16px;border-radius:50px;cursor:pointer;margin-bottom:28px;transition:all .2s;}
+.back-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* GAME PANEL */
+.game-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.game-panel-header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:12px;}
+.game-panel-icon{font-size:1.4rem;}
+.game-panel-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--text);}
+.game-panel-body{padding:24px;display:flex;justify-content:center;}
+
+/* ═══════════════════════════════════════════
+   BULLS AND COWS — estilos internos
+═══════════════════════════════════════════ */
+.bc-container{width:100%;max-width:440px;}
+.bc-stats{display:flex;gap:12px;margin-bottom:20px;}
+.bc-stat{flex:1;background:var(--tag-bg);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
+.bc-stat-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--gold-lt);}
+.bc-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+.bc-section{background:var(--tag-bg);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;}
+.bc-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:block;}
+.bc-digits{display:flex;gap:10px;justify-content:center;}
+.bc-digit{width:60px;height:70px;background:var(--surface);border:2px solid var(--border);border-radius:12px;font-size:2rem;font-weight:700;text-align:center;color:var(--text);outline:none;transition:all .2s;caret-color:var(--gold);}
+.bc-digit:focus{border-color:var(--gold);background:rgba(var(--accent-rgb),.06);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.12);}
+.bc-digit.hidden{display:none;}
+.bc-guess-btn{width:100%;margin-top:14px;padding:13px;background:var(--gold);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--bg);cursor:pointer;transition:all .2s;}
+.bc-guess-btn:hover{filter:brightness(1.1);}
+.bc-guess-btn:disabled{opacity:.45;cursor:not-allowed;filter:none;}
+.bc-giveup-btn{width:100%;margin-top:8px;padding:10px;background:none;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;}
+.bc-giveup-btn:hover{border-color:rgba(239,68,68,.4);color:#f87171;background:rgba(239,68,68,.06);}
+.bc-history{background:var(--tag-bg);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
+.bc-hist-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.bc-hist-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.bc-reset-btn{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#f87171;cursor:pointer;transition:all .2s;}
+.bc-reset-btn:hover{background:rgba(239,68,68,.16);}
+.bc-list{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;}
+.bc-list::-webkit-scrollbar{width:4px;}
+.bc-list::-webkit-scrollbar-thumb{background:rgba(var(--accent-rgb),.15);border-radius:2px;}
+.bc-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface);border-radius:10px;font-size:14px;}
+.bc-num{font-weight:600;color:var(--text);letter-spacing:.15em;}
+.bc-hints{display:flex;gap:8px;}
+.bc-bull{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(52,211,153,.12);color:#34d399;}
+.bc-cow {padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(251,191,36,.12);color:#fbbf24;}
+.bc-empty{text-align:center;padding:28px 20px;color:var(--muted);font-size:13px;}
+.bc-diff-section{background:var(--tag-bg);border:1px solid var(--border);border-radius:14px;padding:28px 20px;margin-bottom:14px;text-align:center;}
+.bc-diff-title{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:20px;}
+.bc-diff-btns{display:flex;gap:12px;}
+.bc-diff-btn{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px 12px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:4px;align-items:center;}
+.bc-diff-btn:hover{border-color:var(--gold);background:rgba(var(--accent-rgb),.06);transform:translateY(-2px);}
+.bc-diff-lbl{font-size:1rem;font-weight:700;color:var(--text);}
+.bc-diff-sub{font-size:11px;color:var(--muted);}
+.bc-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:400;opacity:0;visibility:hidden;transition:all .3s;padding:20px;}
+.bc-modal-overlay.active{opacity:1;visibility:visible;}
+.bc-modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center;max-width:340px;width:100%;transform:scale(.9);transition:transform .3s;}
+.bc-modal-overlay.active .bc-modal{transform:scale(1);}
+.bc-modal-icon{font-size:3rem;margin-bottom:16px;}
+.bc-modal-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:8px;}
+.bc-modal-text{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.bc-modal-btn{padding:12px 32px;background:var(--gold);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--bg);cursor:pointer;transition:all .2s;}
+.bc-modal-btn:hover{filter:brightness(1.1);}
+@keyframes bc-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.bc-shake{animation:bc-shake .4s ease;}
+.bc-invalid{border-color:#f87171!important;}
+
+/* ═══════════════════════════════════════════
+   DUNGEON MATH — estilos internos
+═══════════════════════════════════════════ */
+.dm-container{width:100%;max-width:560px;}
+.dm-screen{display:none;}
+.dm-screen.active{display:block;}
+@keyframes dm-fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.dm-start{text-align:center;animation:dm-fade .5s ease;}
+.dm-dragon-art{font-size:4rem;margin-bottom:16px;display:block;filter:drop-shadow(0 0 14px rgba(var(--accent-rgb),.4));}
+@keyframes dm-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.dm-dragon-art{animation:dm-breathe 3s ease-in-out infinite;}
+.dm-start-title{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(var(--accent-rgb),.3);margin-bottom:6px;letter-spacing:.04em;}
+.dm-start-sub{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:20px;}
+.dm-start-desc{font-size:13px;line-height:1.7;color:var(--muted);max-width:460px;margin:0 auto 28px;}
+.dm-start-btn{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;padding:14px 40px;background:linear-gradient(180deg,rgba(var(--accent-rgb),.25),rgba(var(--accent-rgb),.1));border:2px solid var(--gold);border-radius:8px;color:var(--gold);cursor:pointer;transition:all .3s;text-transform:uppercase;letter-spacing:.08em;}
+.dm-start-btn:hover{background:var(--gold);color:var(--bg);transform:translateY(-2px);box-shadow:0 6px 24px rgba(var(--accent-rgb),.3);}
+.dm-game{animation:dm-fade .5s ease;}
+.dm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.dm-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--gold);}
+.dm-level{font-size:12px;color:var(--muted);margin-top:2px;}
+.dm-hp-wrap{display:flex;align-items:center;gap:8px;}
+.dm-hp-bar{width:110px;height:14px;background:var(--tag-bg);border:1.5px solid var(--border);border-radius:7px;overflow:hidden;}
+.dm-hp-fill{height:100%;background:linear-gradient(90deg,#ff4444,#cc0000);transition:width .5s ease;box-shadow:0 0 8px rgba(255,0,0,.4);}
+.dm-hp-text{font-size:12px;font-weight:600;color:#ff6b6b;min-width:36px;}
+.dm-arena{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding:14px;background:var(--tag-bg);border:1.5px solid var(--border);border-radius:12px;position:relative;}
+.dm-char{display:flex;flex-direction:column;align-items:center;}
+.dm-char-icon{font-size:2.6rem;transition:transform .3s;}
+.dm-char-icon.attacking{animation:dm-patk .5s ease;}
+.dm-char-icon.hurt{animation:dm-hurt .5s ease;}
+.dm-dragon-icon{font-size:2.6rem;transition:transform .3s;}
+.dm-dragon-icon.attacking{animation:dm-datk .5s ease;}
+.dm-dragon-icon.hurt{animation:dm-hurt .5s ease;}
+@keyframes dm-patk{0%{transform:translateX(0) scale(1)}50%{transform:translateX(60px) scale(1.2)}100%{transform:translateX(0) scale(1)}}
+@keyframes dm-datk{0%{transform:translateX(0) scale(1)}50%{transform:translateX(-60px) scale(1.2)}100%{transform:translateX(0) scale(1)}}
+@keyframes dm-hurt{0%,100%{filter:brightness(1)}50%{filter:brightness(2);transform:scale(.9)}}
+.dm-vs{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:900;color:var(--gold);text-shadow:0 0 10px rgba(var(--accent-rgb),.4);}
+.dm-prog-wrap{margin-bottom:14px;}
+.dm-prog-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.dm-prog-bar{height:8px;background:var(--tag-bg);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.dm-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lt));transition:width .5s ease;}
+.dm-timer-wrap{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.dm-timer-bar{flex:1;height:7px;background:var(--tag-bg);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.dm-timer-fill{height:100%;background:linear-gradient(90deg,#44ff44,#ffdd44,#ff4444);transition:width .1s linear;}
+.dm-timer-fill.warn{animation:dm-blink .5s ease infinite;}
+@keyframes dm-blink{0%,100%{opacity:1}50%{opacity:.4}}
+.dm-timer-text{font-size:12px;font-weight:600;color:var(--text);min-width:32px;}
+.dm-qcard{background:var(--tag-bg);border:1.5px solid var(--border);border-radius:12px;padding:22px;margin-bottom:14px;text-align:center;}
+.dm-qnum{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.dm-qtext{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:6px;}
+.dm-qhint{font-size:12px;color:var(--muted);font-style:italic;}
+.dm-ans-wrap{display:flex;gap:6px;justify-content:center;margin-bottom:12px;}
+.dm-ans{width:48px;height:54px;background:var(--surface);border:2px solid var(--border);border-radius:8px;font-size:1.2rem;font-weight:700;text-align:center;color:var(--gold-lt);outline:none;transition:all .2s;caret-color:var(--gold);}
+.dm-ans:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(var(--accent-rgb),.15);}
+.dm-ans.wrong{border-color:#f87171;animation:dm-shakeans .4s ease;}
+.dm-ans.correct{border-color:#34d399;background:rgba(52,211,153,.08);}
+@keyframes dm-shakeans{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.dm-attack-btn{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;padding:13px 32px;background:linear-gradient(180deg,rgba(var(--accent-rgb),.2),rgba(var(--accent-rgb),.08));border:2px solid var(--gold);border-radius:8px;color:var(--gold);cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.05em;display:block;margin:0 auto;}
+.dm-attack-btn:hover{background:var(--gold);color:var(--bg);}
+.dm-attack-btn:disabled{opacity:.45;cursor:not-allowed;}
+.dm-feedback{text-align:center;font-size:13px;padding:11px;border-radius:8px;margin-top:12px;animation:dm-fade .3s ease;}
+.dm-feedback.correct{background:rgba(52,211,153,.1);color:#6bff6b;border:1px solid rgba(52,211,153,.25);}
+.dm-feedback.wrong{background:rgba(255,68,68,.1);color:#ff6b6b;border:1px solid rgba(255,68,68,.25);}
+.dm-end{text-align:center;animation:dm-fade .5s ease;}
+.dm-end-icon{font-size:4rem;margin-bottom:16px;display:block;}
+.dm-end-title{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:900;margin-bottom:10px;}
+.dm-end-title.win{color:var(--gold-lt);text-shadow:0 0 20px rgba(var(--accent-rgb),.4);}
+.dm-end-title.lose{color:#ff4444;text-shadow:0 0 20px rgba(255,0,0,.3);}
+.dm-end-msg{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.7;}
+.dm-stats-box{background:var(--tag-bg);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:24px;}
+.dm-stat-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(var(--accent-rgb),.06);font-size:13px;}
+.dm-stat-row:last-child{border-bottom:none;}
+.dm-stat-name{color:var(--muted);}
+.dm-stat-val{font-weight:700;color:var(--gold);}
+.dm-restart-btn{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;padding:13px 36px;background:linear-gradient(180deg,rgba(var(--accent-rgb),.2),rgba(var(--accent-rgb),.08));border:2px solid var(--gold);border-radius:8px;color:var(--gold);cursor:pointer;transition:all .3s;text-transform:uppercase;letter-spacing:.08em;}
+.dm-restart-btn:hover{background:var(--gold);color:var(--bg);transform:translateY(-2px);}
 </style>
 </head>
 <body>
@@ -171,13 +259,13 @@ h1 span{color:var(--gold-lt);}
     </div>
     <button class="menu-btn" id="open-drawer" aria-label="Menú">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <line x1="3" y1="6"  x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </button>
   </div>
 </nav>
 
-<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer-overlay" id="nav-overlay"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-header">
     <span class="drawer-title">Menú</span>
@@ -196,101 +284,470 @@ h1 span{color:var(--gold-lt);}
 </header>
 
 <div class="wrap">
-  <div class="game-grid">
 
-    <!-- Bulls and Cows -->
-    <div class="game-card" onclick="openGame('JUEGOS/bulls-and-cows.html','Bulls and Cows')">
-      <span class="game-icon">🎯</span>
-      <span class="game-tag">Lógica</span>
-      <div class="game-title">Bulls and Cows</div>
-      <div class="game-desc">
-        Adivina el número secreto usando pistas. Cada intento te dice cuántos dígitos
-        están en la posición correcta (Toros) y cuántos existen pero están mal ubicados (Vacas).
+  <!-- ── VISTA: selección ── -->
+  <div class="view active" id="view-home">
+    <div class="game-grid">
+      <div class="game-card">
+        <span class="game-icon">🎯</span>
+        <span class="game-tag">Lógica</span>
+        <div class="game-title">Bulls and Cows</div>
+        <div class="game-desc">Adivina el número secreto. Cada intento te dice cuántos dígitos están en la posición correcta (Toros) y cuántos existen pero mal ubicados (Vacas).</div>
+        <div class="game-meta">
+          <span class="meta-badge">Fácil / Difícil</span>
+          <span class="meta-badge">3–4 dígitos</span>
+        </div>
+        <button class="play-btn" onclick="showGame('bc')">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          Jugar
+        </button>
       </div>
-      <div class="game-meta">
-        <span class="meta-badge">Fácil / Difícil</span>
-        <span class="meta-badge">3–4 dígitos</span>
-        <span class="meta-badge">1 jugador</span>
+      <div class="game-card">
+        <span class="game-icon">🐉</span>
+        <span class="game-tag">Matemáticas</span>
+        <div class="game-title">Calabozos y Dragones</div>
+        <div class="game-desc">Responde 10 operaciones matemáticas antes de que se acabe el tiempo. Necesitas al menos 7 correctas para vencer al dragón.</div>
+        <div class="game-meta">
+          <span class="meta-badge">10 preguntas</span>
+          <span class="meta-badge">30 seg c/u</span>
+        </div>
+        <button class="play-btn" onclick="showGame('dm')">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          Jugar
+        </button>
       </div>
-      <button class="play-btn">
-        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        Jugar
-      </button>
+    </div>
+  </div>
+
+  <!-- ── VISTA: Bulls and Cows ── -->
+  <div class="view" id="view-bc">
+    <button class="back-btn" onclick="showHome()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver a juegos
+    </button>
+    <div class="game-panel">
+      <div class="game-panel-header">
+        <span class="game-panel-icon">🎯</span>
+        <span class="game-panel-title">Bulls and Cows</span>
+      </div>
+      <div class="game-panel-body">
+        <div class="bc-container">
+
+          <!-- Selección dificultad -->
+          <div class="bc-diff-section" id="bc-diff">
+            <div class="bc-diff-title">Selecciona dificultad</div>
+            <div class="bc-diff-btns">
+              <button class="bc-diff-btn" onclick="bcStart(3)">
+                <span class="bc-diff-lbl">Fácil</span>
+                <span class="bc-diff-sub">3 dígitos</span>
+              </button>
+              <button class="bc-diff-btn" onclick="bcStart(4)">
+                <span class="bc-diff-lbl">Difícil</span>
+                <span class="bc-diff-sub">4 dígitos</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="bc-stats">
+            <div class="bc-stat"><div class="bc-stat-val" id="bc-attempts">0</div><div class="bc-stat-lbl">Intentos</div></div>
+            <div class="bc-stat"><div class="bc-stat-val" id="bc-bulls">0</div><div class="bc-stat-lbl">Toros</div></div>
+            <div class="bc-stat"><div class="bc-stat-val" id="bc-cows">0</div><div class="bc-stat-lbl">Vacas</div></div>
+          </div>
+
+          <!-- Input -->
+          <div class="bc-section">
+            <label class="bc-label">Ingresa tu número</label>
+            <div class="bc-digits">
+              <input type="text" class="bc-digit" id="bc-d1" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="bc-digit" id="bc-d2" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="bc-digit" id="bc-d3" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="bc-digit hidden" id="bc-d4" maxlength="1" inputmode="numeric" autocomplete="off">
+            </div>
+            <button class="bc-guess-btn" id="bc-guess">Adivinar</button>
+            <button class="bc-giveup-btn" id="bc-giveup">Rendirme</button>
+          </div>
+
+          <!-- Historial -->
+          <div class="bc-history">
+            <div class="bc-hist-header">
+              <span class="bc-hist-title">Historial</span>
+              <button class="bc-reset-btn" id="bc-reset">Reiniciar</button>
+            </div>
+            <div class="bc-list" id="bc-list"><div class="bc-empty">Sin intentos aún</div></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Dungeon Math -->
-    <div class="game-card" onclick="openGame('JUEGOS/dungeon-math.html','Calabozos y Dragones')">
-      <span class="game-icon">🐉</span>
-      <span class="game-tag">Matemáticas</span>
-      <div class="game-title">Calabozos y Dragones</div>
-      <div class="game-desc">
-        Un dragón feroz custodia el tesoro legendario. Responde 10 operaciones matemáticas
-        antes de que se acabe el tiempo. Necesitas al menos 7 correctas para vencer al dragón.
+    <!-- Modal victoria/derrota -->
+    <div class="bc-modal-overlay" id="bc-modal">
+      <div class="bc-modal">
+        <div class="bc-modal-icon" id="bc-modal-icon">🎉</div>
+        <div class="bc-modal-title" id="bc-modal-title">¡Felicidades!</div>
+        <div class="bc-modal-text" id="bc-modal-text"></div>
+        <button class="bc-modal-btn" id="bc-modal-btn">Jugar de nuevo</button>
       </div>
-      <div class="game-meta">
-        <span class="meta-badge">10 preguntas</span>
-        <span class="meta-badge">30 seg/pregunta</span>
-        <span class="meta-badge">1 jugador</span>
-      </div>
-      <button class="play-btn">
-        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        Jugar
-      </button>
     </div>
-
   </div>
-</div>
 
-<!-- Game modal overlay -->
-<div class="game-overlay" id="game-overlay">
-  <div class="game-modal-header">
-    <span class="game-modal-title" id="modal-game-title">Juego</span>
-    <button class="modal-close" id="close-game" title="Cerrar">✕</button>
+  <!-- ── VISTA: Dungeon Math ── -->
+  <div class="view" id="view-dm">
+    <button class="back-btn" onclick="showHome()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver a juegos
+    </button>
+    <div class="game-panel">
+      <div class="game-panel-header">
+        <span class="game-panel-icon">🐉</span>
+        <span class="game-panel-title">Calabozos y Dragones</span>
+      </div>
+      <div class="game-panel-body">
+        <div class="dm-container">
+
+          <!-- Pantalla inicio -->
+          <div class="dm-screen active" id="dm-start">
+            <span class="dm-dragon-art">🐉</span>
+            <div class="dm-start-title">Calabozos y Dragones</div>
+            <div class="dm-start-sub">Aventura Matemática</div>
+            <div class="dm-start-desc">Un dragón feroz custodia el tesoro legendario. Para reclamarlo debes responder 10 preguntas matemáticas. Si logras acertar al menos 7 sobrevivirás. Tienes 30 segundos por pregunta.</div>
+            <button class="dm-start-btn" id="dm-start-btn">Comenzar Aventura</button>
+          </div>
+
+          <!-- Pantalla juego -->
+          <div class="dm-screen" id="dm-game">
+            <div class="dm-header">
+              <div class="dm-header-left">
+                <div class="dm-title">🐲 El Calabozo del Dragón</div>
+                <div class="dm-level">Nivel <span id="dm-level">1</span></div>
+              </div>
+              <div class="dm-hp-wrap">
+                <span>❤️</span>
+                <div class="dm-hp-bar"><div class="dm-hp-fill" id="dm-hp-fill" style="width:100%"></div></div>
+                <span class="dm-hp-text" id="dm-hp-text">3/3</span>
+              </div>
+            </div>
+            <div class="dm-arena">
+              <div class="dm-char"><span class="dm-char-icon" id="dm-player">⚔️</span></div>
+              <span class="dm-vs">VS</span>
+              <div class="dm-char"><span class="dm-dragon-icon" id="dm-dragon">🐲</span></div>
+            </div>
+            <div class="dm-prog-wrap">
+              <div class="dm-prog-lbl"><span>Progreso</span><span id="dm-prog-text">0 / 10 preguntas</span></div>
+              <div class="dm-prog-bar"><div class="dm-prog-fill" id="dm-prog-fill" style="width:0%"></div></div>
+            </div>
+            <div class="dm-timer-wrap">
+              <span>⏱️</span>
+              <div class="dm-timer-bar"><div class="dm-timer-fill" id="dm-timer-fill" style="width:100%"></div></div>
+              <span class="dm-timer-text" id="dm-timer-text">30s</span>
+            </div>
+            <div class="dm-qcard">
+              <div class="dm-qnum">Pregunta <span id="dm-qnum">1</span> de 10</div>
+              <div class="dm-qtext" id="dm-qtext">5 + 3 = ?</div>
+              <div class="dm-qhint" id="dm-qhint">El dragón espera tu respuesta...</div>
+            </div>
+            <div class="dm-ans-wrap">
+              <input type="text" class="dm-ans" id="dm-a1" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="dm-ans" id="dm-a2" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="dm-ans" id="dm-a3" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="dm-ans" id="dm-a4" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="dm-ans" id="dm-a5" maxlength="1" inputmode="numeric" autocomplete="off">
+              <input type="text" class="dm-ans" id="dm-a6" maxlength="1" inputmode="numeric" autocomplete="off">
+            </div>
+            <button class="dm-attack-btn" id="dm-submit">Atacar</button>
+            <div id="dm-feedback"></div>
+          </div>
+
+          <!-- Pantalla fin -->
+          <div class="dm-screen" id="dm-end">
+            <span class="dm-end-icon" id="dm-end-icon">💀</span>
+            <div class="dm-end-title" id="dm-end-title">Has Muerto</div>
+            <div class="dm-end-msg" id="dm-end-msg"></div>
+            <div class="dm-stats-box">
+              <div class="dm-stat-row"><span class="dm-stat-name">Respuestas correctas</span><span class="dm-stat-val" id="dm-sc">0</span></div>
+              <div class="dm-stat-row"><span class="dm-stat-name">Respuestas incorrectas</span><span class="dm-stat-val" id="dm-sw">0</span></div>
+              <div class="dm-stat-row"><span class="dm-stat-name">Tiempo agotado</span><span class="dm-stat-val" id="dm-st">0</span></div>
+              <div class="dm-stat-row"><span class="dm-stat-name">Precisión</span><span class="dm-stat-val" id="dm-sa">0%</span></div>
+            </div>
+            <button class="dm-restart-btn" id="dm-restart-btn">Nueva Aventura</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-  <iframe class="game-frame" id="game-frame" src="" allowfullscreen></iframe>
-</div>
+
+</div><!-- /wrap -->
 
 <script>
-function openGame(src, title) {
-  document.getElementById('game-frame').src = src;
-  document.getElementById('modal-game-title').textContent = title;
-  document.getElementById('game-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+/* ─────── VISTA ─────── */
+function showHome() {
+  document.getElementById('view-home').classList.add('active');
+  document.getElementById('view-bc').classList.remove('active');
+  document.getElementById('view-dm').classList.remove('active');
+  dmStop();
+}
+function showGame(id) {
+  document.getElementById('view-home').classList.remove('active');
+  document.getElementById('view-bc').classList.remove('active');
+  document.getElementById('view-dm').classList.remove('active');
+  document.getElementById('view-' + id).classList.add('active');
+  window.scrollTo({top: 56, behavior: 'smooth'});
 }
 
-document.getElementById('close-game').addEventListener('click', () => {
-  document.getElementById('game-overlay').classList.remove('open');
-  document.getElementById('game-frame').src = '';
-  document.body.style.overflow = '';
-});
+/* ══════════════════════════════════
+   BULLS AND COWS
+══════════════════════════════════ */
+let bcSecret = '', bcAttempts = 0, bcGameOver = false, bcDigits = 4;
+const bcInputs = [
+  document.getElementById('bc-d1'), document.getElementById('bc-d2'),
+  document.getElementById('bc-d3'), document.getElementById('bc-d4')
+];
 
-// Cerrar con Escape
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.getElementById('game-overlay').classList.remove('open');
-    document.getElementById('game-frame').src = '';
-    document.body.style.overflow = '';
+function bcGenSecret(n) {
+  const d = ['0','1','2','3','4','5','6','7','8','9'];
+  for (let i = d.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [d[i],d[j]]=[d[j],d[i]]; }
+  return d.slice(0,n).join('');
+}
+
+function bcStart(n) {
+  bcDigits = n;
+  document.getElementById('bc-diff').style.display = 'none';
+  bcInputs.forEach((inp,i) => { inp.classList.toggle('hidden', i >= n); inp.value=''; inp.classList.remove('bc-invalid'); });
+  bcReset();
+}
+
+function bcReset() {
+  bcSecret = bcGenSecret(bcDigits);
+  bcAttempts = 0; bcGameOver = false;
+  document.getElementById('bc-attempts').textContent='0';
+  document.getElementById('bc-bulls').textContent='0';
+  document.getElementById('bc-cows').textContent='0';
+  bcInputs.forEach(i => { i.value=''; i.classList.remove('bc-invalid'); });
+  document.getElementById('bc-list').innerHTML='<div class="bc-empty">Sin intentos aún</div>';
+  document.getElementById('bc-modal').classList.remove('active');
+  document.getElementById('bc-diff').style.display = 'none';
+  bcInputs[0].focus();
+}
+
+function bcGuess() {
+  if (bcGameOver) return;
+  let guess = bcInputs.slice(0, bcDigits).map(i => i.value).join('');
+  if (guess.length !== bcDigits || new Set(guess).size !== bcDigits) {
+    bcInputs.slice(0,bcDigits).forEach(i => { i.classList.add('bc-shake','bc-invalid'); setTimeout(()=>i.classList.remove('bc-shake','bc-invalid'),400); });
+    return;
   }
+  bcAttempts++;
+  document.getElementById('bc-attempts').textContent = bcAttempts;
+  let bulls=0, cows=0;
+  for (let i=0; i<bcDigits; i++) {
+    if (guess[i]===bcSecret[i]) bulls++;
+    else if (bcSecret.includes(guess[i])) cows++;
+  }
+  document.getElementById('bc-bulls').textContent = bulls;
+  document.getElementById('bc-cows').textContent = cows;
+  const item = document.createElement('div');
+  item.className = 'bc-item';
+  item.innerHTML = `<span class="bc-num">${guess}</span><div class="bc-hints"><span class="bc-bull">${bulls} T</span><span class="bc-cow">${cows} V</span></div>`;
+  const list = document.getElementById('bc-list');
+  const empty = list.querySelector('.bc-empty');
+  if (empty) empty.remove();
+  list.insertBefore(item, list.firstChild);
+  if (bulls === bcDigits) {
+    bcGameOver = true;
+    document.getElementById('bc-modal-icon').textContent='🎉';
+    document.getElementById('bc-modal-title').textContent='¡Felicidades!';
+    document.getElementById('bc-modal-text').textContent=`Adivinaste el número en ${bcAttempts} intento${bcAttempts>1?'s':''}`;
+    document.getElementById('bc-modal').classList.add('active');
+  } else {
+    bcInputs.slice(0,bcDigits).forEach(i => { i.value=''; });
+    bcInputs[0].focus();
+  }
+}
+
+bcInputs.forEach((inp,i) => {
+  inp.addEventListener('input', e => {
+    e.target.value = e.target.value.replace(/[^0-9]/g,'');
+    if (e.target.value && i < bcDigits-1) bcInputs[i+1].focus();
+  });
+  inp.addEventListener('keydown', e => {
+    if (e.key==='Backspace' && !e.target.value && i>0) bcInputs[i-1].focus();
+    if (e.key==='Enter') bcGuess();
+  });
+});
+document.getElementById('bc-guess').addEventListener('click', bcGuess);
+document.getElementById('bc-giveup').addEventListener('click', () => {
+  bcGameOver = true;
+  document.getElementById('bc-modal-icon').textContent='🤔';
+  document.getElementById('bc-modal-title').textContent='Te rendiste';
+  document.getElementById('bc-modal-text').textContent=`El número era: ${bcSecret}`;
+  document.getElementById('bc-modal').classList.add('active');
+});
+document.getElementById('bc-reset').addEventListener('click', () => {
+  document.getElementById('bc-diff').style.display = 'block';
+  bcInputs.forEach(i => { i.classList.add('hidden'); i.value=''; });
+});
+document.getElementById('bc-modal-btn').addEventListener('click', () => {
+  document.getElementById('bc-modal').classList.remove('active');
+  document.getElementById('bc-diff').style.display = 'block';
+  bcInputs.forEach(i => { i.classList.add('hidden'); i.value=''; });
 });
 
-// Drawer
-const drawer = document.getElementById('drawer');
-const overlay = document.getElementById('overlay');
-document.getElementById('open-drawer').addEventListener('click', () => {
-  drawer.classList.add('open'); overlay.classList.add('open');
-});
-function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
-document.getElementById('close-drawer').addEventListener('click', closeDrawer);
-overlay.addEventListener('click', closeDrawer);
+/* ══════════════════════════════════
+   DUNGEON MATH
+══════════════════════════════════ */
+const DM_TOTAL=10, DM_NEED=7, DM_MAX_WRONG=3, DM_TIME=30;
+let dmQ=0, dmCorrect=0, dmWrong=0, dmTimeout=0, dmLives=DM_MAX_WRONG;
+let dmQuestions=[], dmTimer=null, dmTimeLeft=DM_TIME, dmLocked=false;
 
-// Theme dots
-document.querySelectorAll('.theme-dot').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
+const dmAnswers = Array.from({length:6},(_,i)=>document.getElementById(`dm-a${i+1}`));
+
+function dmScreen(id) {
+  ['dm-start','dm-game','dm-end'].forEach(s=>document.getElementById(s).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function dmGenQ() {
+  const types = [
+    ()=>{ const a=Math.floor(Math.random()*50)+10,b=Math.floor(Math.random()*30)+5; return{display:`${a} × ${b} = ?`,answer:a*b}; },
+    ()=>{ const b=Math.floor(Math.random()*15)+5,ans=Math.floor(Math.random()*40)+5; return{display:`${b*ans} ÷ ${b} = ?`,answer:ans}; },
+    ()=>{ const base=Math.floor(Math.random()*8)+2,exp=Math.floor(Math.random()*3)+2; return{display:`${base}^${exp} = ?`,answer:Math.pow(base,exp)}; },
+    ()=>{ const r=Math.floor(Math.random()*12)+2; return{display:`√${r*r} = ?`,answer:r}; },
+    ()=>{ const a=Math.floor(Math.random()*30)+10,b=Math.floor(Math.random()*20)+5,c=Math.floor(Math.random()*8)+2; return{display:`${a} + ${b} × ${c} = ?`,answer:a+b*c}; },
+    ()=>{ const a=Math.floor(Math.random()*150)+50,b=Math.floor(Math.random()*100)+30; return{display:`${a} − ${b} = ?`,answer:a-b}; },
+    ()=>{ const a=Math.floor(Math.random()*20)+10,b=Math.floor(Math.random()*20)+10; return{display:`${a} + ${b} = ?`,answer:a+b}; },
+    ()=>{ const x=Math.floor(Math.random()*15)+1,b=Math.floor(Math.random()*25)+5,op=Math.random()>.5?'+':'-',r=op==='+'?x+b:x-b; return{display:`x ${op} ${b} = ${r}, x = ?`,answer:x}; },
+    ()=>{ const p=(Math.floor(Math.random()*5)+1)*20,n=(Math.floor(Math.random()*10)+2)*5; return{display:`${p}% de ${n} = ?`,answer:p*n/100}; },
+    ()=>{ const a=Math.floor(Math.random()*12)+1,b=Math.floor(Math.random()*12)+1; return{display:`${a} × ${b} = ?`,answer:a*b}; }
+  ];
+  return [...types].sort(()=>Math.random()-.5).slice(0,DM_TOTAL).map(f=>f());
+}
+
+function dmUpdateUI() {
+  const prog=(dmQ/DM_TOTAL)*100;
+  document.getElementById('dm-prog-fill').style.width=`${prog}%`;
+  document.getElementById('dm-prog-text').textContent=`${dmQ} / ${DM_TOTAL} preguntas`;
+  const hp=(dmLives/DM_MAX_WRONG)*100;
+  document.getElementById('dm-hp-fill').style.width=`${hp}%`;
+  document.getElementById('dm-hp-text').textContent=`${dmLives}/${DM_MAX_WRONG}`;
+  document.getElementById('dm-level').textContent=Math.min(3,Math.floor(dmQ/3)+1);
+}
+
+function dmStartTimer() {
+  clearInterval(dmTimer);
+  dmTimeLeft=DM_TIME;
+  dmTimerUI();
+  dmTimer=setInterval(()=>{ dmTimeLeft-=.1; dmTimerUI(); if(dmTimeLeft<=0){clearInterval(dmTimer);dmHandleTimeout();}},100);
+}
+function dmTimerUI() {
+  const pct=(dmTimeLeft/DM_TIME)*100;
+  document.getElementById('dm-timer-fill').style.width=`${pct}%`;
+  document.getElementById('dm-timer-text').textContent=`${Math.ceil(dmTimeLeft)}s`;
+  document.getElementById('dm-timer-fill').classList.toggle('warn',dmTimeLeft<=5);
+}
+function dmStop() { clearInterval(dmTimer); }
+
+function dmHandleTimeout() {
+  if(dmLocked)return; dmLocked=true; dmTimeout++; dmWrong++; dmLives--;
+  document.getElementById('dm-dragon').classList.add('attacking'); setTimeout(()=>document.getElementById('dm-dragon').classList.remove('attacking'),500);
+  dmFeedback(false,dmQuestions[dmQ].answer,true); dmUpdateUI();
+  setTimeout(()=>{ dmQ++; if(dmLives<=0||dmQ>=DM_TOTAL){dmEndGame();}else{dmLocked=false;dmShowQ();}},1500);
+}
+
+function dmShowQ() {
+  if(dmQ>=DM_TOTAL){dmEndGame();return;}
+  const q=dmQuestions[dmQ];
+  document.getElementById('dm-qnum').textContent=dmQ+1;
+  document.getElementById('dm-qtext').textContent=q.display;
+  const hints=['El dragón espera...','¿Podrás resolverlo?','Las llamas aumentan...','Concéntrate...','El dragón ruge...','Tu destino está en tus manos...'];
+  document.getElementById('dm-qhint').textContent=hints[Math.floor(Math.random()*hints.length)];
+  dmAnswers.forEach(i=>{i.value='';i.classList.remove('wrong','correct');i.disabled=false;});
+  document.getElementById('dm-feedback').innerHTML='';
+  document.getElementById('dm-submit').disabled=false;
+  dmAnswers[0].focus();
+  dmStartTimer();
+}
+
+function dmFeedback(ok,correct=null,timeout=false) {
+  let msg = ok ? '⚔️ ¡Correcto! El dragón retrocede...' :
+    timeout ? `⏰ ¡Tiempo agotado! Respuesta: ${Number.isInteger(correct)?correct:correct.toFixed(1)}` :
+    `🔥 ¡Incorrecto! Respuesta: ${Number.isInteger(correct)?correct:correct.toFixed(1)}`;
+  document.getElementById('dm-feedback').innerHTML=`<div class="dm-feedback ${ok?'correct':'wrong'}">${msg}</div>`;
+  dmAnswers.forEach(i=>{i.classList.toggle('correct',ok);i.classList.toggle('wrong',!ok);});
+  document.getElementById('dm-submit').disabled=true;
+}
+
+function dmCheck() {
+  if(dmLocked)return; dmLocked=true; dmStop();
+  let str=dmAnswers.map(i=>i.value).join('').replace(/,/g,'.');
+  const isDecimal=dmQuestions[dmQ].isDecimal;
+  const userAns=isDecimal?parseFloat(str)||0:parseInt(str)||0;
+  const correct=dmQuestions[dmQ].answer;
+  if(Math.abs(userAns-correct)<0.001) {
+    dmCorrect++;
+    dmFeedback(true);
+    document.getElementById('dm-player').classList.add('attacking'); setTimeout(()=>document.getElementById('dm-player').classList.remove('attacking'),500);
+    setTimeout(()=>{document.getElementById('dm-dragon').classList.add('hurt'); setTimeout(()=>document.getElementById('dm-dragon').classList.remove('hurt'),500);},250);
+  } else {
+    dmWrong++; dmLives--;
+    dmFeedback(false,correct);
+    document.getElementById('dm-dragon').classList.add('attacking'); setTimeout(()=>document.getElementById('dm-dragon').classList.remove('attacking'),500);
+    setTimeout(()=>{document.getElementById('dm-player').classList.add('hurt'); setTimeout(()=>document.getElementById('dm-player').classList.remove('hurt'),500);},250);
+  }
+  dmAnswers.forEach(i=>i.disabled=true); dmUpdateUI();
+  setTimeout(()=>{ dmQ++; if(dmLives<=0||dmQ>=DM_TOTAL){dmEndGame();}else{dmLocked=false;dmShowQ();}},1500);
+}
+
+function dmEndGame() {
+  dmStop();
+  const won=dmCorrect>=DM_NEED;
+  document.getElementById('dm-end-icon').textContent=won?'👑':'💀';
+  document.getElementById('dm-end-title').textContent=won?'¡Victoria!':'Has Muerto';
+  document.getElementById('dm-end-title').className=`dm-end-title ${won?'win':'lose'}`;
+  document.getElementById('dm-end-msg').innerHTML=won
+    ?`Has derrotado al dragón y reclamado el tesoro.<br><strong>${dmCorrect} de ${DM_TOTAL}</strong> respuestas correctas.`
+    :`El dragón te consumió entre las llamas.<br>Necesitabas <strong>${DM_NEED}</strong> correctas, lograste <strong>${dmCorrect}</strong>.`;
+  document.getElementById('dm-sc').textContent=dmCorrect;
+  document.getElementById('dm-sw').textContent=dmWrong;
+  document.getElementById('dm-st').textContent=dmTimeout;
+  document.getElementById('dm-sa').textContent=Math.round(dmCorrect/DM_TOTAL*100)+'%';
+  dmScreen('dm-end');
+}
+
+function dmStartGame() {
+  dmQ=0; dmCorrect=0; dmWrong=0; dmTimeout=0; dmLives=DM_MAX_WRONG; dmLocked=false;
+  dmQuestions=dmGenQ(); dmUpdateUI(); dmScreen('dm-game'); dmShowQ();
+}
+
+dmAnswers.forEach((inp,i)=>{
+  inp.addEventListener('input',e=>{
+    if(dmLocked){e.preventDefault();return;}
+    e.target.value=e.target.value.replace(/[^0-9.]/g,'');
+    if(e.target.value&&i<5) dmAnswers[i+1].focus();
+  });
+  inp.addEventListener('keydown',e=>{
+    if(dmLocked){e.preventDefault();return;}
+    if(e.key==='Backspace'&&!e.target.value&&i>0) dmAnswers[i-1].focus();
+    if(e.key==='Enter') dmCheck();
+  });
+});
+document.getElementById('dm-start-btn').addEventListener('click', dmStartGame);
+document.getElementById('dm-submit').addEventListener('click', dmCheck);
+document.getElementById('dm-restart-btn').addEventListener('click', ()=>dmScreen('dm-start'));
+
+/* ─────── NAV / TEMAS ─────── */
+const drawer=document.getElementById('drawer'), navOverlay=document.getElementById('nav-overlay');
+document.getElementById('open-drawer').addEventListener('click',()=>{drawer.classList.add('open');navOverlay.classList.add('open');});
+function closeDrawer(){drawer.classList.remove('open');navOverlay.classList.remove('open');}
+document.getElementById('close-drawer').addEventListener('click',closeDrawer);
+navOverlay.addEventListener('click',closeDrawer);
+document.querySelectorAll('.theme-dot').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.theme-dot').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    const t = btn.dataset.theme;
-    if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', t);
+    const t=btn.dataset.theme;
+    if(t==='obsidiana') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme',t);
   });
 });
 </script>
