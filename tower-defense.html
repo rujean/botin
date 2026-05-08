@@ -69,6 +69,7 @@
     <button id="bT2" style="background:#44cc44;color:#111">Verde $100</button>
     <button id="bT3" style="background:#00d2ff;color:#111">Azul $150</button>
     <button id="bReiniciar" style="background:#555">Reiniciar</button>
+    <button id="bMute" style="background:#333;font-size:16px;padding:7px 12px" title="Silenciar">🔊</button>
   </div>
   <div class="msg" id="msg">Roja seleccionada — Clic para colocar</div>
 </div>
@@ -128,12 +129,54 @@ const TI={
 
 const RANGO_ENEMIGO=90,RANGO_BOSS=216,DMG_BALA_ENEMIGO=1,DMG_BALA_BOSS=3;
 
-let dn=500,vd=50,kl=0,ol=0,be=0,en=[],tr=[],bl=[],expl=[],go=0,vi=0,vicPend=0,au=0,ts='t1',mx=0,my=0,rg={};
+let dn=500,vd=50,kl=0,ol=0,be=0,en=[],tr=[],bl=[],expl=[],go=0,vi=0,vicPend=0,spawnPend=0,au=0,ts='t1',mx=0,my=0,rg={};
+
+// ── AUDIO ──────────────────────────────────────────
+let muted=false,_ac=null,_kscd=0,_s1cd=0,_s2cd=0,_s3cd=0;
+function getAC(){
+  if(!_ac)try{_ac=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}
+  if(_ac&&_ac.state==='suspended')_ac.resume();
+  return _ac;
+}
+function _osc(f1,f2,dur,vol,type='sine'){
+  if(muted)return;const ac=getAC();if(!ac)return;
+  const o=ac.createOscillator(),g=ac.createGain();
+  o.type=type;o.connect(g);g.connect(ac.destination);
+  o.frequency.setValueAtTime(f1,ac.currentTime);
+  if(f2)o.frequency.exponentialRampToValueAtTime(f2,ac.currentTime+dur);
+  g.gain.setValueAtTime(vol,ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+dur);
+  o.start();o.stop(ac.currentTime+dur);
+}
+function _noise(dur,vol,lp=800){
+  if(muted)return;const ac=getAC();if(!ac)return;
+  const n=Math.floor(ac.sampleRate*dur),buf=ac.createBuffer(1,n,ac.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  const src=ac.createBufferSource(),g=ac.createGain(),f=ac.createBiquadFilter();
+  f.type='lowpass';f.frequency.value=lp;
+  src.buffer=buf;src.connect(f);f.connect(g);g.connect(ac.destination);
+  g.gain.setValueAtTime(vol,ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+dur);
+  src.start();src.stop(ac.currentTime+dur);
+}
+function sndShoot1(){const n=Date.now();if(n-_s1cd<80)return;_s1cd=n;_osc(700,180,0.07,0.06);}
+function sndShoot2(){const n=Date.now();if(n-_s2cd<100)return;_s2cd=n;_osc(450,350,0.1,0.05);_osc(580,420,0.1,0.04);}
+function sndShoot3(){const n=Date.now();if(n-_s3cd<150)return;_s3cd=n;_osc(120,55,0.18,0.07,'sawtooth');}
+function sndAoe(){_noise(0.28,0.38,350);_osc(85,35,0.28,0.15,'sine');}
+function sndKill(){const n=Date.now();if(n-_kscd<45)return;_kscd=n;_osc(280,90,0.09,0.08);}
+function sndBossKill(){_noise(0.55,0.55,280);_osc(65,22,0.65,0.28,'sine');}
+function sndTowerDead(){_osc(380,42,0.45,0.2,'sawtooth');}
+function sndPlace(){_osc(400,900,0.14,0.13);}
+function sndUpgrade(){[520,660,800].forEach((f,i)=>setTimeout(()=>_osc(f,f*1.06,0.14,0.14),i*110));}
+function sndWave(){_osc(440,550,0.1,0.09,'square');setTimeout(()=>_osc(550,660,0.1,0.09,'square'),160);}
+function sndVictory(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>_osc(f,f,0.32,0.2),i*190));}
+function sndGameOver(){_osc(260,45,2.0,0.22,'sawtooth');}
+// ───────────────────────────────────────────────────
 
 function velOleada(n){return 1+(n-1)*0.2;}
 function rutaAleatoria(){return Math.floor(Math.random()*3);}
 function ce(vl,vl2,vr,rc,b,ri){
-  return{dist:0,vida:vl,mv:vl2||vl,vel:vr,rec:rc,vivo:1,boss:!!b,cd:0,ruta:ri!==undefined?ri:rutaAleatoria(),ralentizado:false,slowFactor:1};
+  return{dist:0,vida:vl,mv:vl2||vl,vel:vr,velOrig:vr,rec:rc,vivo:1,boss:!!b,cd:0,ruta:ri!==undefined?ri:rutaAleatoria(),ralentizado:false};
 }
 function gob(n){
   if(vi||go)return;
@@ -141,14 +184,18 @@ function gob(n){
   let cnt=4+n*2,vb=30+n*8,v=velOleada(n),boss=n%10===0,nj=Math.floor(n/10),dj=Math.floor(n/10);
   if(boss){
     ms(nj+' BOSS por ruta!');
-    for(let r=0;r<3;r++) for(let j=0;j<nj;j++)
-      setTimeout(()=>{if(!go&&!vi){let b2=ce(vb*5,vb*5,v*0.6,200+n*20,1,r);b2.dj=dj;en.push(b2);}},500+(r*400)+(j*600));
+    for(let r=0;r<3;r++) for(let j=0;j<nj;j++){
+      spawnPend++;
+      setTimeout(()=>{spawnPend--;if(!go&&!vi){let b2=ce(vb*5,vb*5,v*0.6,200+n*20,1,r);b2.dj=dj;en.push(b2);}},500+(r*400)+(j*600));
+    }
   }else{
     ms('Oleada '+n+' ('+cnt+' x ruta, vel:'+v.toFixed(1)+')');
-    for(let r=0;r<3;r++) for(let i=0;i<cnt;i++)
-      setTimeout(()=>{if(!go&&!vi)en.push(ce(vb,vb,v,10+n*2,0,r));},i*250+r*400);
+    for(let r=0;r<3;r++) for(let i=0;i<cnt;i++){
+      spawnPend++;
+      setTimeout(()=>{spawnPend--;if(!go&&!vi)en.push(ce(vb,vb,v,10+n*2,0,r));},i*250+r*400);
+    }
   }
-  ol=n;document.getElementById('oleada').textContent=n;
+  ol=n;document.getElementById('oleada').textContent=n;sndWave();
 }
 
 // Colocar torre nueva
@@ -158,7 +205,7 @@ function placeTower(col,row,tp){
   let info=TI[tp];if(dn<info.baseCosto)return false;
   dn-=info.baseCosto;
   tr.push({cl:col,ro:row,x:col*CL+CL/2,y:row*CL+CL/2,tp,nivel:0,i:info.niveles[0],cd:0,ang:0,vid:3,vidMax:3});
-  flashRange(col,row);ui();return true;
+  flashRange(col,row);sndPlace();ui();return true;
 }
 // Mejorar torre existente
 function upgradeTower(col,row){
@@ -168,7 +215,7 @@ function upgradeTower(col,row){
   let costo=TI[t.tp].niveles[t.nivel].upgCosto;
   if(dn<costo){ms('Necesitas $'+costo+' para mejorar esta torre');return true;}
   dn-=costo;t.nivel++;t.i=TI[t.tp].niveles[t.nivel];
-  flashRange(col,row);
+  flashRange(col,row);sndUpgrade();
   ms('Torre '+TI[t.tp].nombre+' → Nivel '+(t.nivel+1)+(t.nivel==4?' ★ MAX':''));
   ui();return true;
 }
@@ -189,7 +236,7 @@ function sel(t){
   ms(TI[t].nombre+' $'+TI[t].baseCosto+' seleccionada — Clic en torre para mejorar');
 }
 function rein(){
-  dn=500;vd=50;kl=0;ol=0;be=0;en=[];tr=[];bl=[];expl=[];go=0;vi=0;vicPend=0;au=0;rg={};
+  dn=500;vd=50;kl=0;ol=0;be=0;en=[];tr=[];bl=[];expl=[];go=0;vi=0;vicPend=0;spawnPend=0;au=0;rg={};
   document.getElementById('bAuto').textContent='Auto';document.getElementById('bAuto').className='sec';
   document.getElementById('bosses').textContent='0';ui();ms('Reiniciado');
 }
@@ -228,6 +275,7 @@ document.getElementById('bAuto').onclick=function(){
   ms(au?'Auto activado':'Manual');if(au&&en.length==0&&ol==0)gob(1);
 };
 document.getElementById('bReiniciar').onclick=rein;
+document.getElementById('bMute').onclick=function(){muted=!muted;this.textContent=muted?'🔇':'🔊';};
 
 // Disparos de enemigos hacia torres
 function enemyAtk(e){
@@ -248,6 +296,7 @@ function bossAtk(b){
 
 // Daño en área (Torre Azul)
 function aoeHit(bx,by,dmg,aoeR,skip){
+  sndAoe();
   for(let e of en){
     if(!e.vivo||e===skip)continue;
     let p=posR(e.dist,e.ruta);
@@ -269,7 +318,7 @@ setInterval(function(){
     e.dist+=e.vel;
     if(!e.boss){if(e.cd<=0){enemyAtk(e);e.cd=90;}else e.cd--;}
     else{if(e.cd<=0){bossAtk(e);e.cd=50-(e.dj||1)*3;}else e.cd--;}
-    if(e.dist>=ruta.PL){e.vivo=0;vd-=e.boss?5:1;ui();if(vd<=0){go=1;ms('GAME OVER');}}
+    if(e.dist>=ruta.PL){e.vivo=0;vd-=e.boss?5:1;ui();if(vd<=0){go=1;ms('GAME OVER');sndGameOver();}}
   }
   // Torres disparan
   for(let t of tr){
@@ -280,6 +329,7 @@ setInterval(function(){
     let nb=Math.min(t.i.balas,obs.length);
     if(nb>0){
       t.cd=t.i.vel;
+      if(t.tp=='t1')sndShoot1();else if(t.tp=='t2')sndShoot2();else sndShoot3();
       for(let j=0;j<nb;j++){
         let o=obs[j].e,p=posR(o.dist,o.ruta);
         t.ang=Math.atan2(p.y-t.y,p.x-t.x);
@@ -297,7 +347,7 @@ setInterval(function(){
       if(d<10){
         if(b.obj.tr&&tr.includes(b.obj.tr)){
           let t=b.obj.tr;t.vid-=b.dmg;
-          if(t.vid<=0){tr.splice(tr.indexOf(t),1);ms('¡Torre '+TI[t.tp].nombre+' destruida!');}
+          if(t.vid<=0){tr.splice(tr.indexOf(t),1);ms('¡Torre '+TI[t.tp].nombre+' destruida!');sndTowerDead();}
           else ms('Torre dañada — vida: '+t.vid+'/'+t.vidMax);
           ui();
         }
@@ -308,17 +358,17 @@ setInterval(function(){
       let p=posR(b.o.dist,b.o.ruta),dx=p.x-b.x,dy=p.y-b.y,d=Math.hypot(dx,dy);
       if(d<8){
         if(b.ral&&!b.o.ralentizado){
-          b.o.vel*=b.slowF;b.o.ralentizado=true;b.o.slowFactor=b.slowF;
-          setTimeout(()=>{if(b.o.vivo){b.o.vel/=b.o.slowFactor;b.o.ralentizado=false;}},1500);
+          b.o.vel=b.o.velOrig*b.slowF;b.o.ralentizado=true;
+          setTimeout(()=>{if(b.o.vivo){b.o.vel=b.o.velOrig;b.o.ralentizado=false;}},1500);
         }
         b.o.vida-=b.dmg;b.vivo=0;
         if(b.aoe>0)aoeHit(p.x,p.y,b.dmg,b.aoe,b.o);
-        if(b.o.vida<=0){b.o.vivo=0;dn+=b.o.rec;kl++;if(b.o.boss){be++;document.getElementById('bosses').textContent=be;ms('BOSS MUERTO! +$'+b.o.rec);}ui();}
+        if(b.o.vida<=0){b.o.vivo=0;dn+=b.o.rec;kl++;if(b.o.boss){be++;document.getElementById('bosses').textContent=be;ms('BOSS MUERTO! +$'+b.o.rec);sndBossKill();}else{sndKill();}ui();}
       }else{let an=Math.atan2(dy,dx)+(b.ao||0);b.x+=Math.cos(an)*b.vel;b.y+=Math.sin(an)*b.vel;}
     }
   }
   en=en.filter(e=>e.vivo);bl=bl.filter(b=>b.vivo);
-  if(ol==30&&en.length==0&&!vi&&!go&&!vicPend){vicPend=1;setTimeout(()=>{vi=1;ms('¡VICTORIA! 30 oleadas completadas!');},500);}
+  if(ol==30&&en.length==0&&spawnPend==0&&!vi&&!go&&!vicPend){vicPend=1;setTimeout(()=>{vi=1;ms('¡VICTORIA! 30 oleadas completadas!');sndVictory();},500);}
 },33);
 
 setInterval(function(){if(au&&en.length==0&&!go&&!vi&&ol<30)gob(ol+1);},2000);
