@@ -72,7 +72,7 @@ const TI={
 
 // ENEMIGOS pequeños: rango=T1(120), disparan 1 bala que quita 1 vida
 // BOSSES: rango=T3*1.2(216), disparan balas que quitan 3 vidas
-const RANGO_ENEMIGO = 120;
+const RANGO_ENEMIGO = 60;
 const RANGO_BOSS = 216; // 180 * 1.2
 const DMG_BALA_ENEMIGO = 1;
 const DMG_BALA_BOSS = 3;
@@ -175,8 +175,7 @@ setInterval(function(){if(go||vi)return;
 for(let i=en.length-1;i>=0;i--){let e=en[i];if(!e.vivo)continue;
 let ruta=RUTAS[e.ruta];if(!ruta)continue;
 e.dist+=e.vel;
-// Enemigo dispara cada ~1.5s (45 frames)
-if(!e.boss&&e.vivo){if(!e.cd||e.cd<=0){enemyAtk(e);e.cd=45;}else e.cd--;}
+if(!e.boss&&e.vivo){if(!e.cd||e.cd<=0){enemyAtk(e);e.cd=90;}else e.cd--;}
 if(e.boss&&e.vivo){if(!e.cd||e.cd<=0){bossAtk(e);e.cd=50-(e.dj||1)*3;}else e.cd--;}
 if(e.dist>=ruta.PL){e.vivo=0;vd-=e.boss?5:1;ui();if(vd<=0){go=1;ms('GAME OVER');}}}
 // Torres disparan
