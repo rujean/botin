@@ -3,32 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tower Defense - Huertas TD</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<title>RzL Tower Defense — Botín de Oro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#1a1a2e;color:#eee;font-family:'DM Sans',Segoe UI,sans-serif;display:flex;flex-direction:column;align-items:center;padding:0 0 40px}
-  .topnav{width:100%;background:#0d0d0d;border-bottom:1px solid #2e2a1a;position:sticky;top:0;z-index:100}
-  .nav-inner{max-width:960px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px}
-  .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:#d4af37;text-decoration:none;flex:1}
-  .back-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px solid #2e2a1a;color:#8a7a5a;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:7px 16px;border-radius:50px;text-decoration:none;transition:all .2s}
-  .back-btn:hover{border-color:#d4af37;color:#d4af37}
-  .wrap{background:#16213e;border-radius:16px;padding:20px;max-width:750px;width:100%;margin-top:24px}
-  h1{text-align:center;color:#e94560;font-size:22px;margin-bottom:10px}
-  h1 span{color:#ffd700}
-  .bar{display:flex;gap:10px;justify-content:center;margin:10px 0;font-size:13px;flex-wrap:wrap}
-  .bar div{background:#0f3460;padding:5px 12px;border-radius:8px}
-  .bar .v{color:#ffd700;font-weight:bold}
-  canvas{display:block;margin:0 auto;border-radius:8px;border:2px solid #0f3460;cursor:crosshair;max-width:100%;background:#1a1a2e}
-  .leyenda{text-align:center;font-size:12px;color:#888;margin:6px 0;line-height:1.8}
-  .leyenda b{color:#bbb}
-  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 3px;vertical-align:middle}
-  .ctl{display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap}
-  .ctl button{color:#fff;border:none;padding:7px 16px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:13px;transition:.2s}
-  .ctl button:hover{filter:brightness(1.2);transform:scale(1.05)}
-  .ctl .sec{background:#0f3460}
-  .ctl .act{border:2px solid #fff;box-shadow:0 0 10px rgba(255,255,255,.3)}
-  .msg{text-align:center;margin:6px 0;font-size:13px;color:#aaa;min-height:20px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0d;--surface:#161616;--card:#1c1c1c;--border:#2e2a1a;
+  --gold:#d4af37;--gold-lt:#f0d060;--terra:#c4922a;
+  --text:#f5f0e8;--muted:#8a7a5a;--tag-bg:#221e0e;
+  --shadow:0 8px 40px rgba(0,0,0,.75);--radius:14px;--accent-rgb:212,175,55;
+}
+[data-theme="marmol"]{
+  --bg:#faf9f7;--surface:#ffffff;--card:#ffffff;--border:#e4dbd0;
+  --gold:#8b1a3a;--gold-lt:#6b1230;--terra:#c4572a;
+  --text:#1a1a1a;--muted:#9a8878;--tag-bg:#f2ece4;
+  --shadow:0 4px 20px rgba(0,0,0,.08);--accent-rgb:139,26,58;
+}
+[data-theme="indigo"]{
+  --bg:#0e0e1f;--surface:#141428;--card:#1a1a32;--border:#2e2e55;
+  --gold:#a78bfa;--gold-lt:#c4b0fc;--terra:#60a5fa;
+  --text:#e2e8f0;--muted:#6b7ab0;--tag-bg:#1e1e3c;
+  --shadow:0 8px 40px rgba(0,0,0,.65);--accent-rgb:167,139,250;
+}
+[data-theme="sage"]{
+  --bg:#f4f4f0;--surface:#fafafa;--card:#ffffff;--border:#d4dace;
+  --gold:#7d9b76;--gold-lt:#556e50;--terra:#b85c38;
+  --text:#1c1c1c;--muted:#8a9a88;--tag-bg:#e8ede6;
+  --shadow:0 4px 20px rgba(0,0,0,.07);--accent-rgb:125,155,118;
+}
+
+html{font-family:'DM Sans',sans-serif;font-size:16px}
+body{
+  background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(var(--accent-rgb),.15),transparent);
+  transition:background .4s,color .4s;
+  display:flex;flex-direction:column;align-items:center;
+}
+*,*::before,*::after{transition:background-color .3s,border-color .3s,color .3s}
+
+/* NAV */
+.topnav{width:100%;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--gold);white-space:nowrap;text-decoration:none;flex:1}
+.nav-links{display:flex;gap:2px}
+.nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:50px;white-space:nowrap;transition:color .2s,background .2s}
+.nav-link:hover{color:var(--text);background:rgba(var(--accent-rgb),.07)}
+.nav-link.active{color:var(--gold);background:rgba(var(--accent-rgb),.1)}
+.theme-switcher{display:flex;gap:6px;align-items:center}
+.theme-dot{width:18px;height:18px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;opacity:.55;transition:transform .2s,border-color .2s}
+.theme-dot:hover{transform:scale(1.2);opacity:1}
+.theme-dot.active{border-color:var(--text);opacity:1;transform:scale(1.15)}
+.menu-btn{display:none;background:none;border:1.5px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s,color .2s}
+.menu-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:230px;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:20px 16px;display:flex;flex-direction:column;gap:4px}
+.drawer.open{transform:translateX(0)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.drawer-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--text)}
+.drawer-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:2px 6px}
+.drawer-close:hover{color:var(--text)}
+.drawer-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);border:1px solid transparent;transition:all .2s}
+.drawer-link:hover{background:rgba(var(--accent-rgb),.07);border-color:var(--border);color:var(--text)}
+.drawer-link.active{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);color:var(--gold)}
+.drawer-payment{display:none;margin-top:16px;padding:14px;border:1px solid rgba(var(--accent-rgb),.28);border-radius:10px;background:rgba(var(--accent-rgb),.07)}
+
+/* PAYMENT */
+.payment-reminder{
+  position:fixed;right:22px;top:112px;z-index:80;width:238px;
+  background:linear-gradient(145deg,rgba(var(--accent-rgb),.16),rgba(var(--accent-rgb),.04));
+  border:1px solid rgba(var(--accent-rgb),.35);border-radius:12px;
+  box-shadow:var(--shadow);padding:16px 16px 14px;color:var(--text);backdrop-filter:blur(10px);
+}
+.payment-reminder::before{content:'';display:block;width:42px;height:2px;background:var(--gold);margin-bottom:12px}
+.pay-label{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.pay-account{font-size:.96rem;font-weight:500;line-height:1.15;color:var(--gold-lt);letter-spacing:.08em;margin-bottom:8px;word-break:break-word;font-variant-numeric:tabular-nums}
+.pay-owner{font-size:12px;font-weight:500;line-height:1.35;color:var(--text)}
+
+/* HEADER */
+header{text-align:center;padding:48px 24px 18px;width:100%}
+header::after{content:'';display:block;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto 0}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.1;color:var(--text)}
+h1 span{color:var(--gold-lt)}
+.header-sub{color:var(--muted);font-size:13px;margin-top:8px}
+
+/* GAME WRAP */
+.wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:750px;width:calc(100% - 40px);margin-top:24px;box-shadow:var(--shadow)}
+
+/* HUD BAR */
+.bar{display:flex;gap:8px;justify-content:center;margin:0 0 16px;font-size:13px;flex-wrap:wrap}
+.bar div{background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:8px;color:var(--text)}
+.bar .v{color:var(--gold-lt);font-weight:700}
+
+/* CANVAS */
+canvas{display:block;margin:0 auto;border-radius:8px;border:1px solid var(--border);cursor:crosshair;max-width:100%;background:#1a1a2e}
+
+/* LEYENDA */
+.leyenda{text-align:center;font-size:12px;color:var(--muted);margin:10px 0;line-height:1.8}
+.leyenda b{color:var(--text)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 3px;vertical-align:middle}
+
+/* CONTROLES */
+.ctl{display:flex;gap:6px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.ctl button{border:none;padding:7px 16px;border-radius:50px;cursor:pointer;font-weight:600;font-size:13px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ctl button:hover{filter:brightness(1.15);transform:scale(1.04)}
+.ctl .sec{background:rgba(var(--accent-rgb),.1);border:1.5px solid rgba(var(--accent-rgb),.3);color:var(--gold)}
+.ctl .sec:hover{background:var(--gold);color:var(--bg)}
+.ctl .act{outline:2px solid var(--text);outline-offset:2px;box-shadow:0 0 10px rgba(var(--accent-rgb),.35)}
+.ctl .btn-reset{background:var(--tag-bg);border:1.5px solid var(--border);color:var(--muted)}
+.ctl .btn-reset:hover{border-color:var(--gold);color:var(--text)}
+.ctl .btn-mute{background:var(--tag-bg);border:1.5px solid var(--border);color:var(--muted);font-size:16px;padding:7px 12px}
+.ctl .btn-mute:hover{border-color:var(--gold);color:var(--text)}
+
+/* MENSAJE */
+.msg{text-align:center;margin:6px 0;font-size:13px;color:var(--muted);min-height:20px}
+
+/* RESPONSIVE */
+@media(max-width:1380px){.payment-reminder{position:static;width:auto;max-width:750px;margin:18px auto 0;padding:15px 20px}}
+@media(max-width:600px){.nav-links{display:none}.menu-btn{display:flex}.drawer-payment{display:block}}
+@media(max-width:540px){
+  header{padding:36px 20px 14px}
+  .payment-reminder{display:none}
+  .wrap{padding:16px 12px}
+  .pay-account{font-size:.94rem}
+}
 </style>
 </head>
 <body>
@@ -36,15 +137,56 @@
 <nav class="topnav">
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">Botín de Oro</a>
-    <a class="back-btn" href="juegos.html">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Volver a Juegos
-    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Lista de Precios</a>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="catalogo.html">Catálogo</a>
+      <a class="nav-link active" href="juegos.html">Juegos</a>
+    </div>
+    <div class="theme-switcher">
+      <button class="theme-dot active" data-theme="obsidiana" title="Obsidiana" style="background:#d4af37"></button>
+      <button class="theme-dot" data-theme="marmol" title="Mármol" style="background:#8b1a3a"></button>
+      <button class="theme-dot" data-theme="indigo" title="Índigo" style="background:#a78bfa"></button>
+      <button class="theme-dot" data-theme="sage" title="Sage" style="background:#7d9b76"></button>
+    </div>
+    <button class="menu-btn" id="open-drawer" aria-label="Menú">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
   </div>
 </nav>
 
+<div class="drawer-overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <span class="drawer-title">Menú</span>
+    <button class="drawer-close" id="close-drawer">✕</button>
+  </div>
+  <a class="drawer-link" href="index.html">Lista de Precios</a>
+  <a class="drawer-link" href="dashboard.html">Dashboard</a>
+  <a class="drawer-link" href="catalogo.html">Catálogo</a>
+  <a class="drawer-link active" href="juegos.html">Juegos</a>
+  <div class="drawer-payment" aria-label="Datos para depósito">
+    <p class="pay-label">DEPOSITOS</p>
+    <p class="pay-account">0011-0237-0200453378</p>
+    <p class="pay-owner">Russell Jean Mayhua Huaman</p>
+  </div>
+</div>
+
+<header>
+  <p class="eyebrow">Estrategia · Defensa</p>
+  <h1>RzL <span>Tower Defense</span></h1>
+  <p class="header-sub">Defiende las rutas y sobrevive cada oleada</p>
+</header>
+
+<aside class="payment-reminder" aria-label="Datos para depósito">
+  <p class="pay-label">DEPOSITOS</p>
+  <p class="pay-account">0011-0237-0200453378</p>
+  <p class="pay-owner">Russell Jean Mayhua Huaman</p>
+</aside>
+
 <div class="wrap">
-  <h1>🏰 <span>Huertas</span> Tower Defense</h1>
   <div class="bar">
     <div>💰 $<span class="v" id="dinero">500</span></div>
     <div>❤️ <span class="v" id="vidas">50</span></div>
@@ -60,16 +202,16 @@
     <span class="dot" style="background:#44cc44"></span><b>Verde $100</b> — 2 balas · slow 20%→65% · rango 120→140
     &nbsp;|&nbsp;
     <span class="dot" style="background:#00d2ff"></span><b>Azul $150</b> — AOE 2→5 celdas · rango 200→250
-    <br><small>Clic en celda vacía = colocar &nbsp;·&nbsp; Clic en torre = mejorar &nbsp;·&nbsp; Hover = ver costo de mejora</small>
+    <br><small>E1/E2/E3 = entradas &nbsp;·&nbsp; S1/S2/S3 = salidas &nbsp;·&nbsp; Clic en celda vacía = colocar &nbsp;·&nbsp; Clic en torre = mejorar</small>
   </div>
   <div class="ctl">
     <button id="bOleada" class="sec">Sgte Oleada</button>
     <button id="bAuto" class="sec">Auto</button>
-    <button id="bT1" class="act" style="background:#e94560">Roja $50</button>
+    <button id="bT1" class="act" style="background:#e94560;color:#fff">Roja $50</button>
     <button id="bT2" style="background:#44cc44;color:#111">Verde $100</button>
     <button id="bT3" style="background:#00d2ff;color:#111">Azul $150</button>
-    <button id="bReiniciar" style="background:#555">Reiniciar</button>
-    <button id="bMute" style="background:#333;font-size:16px;padding:7px 12px" title="Silenciar">🔊</button>
+    <button id="bReiniciar" class="btn-reset">Reiniciar</button>
+    <button id="bMute" class="btn-mute" title="Silenciar">🔊</button>
   </div>
   <div class="msg" id="msg">Roja seleccionada — Clic para colocar</div>
 </div>
@@ -78,9 +220,12 @@
 const c=document.getElementById('g'),ctx=c.getContext('2d'),W=620,H=620,CL=31;
 
 const RUTAS=[
-  {puntos:[[0,3],[4,3],[4,7],[8,7],[8,3],[12,3],[12,7],[16,7],[16,3],[19,3]]},
-  {puntos:[[0,10],[4,10],[4,6],[8,6],[8,10],[12,10],[12,14],[16,14],[16,10],[19,10]]},
-  {puntos:[[0,17],[4,17],[4,13],[8,13],[8,17],[12,17],[12,11],[16,11],[16,17],[19,17]]}
+  // E1: entra IZQUIERDA fila 1 → baja→derecha→sube → sale ARRIBA col 18 (35 celdas)
+  {puntos:[[0,1],[6,1],[6,4],[13,4],[13,9],[18,9],[18,0]]},
+  // E2: entra IZQUIERDA fila 9 → sale ABAJO col 1 (35 celdas)
+  {puntos:[[0,9],[4,9],[4,7],[11,7],[11,11],[1,11],[1,19]]},
+  // E3: entra ABAJO col 2 → sale DERECHA fila 13 (35 celdas)
+  {puntos:[[2,19],[2,13],[8,13],[8,19],[14,19],[14,13],[19,13]]}
 ];
 RUTAS.forEach(r=>{
   r.px=r.puntos.map(p=>({x:p[0]*CL+CL/2,y:p[1]*CL+CL/2}));
@@ -97,9 +242,6 @@ function posR(d,ri){
 }
 const todosPuntos=RUTAS.reduce((a,r)=>a.concat(r.puntos),[]);
 
-// TORRES CON NIVELES (nivel = índice 0-4)
-// slow = multiplicador velocidad enemigo (0.8 = 20% más lento)
-// aoe  = radio en px (CL=31: 2c=62, 3c=93, 4c=124, 5c=155)
 const TI={
   t1:{color:'#e94560',nombre:'Roja',baseCosto:50,
     niveles:[
@@ -131,7 +273,7 @@ const RANGO_ENEMIGO=90,RANGO_BOSS=216,DMG_BALA_ENEMIGO=1,DMG_BALA_BOSS=3;
 
 let dn=500,vd=50,kl=0,ol=0,be=0,en=[],tr=[],bl=[],expl=[],go=0,vi=0,vicPend=0,spawnPend=0,au=0,ts='t1',mx=0,my=0,rg={};
 
-// ── AUDIO ──────────────────────────────────────────
+// AUDIO
 let muted=false,_ac=null,_kscd=0,_s1cd=0,_s2cd=0,_s3cd=0;
 function getAC(){
   if(!_ac)try{_ac=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}
@@ -171,7 +313,6 @@ function sndUpgrade(){[520,660,800].forEach((f,i)=>setTimeout(()=>_osc(f,f*1.06,
 function sndWave(){_osc(440,550,0.1,0.09,'square');setTimeout(()=>_osc(550,660,0.1,0.09,'square'),160);}
 function sndVictory(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>_osc(f,f,0.32,0.2),i*190));}
 function sndGameOver(){_osc(260,45,2.0,0.22,'sawtooth');}
-// ───────────────────────────────────────────────────
 
 function velOleada(n){return 1+(n-1)*0.2;}
 function rutaAleatoria(){return Math.floor(Math.random()*3);}
@@ -198,7 +339,6 @@ function gob(n){
   ol=n;document.getElementById('oleada').textContent=n;sndWave();
 }
 
-// Colocar torre nueva
 function placeTower(col,row,tp){
   for(let p of todosPuntos) if(p[0]==col&&p[1]==row) return false;
   for(let t of tr) if(t.cl==col&&t.ro==row) return false;
@@ -207,7 +347,6 @@ function placeTower(col,row,tp){
   tr.push({cl:col,ro:row,x:col*CL+CL/2,y:row*CL+CL/2,tp,nivel:0,i:info.niveles[0],cd:0,ang:0,vid:3,vidMax:3});
   flashRange(col,row);sndPlace();ui();return true;
 }
-// Mejorar torre existente
 function upgradeTower(col,row){
   let t=tr.find(t=>t.cl==col&&t.ro==row);
   if(!t)return false;
@@ -277,7 +416,6 @@ document.getElementById('bAuto').onclick=function(){
 document.getElementById('bReiniciar').onclick=rein;
 document.getElementById('bMute').onclick=function(){muted=!muted;this.textContent=muted?'🔇':'🔊';};
 
-// Disparos de enemigos hacia torres
 function enemyAtk(e){
   let p=posR(e.dist,e.ruta);
   let rango=e.boss?RANGO_BOSS:RANGO_ENEMIGO,dmg=e.boss?DMG_BALA_BOSS:DMG_BALA_ENEMIGO;
@@ -294,7 +432,6 @@ function bossAtk(b){
   else for(let o of objs)bl.push({x:p.x,y:p.y,obj:{x:o.tr.x,y:o.tr.y,tr:o.tr},dmg:DMG_BALA_BOSS,vel:2.5,color:'#ff00ff',vivo:1,isEnemy:1});
 }
 
-// Daño en área (Torre Azul)
 function aoeHit(bx,by,dmg,aoeR,skip){
   sndAoe();
   for(let e of en){
@@ -311,7 +448,6 @@ function aoeHit(bx,by,dmg,aoeR,skip){
 // LOOP PRINCIPAL
 setInterval(function(){
   if(go||vi)return;
-  // Mover enemigos
   for(let i=en.length-1;i>=0;i--){
     let e=en[i];if(!e.vivo)continue;
     let ruta=RUTAS[e.ruta];if(!ruta)continue;
@@ -320,7 +456,6 @@ setInterval(function(){
     else{if(e.cd<=0){bossAtk(e);e.cd=50-(e.dj||1)*3;}else e.cd--;}
     if(e.dist>=ruta.PL){e.vivo=0;vd-=e.boss?5:1;ui();if(vd<=0){go=1;ms('GAME OVER');sndGameOver();}}
   }
-  // Torres disparan
   for(let t of tr){
     if(t.cd>0){t.cd--;continue;}
     let obs=[];
@@ -339,7 +474,6 @@ setInterval(function(){
       }
     }
   }
-  // Mover balas
   for(let i=bl.length-1;i>=0;i--){
     let b=bl[i];if(!b.vivo){bl.splice(i,1);continue;}
     if(b.isEnemy){
@@ -375,63 +509,57 @@ setInterval(function(){if(au&&en.length==0&&!go&&!vi&&ol<30)gob(ol+1);},2000);
 
 // RENDER
 setInterval(function(){
-  ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,W,H);
-  // Grilla
-  ctx.strokeStyle='#1f1f3a';ctx.lineWidth=.5;
+  const P=getPaleta();
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=P.fondo;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle=P.grilla;ctx.lineWidth=.5;
   for(let i=0;i<=20;i++){ctx.beginPath();ctx.moveTo(i*CL,0);ctx.lineTo(i*CL,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i*CL);ctx.lineTo(W,i*CL);ctx.stroke();}
-  // Caminos
   for(let ri=0;ri<RUTAS.length;ri++){
     let r=RUTAS[ri];
     ctx.beginPath();ctx.moveTo(r.px[0].x,r.px[0].y);
     for(let i=1;i<r.px.length;i++)ctx.lineTo(r.px[i].x,r.px[i].y);
-    ctx.strokeStyle='#2a2a3a';ctx.lineWidth=16;ctx.stroke();
-    ctx.strokeStyle='#353550';ctx.lineWidth=12;ctx.stroke();
-    ctx.strokeStyle='#4a4a6a';ctx.lineWidth=1.5;ctx.setLineDash([4,6]);ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle=P.pathA;ctx.lineWidth=16;ctx.stroke();
+    ctx.strokeStyle=P.pathB;ctx.lineWidth=12;ctx.stroke();
+    ctx.strokeStyle=P.pathC;ctx.lineWidth=1.5;ctx.setLineDash([4,6]);ctx.stroke();ctx.setLineDash([]);
     let ep=r.px[0];
     ctx.fillStyle=['rgba(68,136,255,0.12)','rgba(68,255,136,0.12)','rgba(255,170,68,0.12)'][ri];
     ctx.fillRect(ep.x-CL/2,ep.y-CL/2,CL,CL);
     let sp=r.px[r.px.length-1];ctx.fillStyle='rgba(255,68,68,0.1)';ctx.fillRect(sp.x-CL/2,sp.y-CL/2,CL,CL);
   }
-  ctx.font='9px Arial';
-  ctx.fillStyle='#4488ff';ctx.fillText('R1',5,3*CL+20);
-  ctx.fillStyle='#44ff88';ctx.fillText('R2',5,10*CL+20);
-  ctx.fillStyle='#ffaa44';ctx.fillText('R3',5,17*CL+20);
-  ctx.fillStyle='#f44';ctx.font='bold 9px Arial';
-  ctx.fillText('S1',19*CL+3,3*CL+20);ctx.fillText('S2',19*CL+3,10*CL+20);ctx.fillText('S3',19*CL+3,17*CL+20);
+  const clrE=['#4488ff','#44ff88','#ffaa44'];
+  ctx.font='bold 9px Arial';
+  const clp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  RUTAS.forEach((r,ri)=>{
+    const e0=r.px[0],eN=r.px[r.px.length-1];
+    ctx.fillStyle=clrE[ri];
+    ctx.fillText('E'+(ri+1),clp(e0.x-10,3,W-22),clp(e0.y+13,12,H-3));
+    ctx.fillStyle='#f44';
+    ctx.fillText('S'+(ri+1),clp(eN.x-10,3,W-22),clp(eN.y+13,12,H-3));
+  });
 
-  // Torres
   let ahora=Date.now();
   for(let t of tr){
     let k=t.cl+','+t.ro,info=TI[t.tp];
     if(rg[k]&&ahora-rg[k]<1500){
-      // Círculo de rango
       ctx.beginPath();ctx.arc(t.x,t.y,t.i.rango,0,Math.PI*2);
       ctx.strokeStyle=info.color+'55';ctx.lineWidth=1.5;ctx.setLineDash([4,6]);ctx.stroke();ctx.setLineDash([]);
-      // Círculo AOE adicional para T3
       if(t.tp=='t3'&&t.i.aoe){
         ctx.beginPath();ctx.arc(t.x,t.y,t.i.aoe,0,Math.PI*2);
         ctx.strokeStyle='#00d2ff33';ctx.lineWidth=1;ctx.setLineDash([2,5]);ctx.stroke();ctx.setLineDash([]);
       }
     }
-    // Color según vida
     let colorT=info.color;
     if(t.vid==1)colorT='#ff6666';
     else if(t.vid==2&&t.vidMax>2)colorT='#ffaa44';
-    // Cuerpo (tamaño crece con nivel)
     let radio=10+t.nivel*1.5;
     ctx.fillStyle=colorT;ctx.shadowColor=info.color;ctx.shadowBlur=4+t.nivel*3;
     ctx.beginPath();ctx.arc(t.x,t.y,radio,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-    // Cañón
     ctx.strokeStyle='#fff';ctx.lineWidth=2+t.nivel*0.3;
     ctx.beginPath();ctx.moveTo(t.x,t.y);ctx.lineTo(t.x+Math.cos(t.ang)*(radio+5),t.y+Math.sin(t.ang)*(radio+5));ctx.stroke();
-    // Número de nivel
     ctx.fillStyle='#fff';ctx.font='bold '+(6+t.nivel)+'px Arial';ctx.textAlign='center';
     ctx.fillText(t.nivel+1,t.x,t.y+radio+10);ctx.textAlign='left';
-    // Puntos de vida
-    for(let v=0;v<t.vidMax;v++){ctx.fillStyle=v<t.vid?'#fff':'#333';ctx.beginPath();ctx.arc(t.x-5+v*5,t.y+radio+15,2,0,Math.PI*2);ctx.fill();}
+    for(let v=0;v<t.vidMax;v++){ctx.fillStyle=v<t.vid?P.puntoFull:P.puntoEmpty;ctx.beginPath();ctx.arc(t.x-5+v*5,t.y+radio+15,2,0,Math.PI*2);ctx.fill();}
   }
 
-  // Enemigos
   let coloresE=['#4488ff','#44ff88','#ffaa44'];
   for(let e of en){
     if(!e.vivo)continue;
@@ -456,7 +584,6 @@ setInterval(function(){
     }
   }
 
-  // Balas
   for(let b of bl){
     if(!b.vivo)continue;
     ctx.fillStyle=b.color;ctx.shadowColor=b.color;ctx.shadowBlur=b.isEnemy?12:8;
@@ -464,7 +591,6 @@ setInterval(function(){
   }
   ctx.shadowBlur=0;ctx.shadowColor='transparent';
 
-  // Explosiones AOE (Torre Azul)
   for(let i=expl.length-1;i>=0;i--){
     let ex=expl[i];ex.age++;
     if(ex.age>ex.maxAge){expl.splice(i,1);continue;}
@@ -476,7 +602,6 @@ setInterval(function(){
     ctx.globalAlpha=1;
   }
 
-  // Preview al hover (celda libre)
   if(ts&&!go&&!vi){
     let col=Math.floor(mx/CL),row=Math.floor(my/CL);
     if(col>=0&&col<20&&row>=0&&row<20){
@@ -491,12 +616,39 @@ setInterval(function(){
     }
   }
 
-  // Overlays finales
   if(vi){ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,H/2-40,W,80);ctx.fillStyle='#ffd700';ctx.font='bold 26px Arial';ctx.textAlign='center';ctx.fillText('¡VICTORIA!',W/2,H/2+8);ctx.textAlign='left';}
   if(go){ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,H/2-40,W,80);ctx.fillStyle='#ff4444';ctx.font='bold 26px Arial';ctx.textAlign='center';ctx.fillText('GAME OVER',W/2,H/2+8);ctx.textAlign='left';}
 },33);
 
 sel('t1');ui();
+
+// Paletas de color del canvas por tema
+const PALETAS={
+  obsidiana:{fondo:'#1a1a2e',grilla:'#1f1f3a',pathA:'#2a2a3a',pathB:'#353550',pathC:'#4a4a6a',puntoFull:'#ffffff',puntoEmpty:'#333333'},
+  marmol:   {fondo:'#f5f0e8',grilla:'#e5ddd0',pathA:'#c8bfb0',pathB:'#b8af9e',pathC:'#9a8878',puntoFull:'#3a2a1a',puntoEmpty:'#d5cdc0'},
+  indigo:   {fondo:'#0e0e1f',grilla:'#161630',pathA:'#1e1e3a',pathB:'#282858',pathC:'#383878',puntoFull:'#e2e8f0',puntoEmpty:'#2e2e55'},
+  sage:     {fondo:'#eaefe8',grilla:'#dce4da',pathA:'#b8c8b0',pathB:'#a8b8a0',pathC:'#88a480',puntoFull:'#1c2c1a',puntoEmpty:'#d0d8ce'},
+};
+function getPaleta(){const t=document.documentElement.getAttribute('data-theme')||'obsidiana';return PALETAS[t]||PALETAS.obsidiana;}
+
+// Drawer móvil
+const drawer=document.getElementById('drawer');
+const overlay=document.getElementById('overlay');
+document.getElementById('open-drawer').addEventListener('click',()=>{drawer.classList.add('open');overlay.classList.add('open');});
+function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove('open');}
+document.getElementById('close-drawer').addEventListener('click',closeDrawer);
+overlay.addEventListener('click',closeDrawer);
+
+// Selector de tema
+document.querySelectorAll('.theme-dot').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.theme-dot').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const t=btn.dataset.theme;
+    if(t==='obsidiana') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme',t);
+  });
+});
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dashboard — Botín de Oro</title>
+<title>Reporte Ejecutivo - Botin de Oro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -66,7 +66,18 @@ body{
 .drawer-link{display:flex;align-items:center;padding:12px 14px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);border:1px solid transparent;transition:all .2s;}
 .drawer-link:hover{background:rgba(var(--accent-rgb),.07);border-color:var(--border);color:var(--text);}
 .drawer-link.active{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);color:var(--gold);}
-@media(max-width:600px){.nav-links{display:none;}.menu-btn{display:flex;}}
+.drawer-payment{display:none;margin-top:16px;padding:14px;border:1px solid rgba(var(--accent-rgb),.28);border-radius:10px;background:rgba(var(--accent-rgb),.07);}
+.drawer-payment .pay-label{margin-bottom:7px;}
+.drawer-payment .pay-account{font-size:.94rem;}
+@media(max-width:600px){.nav-links{display:none;}.menu-btn{display:flex;}.drawer-payment{display:block;}}
+
+.payment-reminder{position:fixed;right:22px;top:112px;z-index:80;width:238px;background:linear-gradient(145deg,rgba(var(--accent-rgb),.16),rgba(var(--accent-rgb),.04));border:1px solid rgba(var(--accent-rgb),.35);border-radius:12px;box-shadow:var(--shadow);padding:16px 16px 14px;color:var(--text);backdrop-filter:blur(10px);}
+.payment-reminder::before{content:'';display:block;width:42px;height:2px;background:var(--gold);margin-bottom:12px;}
+.pay-label{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pay-account{font-family:'DM Sans',sans-serif;font-size:.96rem;font-weight:500;line-height:1.15;color:var(--gold-lt);letter-spacing:.08em;margin-bottom:8px;word-break:break-word;font-variant-numeric:tabular-nums;}
+.pay-owner{font-size:12px;font-weight:500;line-height:1.35;color:var(--text);}
+@media(max-width:1380px){.payment-reminder{position:static;width:auto;max-width:860px;margin:18px auto 0;padding:15px 20px;}}
+@media(max-width:540px){.payment-reminder{display:none;}.pay-account{font-size:.94rem;}}
 
 /* HEADER */
 header{text-align:center;padding:48px 24px 16px;position:relative;}
@@ -180,36 +191,47 @@ h1 span{color:var(--gold-lt);}
   <a class="drawer-link active" href="dashboard.html">Dashboard</a>
   <a class="drawer-link" href="catalogo.html">Catálogo</a>
   <a class="drawer-link" href="juegos.html">Juegos</a>
+  <div class="drawer-payment" aria-label="Datos para deposito">
+    <p class="pay-label">DEPOSITOS</p>
+    <p class="pay-account">0011-0237-0200453378</p>
+    <p class="pay-owner">Russell Jean Mayhua Huaman</p>
+  </div>
 </div>
 
 <header>
-  <p class="eyebrow">Resumen General</p>
-  <h1>Panel de <span>Control</span></h1>
+  <p class="eyebrow">Catalogo de insumos</p>
+  <h1>Reporte <span>Ejecutivo</span></h1>
 </header>
+
+<aside class="payment-reminder" aria-label="Datos para deposito">
+  <p class="pay-label">DEPOSITOS</p>
+  <p class="pay-account">0011-0237-0200453378</p>
+  <p class="pay-owner">Russell Jean Mayhua Huaman</p>
+</aside>
 
 <div class="wrap" id="main" style="display:none">
 
   <!-- KPIs -->
   <div class="kpi-grid" id="kpis"></div>
 
-  <!-- Distribución de márgenes -->
+  <!-- Estado de referencias -->
   <div class="section">
-    <div class="sec-title">Distribución de Márgenes</div>
+    <div class="sec-title">Estado de Referencias de Precio</div>
     <div class="dist-grid" id="dist-grid"></div>
   </div>
 
-  <!-- Alerta sin margen -->
+  <!-- Alerta precios iguales -->
   <div class="alert-box" id="alert-box" style="display:none">
-    <div class="alert-title">⚠ Productos sin margen (compra = venta)</div>
+    <div class="alert-title">Atencion: productos con compra igual a venta</div>
     <div class="alert-chips" id="alert-chips"></div>
   </div>
 
-  <!-- Por categoría -->
+  <!-- Por categoria -->
   <div class="section">
-    <div class="sec-title">Rendimiento por Categoría</div>
+    <div class="sec-title">Resumen por Categoria</div>
     <table class="cat-table" id="cat-table">
       <thead><tr>
-        <th>Categoría</th><th>Productos</th><th>Margen promedio</th><th>Estado</th>
+        <th>Categoria</th><th>Productos</th><th>Diferencia ref. promedio</th><th>Estado</th>
       </tr></thead>
       <tbody id="cat-body"></tbody>
     </table>
@@ -218,11 +240,11 @@ h1 span{color:var(--gold-lt);}
   <!-- Top listas -->
   <div class="two-col">
     <div class="rank-list">
-      <div class="rank-header">Mejor margen</div>
+      <div class="rank-header">Mayor diferencia de referencia</div>
       <div id="top-best"></div>
     </div>
     <div class="rank-list">
-      <div class="rank-header">Menor margen</div>
+      <div class="rank-header">Revisar primero</div>
       <div id="top-worst"></div>
     </div>
   </div>
@@ -246,20 +268,20 @@ function parseCSV(text) {
   });
 }
 
-function margin(p) { return ((p.venta - p.compra) / p.compra) * 100; }
+function refDiff(p) { return ((p.venta - p.compra) / p.compra) * 100; }
 function fmt(n) { return n.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function pillClass(m) { return m === 0 ? 'zero' : m < 20 ? 'bajo' : m <= 30 ? 'medio' : 'alto'; }
-function pillLabel(m) { return m === 0 ? 'Sin margen' : m < 20 ? 'Bajo' : m <= 30 ? 'Medio' : 'Alto'; }
+function pillClass(d) { return d === 0 ? 'zero' : d < 20 ? 'bajo' : d <= 30 ? 'medio' : 'alto'; }
+function pillLabel(d) { return d === 0 ? 'Revisar' : d < 20 ? 'Diferencia baja' : d <= 30 ? 'Normal' : 'Amplia'; }
 
 fetch('productos.csv')
   .then(r => r.text())
   .then(text => {
     const prods = parseCSV(text);
     const total = prods.length;
-    const conMargen = prods.filter(p => margin(p) > 0);
-    const sinMargen = prods.filter(p => margin(p) === 0);
-    const avgMargen = conMargen.length
-      ? conMargen.reduce((s,p) => s + margin(p), 0) / conMargen.length : 0;
+    const conDiferencia = prods.filter(p => refDiff(p) > 0);
+    const precioIgual = prods.filter(p => refDiff(p) === 0);
+    const avgDiferencia = conDiferencia.length
+      ? conDiferencia.reduce((s,p) => s + refDiff(p), 0) / conDiferencia.length : 0;
 
     // KPIs
     const cats = [...new Set(prods.map(p => p.categoria))];
@@ -267,30 +289,30 @@ fetch('productos.csv')
       <div class="kpi">
         <div class="kpi-label">Total Productos</div>
         <div class="kpi-value">${total}</div>
-        <div class="kpi-sub">${cats.length} categorías</div>
+        <div class="kpi-sub">${cats.length} categorias registradas</div>
       </div>
       <div class="kpi good">
-        <div class="kpi-label">Margen Promedio</div>
-        <div class="kpi-value">${avgMargen.toFixed(1)}%</div>
-        <div class="kpi-sub">Productos con ganancia</div>
+        <div class="kpi-label">Diferencia Ref.</div>
+        <div class="kpi-value">${avgDiferencia.toFixed(1)}%</div>
+        <div class="kpi-sub">Promedio entre compra y venta</div>
       </div>
-      <div class="kpi ${sinMargen.length > 0 ? 'alert':'good'}">
-        <div class="kpi-label">Sin margen</div>
-        <div class="kpi-value">${sinMargen.length}</div>
-        <div class="kpi-sub">Compra = venta</div>
+      <div class="kpi ${precioIgual.length > 0 ? 'alert':'good'}">
+        <div class="kpi-label">Revisar</div>
+        <div class="kpi-value">${precioIgual.length}</div>
+        <div class="kpi-sub">Compra igual a venta</div>
       </div>
       <div class="kpi">
-        <div class="kpi-label">Con margen</div>
-        <div class="kpi-value">${conMargen.length}</div>
-        <div class="kpi-sub">Generan ganancia</div>
+        <div class="kpi-label">Con referencia</div>
+        <div class="kpi-value">${conDiferencia.length}</div>
+        <div class="kpi-sub">Tienen diferencia registrada</div>
       </div>`;
 
-    // Distribución de márgenes
+    // Distribucion de referencias
     const bands = [
-      { key:'d-zero',  label:'Sin margen',   sub:'Compra = venta', icon:'⚪', items: prods.filter(p => margin(p) === 0) },
-      { key:'d-bajo',  label:'Margen bajo',  sub:'Menos del 20%',  icon:'🔴', items: prods.filter(p => margin(p) > 0 && margin(p) < 20) },
-      { key:'d-medio', label:'Margen medio', sub:'Entre 20% y 30%', icon:'🟡', items: prods.filter(p => margin(p) >= 20 && margin(p) <= 30) },
-      { key:'d-alto',  label:'Margen alto',  sub:'Más del 30%',    icon:'🟢', items: prods.filter(p => margin(p) > 30) },
+      { key:'d-zero',  label:'Por revisar',      sub:'Compra = venta', icon:'!', items: prods.filter(p => refDiff(p) === 0) },
+      { key:'d-bajo',  label:'Diferencia baja',  sub:'Menos del 20%',  icon:'<', items: prods.filter(p => refDiff(p) > 0 && refDiff(p) < 20) },
+      { key:'d-medio', label:'Diferencia media', sub:'Entre 20% y 30%', icon:'=', items: prods.filter(p => refDiff(p) >= 20 && refDiff(p) <= 30) },
+      { key:'d-alto',  label:'Diferencia amplia',sub:'Mas del 30%',    icon:'+', items: prods.filter(p => refDiff(p) > 30) },
     ];
     document.getElementById('dist-grid').innerHTML = bands.map(b => `
       <div class="dist-card ${b.key}">
@@ -301,18 +323,18 @@ fetch('productos.csv')
         <span class="dist-pct">${((b.items.length/total)*100).toFixed(1)}% del total</span>
       </div>`).join('');
 
-    // Alerta sin margen
-    if (sinMargen.length > 0) {
+    // Alerta precios iguales
+    if (precioIgual.length > 0) {
       document.getElementById('alert-box').style.display = 'block';
       document.getElementById('alert-chips').innerHTML =
-        sinMargen.map(p => `<span class="alert-chip">${p.nombre}</span>`).join('');
+        precioIgual.map(p => `<span class="alert-chip">${p.nombre}</span>`).join('');
     }
 
     // Por categoría
     const catStats = cats.map(cat => {
       const items = prods.filter(p => p.categoria === cat);
-      const withM  = items.filter(p => margin(p) > 0);
-      const avg    = withM.length ? withM.reduce((s,p)=>s+margin(p),0)/withM.length : 0;
+      const withD  = items.filter(p => refDiff(p) > 0);
+      const avg    = withD.length ? withD.reduce((s,p)=>s+refDiff(p),0)/withD.length : 0;
       return { cat, count: items.length, avg };
     }).sort((a,b) => b.avg - a.avg);
 
@@ -328,13 +350,13 @@ fetch('productos.csv')
         <td><span class="pill ${pillClass(c.avg)}">${pillLabel(c.avg)}</span></td>
       </tr>`).join('');
 
-    // Top 5 mejor / menor margen (solo con margen > 0)
-    const sorted = [...conMargen].sort((a,b) => margin(b)-margin(a));
+    // Top 5 mayor diferencia / menor diferencia positiva
+    const sorted = [...conDiferencia].sort((a,b) => refDiff(b)-refDiff(a));
     const best  = sorted.slice(0, 5);
     const worst = sorted.slice(-5).reverse();
 
     document.getElementById('top-best').innerHTML = best.map((p,i) => {
-      const m = margin(p);
+      const m = refDiff(p);
       return `<div class="rank-item">
         <span class="rank-num">${i+1}</span>
         <span class="rank-name">${p.nombre}<br><small style="color:var(--muted);font-size:11px">${p.categoria}</small></span>
@@ -343,7 +365,7 @@ fetch('productos.csv')
     }).join('');
 
     document.getElementById('top-worst').innerHTML = worst.map((p,i) => {
-      const m = margin(p);
+      const m = refDiff(p);
       const cls = m < 20 ? 'bajo' : m <= 30 ? 'medio' : 'alto';
       return `<div class="rank-item">
         <span class="rank-num">${i+1}</span>
