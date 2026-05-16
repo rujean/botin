@@ -71,10 +71,14 @@ body{
 .drawer-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);border:1px solid transparent;transition:all .2s;}
 .drawer-link:hover{background:rgba(var(--accent-rgb),.07);border-color:var(--border);color:var(--text);}
 .drawer-link.active{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);color:var(--gold);}
+.drawer-payment{display:none;margin-top:16px;padding:14px;border:1px solid rgba(var(--accent-rgb),.28);border-radius:10px;background:rgba(var(--accent-rgb),.07);}
+.drawer-payment .pay-label{margin-bottom:7px;}
+.drawer-payment .pay-account{font-size:.94rem;}
 
 @media(max-width:600px){
   .nav-links{display:none;}
   .menu-btn{display:flex;}
+  .drawer-payment{display:block;}
 }
 
 /* HEADER */
@@ -100,6 +104,26 @@ h1 span{color:var(--gold-lt);}
 /* STATS */
 .stats{max-width:860px;margin:16px auto 0;padding:0 20px;display:flex;justify-content:space-between;font-size:13px;color:var(--muted);}
 .stats strong{color:var(--gold-lt);}
+
+/* PAYMENT REMINDER */
+.payment-reminder{
+  position:fixed;right:22px;top:112px;z-index:80;width:238px;
+  background:linear-gradient(145deg,rgba(var(--accent-rgb),.16),rgba(var(--accent-rgb),.04));
+  border:1px solid rgba(var(--accent-rgb),.35);border-radius:12px;
+  box-shadow:var(--shadow);padding:16px 16px 14px;color:var(--text);
+  backdrop-filter:blur(10px);
+}
+.payment-reminder::before{content:'';display:block;width:42px;height:2px;background:var(--gold);margin-bottom:12px;}
+.pay-label{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pay-account{font-family:'DM Sans',sans-serif;font-size:.96rem;font-weight:500;line-height:1.15;color:var(--gold-lt);letter-spacing:.08em;margin-bottom:8px;word-break:break-word;font-variant-numeric:tabular-nums;}
+.pay-owner{font-size:12px;font-weight:500;line-height:1.35;color:var(--text);}
+@media(max-width:1380px){
+  .payment-reminder{position:static;width:auto;max-width:860px;margin:18px auto 0;padding:15px 20px;}
+}
+@media(max-width:540px){
+  .payment-reminder{display:none;}
+  .pay-account{font-size:.94rem;}
+}
 
 /* PRICE TABLE */
 .wrap{max-width:860px;margin:16px auto 0;padding:0 20px;}
@@ -139,6 +163,7 @@ mark{background:rgba(var(--accent-rgb),.25);color:var(--gold-lt);border-radius:3
 /* PRINT STYLES */
 @media print {
   .topnav,.controls,.stats,.print-btn{display:none!important;}
+  .payment-reminder{position:static!important;box-shadow:none!important;margin:0 0 18px!important;border-color:#ccc!important;color:black!important;}
   body{background:white!important;color:black!important;}
   .price-table{box-shadow:none!important;}
   .price-table th,.price-table td{color:black!important;border-color:#ccc!important;}
@@ -182,6 +207,11 @@ mark{background:rgba(var(--accent-rgb),.25);color:var(--gold-lt);border-radius:3
   <a class="drawer-link" href="dashboard.html">Dashboard</a>
   <a class="drawer-link" href="catalogo.html">Catálogo</a>
   <a class="drawer-link" href="juegos.html">Juegos</a>
+  <div class="drawer-payment" aria-label="Datos para depósito">
+    <p class="pay-label">DEPOSITOS</p>
+    <p class="pay-account">0011-0237-0200453378</p>
+    <p class="pay-owner">Russell Jean Mayhua Huaman</p>
+  </div>
 </div>
 
 <header>
@@ -189,6 +219,12 @@ mark{background:rgba(var(--accent-rgb),.25);color:var(--gold-lt);border-radius:3
   <h1>Lista de <span>Precios</span></h1>
   <p class="header-sub">Solo precios de venta — uso interno restringido</p>
 </header>
+
+<aside class="payment-reminder" aria-label="Datos para depósito">
+  <p class="pay-label">DEPOSITOS</p>
+  <p class="pay-account">0011-0237-0200453378</p>
+  <p class="pay-owner">Russell Jean Mayhua Huaman</p>
+</aside>
 
 <div class="controls">
   <div class="search-wrap">
