@@ -252,11 +252,16 @@ canvas{display:block;margin:0 auto;border-radius:8px;border:1px solid rgba(var(-
     </div>
   </div>
   <div class="leyenda">
-    <span class="dot" style="background:#e94560"></span><b>Roja $50</b> — rango global, perfora armadura y remata enemigos débiles
+    <span class="dot" style="background:#e94560"></span><b>Roja $50</b> — perfora armadura y remata enemigos débiles
     &nbsp;|&nbsp;
     <span class="dot" style="background:#44cc44"></span><b>Verde $100</b> — slow, veneno y debilita para que otras torres peguen más
     &nbsp;|&nbsp;
     <span class="dot" style="background:#00d2ff"></span><b>Azul $190</b> — explosión en área, fuerte pero más cara
+    &nbsp;|&nbsp;
+    <span class="dot" style="background:#9b5cff"></span><b>Morada $120</b> — cadena de rayos que salta entre enemigos; Nv5: 30 saltos + slow + veneno
+    &nbsp;|&nbsp;
+    <span class="dot" style="background:#f7c948"></span><b>Dorada $3000</b> — aura global: acelera y potencia TODAS las torres; colócala lejos de los caminos
+    <br><small><b>★ Nv5 MAX:</b> Roja $250 · Verde $300 · Azul $380 · Morada $320 dan rango global &nbsp;·&nbsp; Dorada cada upgrade $2000 (Nv5: cadencia ×2, daño +45%)</small>
     <br><small><b>Tipos:</b> R rápido · T tanque · + regenera · B blindado &nbsp;·&nbsp; E1/E2/E3 entradas · S1/S2/S3 salidas</small>
     <br><small>Clic en celda vacía = colocar &nbsp;·&nbsp; Clic en torre = mejorar</small>
   </div>
@@ -265,7 +270,9 @@ canvas{display:block;margin:0 auto;border-radius:8px;border:1px solid rgba(var(-
     <button id="bAuto" class="sec">Auto</button>
     <button id="bT1" class="act" style="background:#e94560;color:#fff">Roja $50</button>
     <button id="bT2" style="background:#44cc44;color:#111">Verde $100</button>
-    <button id="bT3" style="background:#00d2ff;color:#111">Azul $190</button>
+    <button id="bT3" style="background:#00d2ff;color:#111">Azul $150</button>
+    <button id="bT5" style="background:#9b5cff;color:#fff">Morada $120</button>
+    <button id="bT4" style="background:#f7c948;color:#111">Dorada $3000</button>
     <button id="bReiniciar" class="btn-reset">Reiniciar</button>
     <button id="bMute" class="btn-mute" title="Silenciar">🔊</button>
   </div>
@@ -275,6 +282,63 @@ canvas{display:block;margin:0 auto;border-radius:8px;border:1px solid rgba(var(-
   </div>
   <div class="msg" id="msg">Roja seleccionada — Clic para colocar</div>
 </div>
+
+<div class="info-tabla">
+  <h3>Costos de torres y mejoras</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Torre</th>
+        <th>Precio base</th>
+        <th>Nv1→2</th>
+        <th>Nv2→3</th>
+        <th>Nv3→4</th>
+        <th>Nv4→5 ★</th>
+        <th>Total máx</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tc" style="background:#e94560"></span> Roja</td>
+        <td>$50</td><td>$60</td><td>$80</td><td>$100</td><td>$250</td><td class="total">$540</td>
+      </tr>
+      <tr>
+        <td><span class="tc" style="background:#44cc44"></span> Verde</td>
+        <td>$100</td><td>$80</td><td>$100</td><td>$120</td><td>$300</td><td class="total">$700</td>
+      </tr>
+      <tr>
+        <td><span class="tc" style="background:#00d2ff"></span> Azul</td>
+        <td>$150</td><td>$120</td><td>$140</td><td>$170</td><td>$380</td><td class="total">$960</td>
+      </tr>
+      <tr>
+        <td><span class="tc" style="background:#9b5cff"></span> Morada</td>
+        <td>$120</td><td>$100</td><td>$130</td><td>$170</td><td>$320</td><td class="total">$840</td>
+      </tr>
+      <tr class="fila-dorada">
+        <td><span class="tc" style="background:#f7c948"></span> Dorada</td>
+        <td>$3,000</td><td>$2,000</td><td>$2,000</td><td>$2,000</td><td>$2,000</td><td class="total">$11,000</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="info-nota">★ Nv5 otorga rango global a todas las torres · La Dorada tiene rango global desde Nv1 y potencia a todas las demás torres</p>
+</div>
+
+<style>
+.info-tabla{max-width:780px;width:calc(100% - 40px);margin:22px auto 0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+.info-tabla h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:14px;letter-spacing:.04em}
+.info-tabla table{width:100%;border-collapse:collapse;font-size:12px}
+.info-tabla th{color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:10px;padding:6px 10px;border-bottom:1px solid var(--border);text-align:right}
+.info-tabla th:first-child{text-align:left}
+.info-tabla td{padding:7px 10px;text-align:right;color:var(--text);border-bottom:1px solid rgba(255,255,255,.04)}
+.info-tabla td:first-child{text-align:left;font-weight:600}
+.info-tabla tr:last-child td{border-bottom:none}
+.info-tabla .total{color:var(--gold-lt);font-weight:700}
+.info-tabla .fila-dorada td{background:rgba(212,175,55,.06)}
+.info-tabla .fila-dorada .total{color:var(--gold)}
+.tc{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;box-shadow:0 0 6px currentColor}
+.info-nota{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.55}
+@media(max-width:540px){.info-tabla{width:calc(100% - 20px);padding:14px 12px}.info-tabla th,.info-tabla td{padding:5px 6px;font-size:11px}}
+</style>
 
 <script>
 const c=document.getElementById('g'),ctx=c.getContext('2d'),W=620,H=620,CL=31;
@@ -312,10 +376,10 @@ const todosPuntos=RUTAS.reduce((a,r)=>a.concat(routeCells(r)),[]);
 const TI={
   t1:{color:'#e94560',nombre:'Roja',baseCosto:50,
     niveles:[
-      {balas:1,dmg:22,rango:9999,vel:11,pierce:.15,execute:.08,global:1,upgCosto:60},
-      {balas:1,dmg:28,rango:9999,vel:10,pierce:.25,execute:.10,global:1,upgCosto:80},
-      {balas:1,dmg:36,rango:9999,vel:9,pierce:.35,execute:.13,global:1,upgCosto:100},
-      {balas:2,dmg:40,rango:9999,vel:9,pierce:.45,execute:.17,global:1,upgCosto:150},
+      {balas:1,dmg:22,rango:120,vel:11,pierce:.15,execute:.08,upgCosto:60},
+      {balas:1,dmg:28,rango:140,vel:10,pierce:.25,execute:.10,upgCosto:80},
+      {balas:1,dmg:36,rango:165,vel:9,pierce:.35,execute:.13,upgCosto:100},
+      {balas:2,dmg:40,rango:195,vel:9,pierce:.45,execute:.17,upgCosto:250},
       {balas:3,dmg:46,rango:9999,vel:8,pierce:.60,execute:.22,global:1,upgCosto:0}
     ]},
   t2:{color:'#44cc44',nombre:'Verde',baseCosto:100,
@@ -323,18 +387,40 @@ const TI={
       {balas:2,dmg:14,rango:130,vel:17,slow:0.78,amp:.10,poison:3,upgCosto:80},
       {balas:2,dmg:17,rango:135,vel:16,slow:0.68,amp:.16,poison:4,upgCosto:100},
       {balas:2,dmg:20,rango:140,vel:15,slow:0.58,amp:.22,poison:5,upgCosto:120},
-      {balas:2,dmg:24,rango:150,vel:14,slow:0.48,amp:.30,poison:7,upgCosto:150},
-      {balas:3,dmg:28,rango:160,vel:13,slow:0.38,amp:.38,poison:9,upgCosto:0}
+      {balas:2,dmg:24,rango:150,vel:14,slow:0.48,amp:.30,poison:7,upgCosto:300},
+      {balas:3,dmg:28,rango:9999,vel:13,slow:0.38,amp:.38,poison:9,global:1,upgCosto:0}
     ]},
-  t3:{color:'#00d2ff',nombre:'Azul',baseCosto:190,
+  t3:{color:'#00d2ff',nombre:'Azul',baseCosto:150,
     niveles:[
       {balas:1,dmg:24,rango:185,vel:23,aoe:50, upgCosto:120},
       {balas:1,dmg:27,rango:190,vel:22,aoe:70, upgCosto:140},
       {balas:1,dmg:31,rango:200,vel:21,aoe:88, upgCosto:170},
-      {balas:1,dmg:36,rango:215,vel:20,aoe:110,upgCosto:220},
-      {balas:1,dmg:42,rango:235,vel:19,aoe:135,upgCosto:0}
+      {balas:1,dmg:36,rango:215,vel:20,aoe:110,upgCosto:380},
+      {balas:1,dmg:42,rango:9999,vel:19,aoe:135,global:1,upgCosto:0}
+    ]},
+  t5:{color:'#9b5cff',nombre:'Morada',baseCosto:120,
+    niveles:[
+      {balas:1,dmg:18,rango:140,vel:18,cadenas:2,chainRange:110,upgCosto:100},
+      {balas:1,dmg:22,rango:155,vel:17,cadenas:3,chainRange:130,upgCosto:130},
+      {balas:1,dmg:26,rango:170,vel:16,cadenas:4,chainRange:150,chainSlow:.80,upgCosto:170},
+      {balas:1,dmg:30,rango:185,vel:15,cadenas:6,chainRange:165,chainSlow:.72,upgCosto:320},
+      {balas:1,dmg:36,rango:9999,vel:14,cadenas:30,chainRange:220,chainSlow:.65,chainPoison:4,global:1,upgCosto:0}
+    ]},
+  t4:{color:'#f7c948',nombre:'Dorada',baseCosto:3000,
+    niveles:[
+      {balas:0,dmg:0,rango:9999,vel:999,global:1,buff:{velMult:.82,dmgMult:1.10},upgCosto:2000},
+      {balas:0,dmg:0,rango:9999,vel:999,global:1,buff:{velMult:.74,dmgMult:1.17},upgCosto:2000},
+      {balas:0,dmg:0,rango:9999,vel:999,global:1,buff:{velMult:.66,dmgMult:1.25},upgCosto:2000},
+      {balas:0,dmg:0,rango:9999,vel:999,global:1,buff:{velMult:.57,dmgMult:1.34},upgCosto:2000},
+      {balas:0,dmg:0,rango:9999,vel:999,global:1,buff:{velMult:.46,dmgMult:1.46},upgCosto:0}
     ]}
 };
+
+function getDoradaBuff(){
+  let best=null;
+  for(let t of tr)if(t.tp==='t4'&&t.vid>0&&(!best||t.nivel>best.nivel))best=t;
+  return best?best.i.buff:null;
+}
 
 const RANGO_ENEMIGO=90,RANGO_BOSS=216,DMG_BALA_ENEMIGO=1,DMG_BALA_BOSS=3;
 const ET={
@@ -360,7 +446,7 @@ const DECOS=[
 ];
 
 // AUDIO
-let muted=false,_ac=null,_kscd=0,_hitcd=0,_s1cd=0,_s2cd=0,_s3cd=0;
+let muted=false,_ac=null,_kscd=0,_hitcd=0,_s1cd=0,_s2cd=0,_s3cd=0,_s5cd=0;
 function getAC(){
   if(!_ac)try{_ac=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}
   if(_ac&&_ac.state==='suspended')_ac.resume();
@@ -390,6 +476,7 @@ function _noise(dur,vol,lp=800){
 function sndShoot1(){const n=Date.now();if(n-_s1cd<80)return;_s1cd=n;_osc(700,180,0.07,0.06);}
 function sndShoot2(){const n=Date.now();if(n-_s2cd<100)return;_s2cd=n;_osc(450,350,0.1,0.05);_osc(580,420,0.1,0.04);}
 function sndShoot3(){const n=Date.now();if(n-_s3cd<150)return;_s3cd=n;_osc(120,55,0.18,0.07,'sawtooth');}
+function sndShoot5(){const n=Date.now();if(n-_s5cd<110)return;_s5cd=n;_osc(290,620,0.1,0.07,'square');setTimeout(()=>_osc(620,900,0.07,0.04),55);}
 function sndHit(kind='normal'){const n=Date.now();if(n-_hitcd<35)return;_hitcd=n;_osc(kind==='armor'?150:260,kind==='armor'?70:105,0.065,0.045,kind==='armor'?'square':'triangle');}
 function sndAoe(){_noise(0.28,0.28,360);_osc(110,34,0.26,0.14,'sine');}
 function sndKill(){const n=Date.now();if(n-_kscd<45)return;_kscd=n;_noise(.07,.08,700);_osc(420,115,0.09,0.07,'triangle');}
@@ -520,10 +607,33 @@ function drawTower(t){
     ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,-13);ctx.lineTo(12,-4);ctx.lineTo(8,12);ctx.lineTo(-8,12);ctx.lineTo(-12,-4);ctx.closePath();ctx.fill();
     ctx.fillStyle='#102315';ctx.fillRect(1,-2,r+11,4);
     ctx.strokeStyle='#d7ffe0';ctx.lineWidth=2;ctx.stroke();
-  }else{
+  }else if(t.tp==='t3'){
     ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,-15);ctx.lineTo(13,8);ctx.lineTo(-13,8);ctx.closePath();ctx.fill();
     ctx.strokeStyle='#dffbff';ctx.lineWidth=2;ctx.stroke();
     ctx.fillStyle='#e8ffff';ctx.beginPath();ctx.moveTo(3,0);ctx.lineTo(r+14,0);ctx.lineTo(3,5);ctx.closePath();ctx.fill();
+  }else if(t.tp==='t5'){
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    for(let hi=0;hi<6;hi++){const a=hi*Math.PI/3-Math.PI/6;hi===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}
+    ctx.closePath();ctx.fill();
+    ctx.strokeStyle='#dbb0ff';ctx.lineWidth=2;ctx.stroke();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.8;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(3,-r*.55);ctx.lineTo(-2,0);ctx.lineTo(2,0);ctx.lineTo(-3,r*.55);ctx.stroke();
+  }else{
+    const pulse=1+Math.sin(Date.now()/220)*.14;
+    ctx.strokeStyle=color+'88';ctx.lineWidth=2;ctx.setLineDash([5,5]);
+    ctx.beginPath();ctx.arc(0,0,(r+10)*pulse,0,Math.PI*2);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    for(let si=0;si<5;si++){
+      const a=si*Math.PI*2/5-Math.PI/2,b=a+Math.PI/5;
+      si===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+      ctx.lineTo(Math.cos(b)*(r*.42),Math.sin(b)*(r*.42));
+    }
+    ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.22)';ctx.beginPath();ctx.arc(0,0,r*.38,0,Math.PI*2);ctx.fill();
   }
   ctx.restore();
   ctx.fillStyle='#fff';ctx.font='bold '+(7+t.nivel)+'px "DM Sans", Arial';ctx.textAlign='center';
@@ -591,7 +701,7 @@ function bossSkill(b){
     if(Math.hypot(p.x-t.x,p.y-t.y)<radius){
       t.vid-=dmg;hit++;
       floatText(t.x,t.y-18,kind==='corrosivo'?'ACIDO':'GOLPE',bt.color);
-      if(t.vid<=0){tr.splice(tr.indexOf(t),1);sndTowerDead();}
+      if(t.vid<=0){tr.splice(tr.indexOf(t),1);if(t.tp==='t4')ms('¡AURA DORADA PERDIDA! El buff global se apagó');sndTowerDead();}
     }
   }
   if(kind==='escudo'){b.armor=.62;setTimeout(()=>{if(b.vivo)b.armor=b.phase===2?.32:.42;},1800);floatText(p.x,p.y-30,'ESCUDO',bt.color);}
@@ -610,10 +720,18 @@ function updateWaveProgress(){
 function setTowerPanel(tower){
   const p=document.getElementById('towerPanel');if(!p)return;
   if(tower){
-    const info=TI[tower.tp], nv=tower.nivel+1, next=tower.nivel<4?' Mejora: $'+info.niveles[tower.nivel].upgCosto:' Nivel maximo';
-    p.innerHTML='<div><strong>'+info.nombre+' Nv'+nv+'</strong><span>Vida '+tower.vid+'/'+tower.vidMax+' · Rango '+(tower.i.global?'Global':tower.i.rango)+' · Danio '+tower.i.dmg+'.'+next+'</span></div><span class="chip">'+(tower.nivel<4?'UPG':'MAX')+'</span>';
+    const info=TI[tower.tp],nv=tower.nivel+1,next=tower.nivel<4?' Mejora: $'+info.niveles[tower.nivel].upgCosto:' Nivel maximo';
+    if(tower.tp==='t4'){
+      const b=tower.i.buff,cad=Math.round((1/b.velMult-1)*100),dmg=Math.round((b.dmgMult-1)*100);
+      p.innerHTML='<div><strong>'+info.nombre+' Nv'+nv+'</strong><span>Vida '+tower.vid+'/'+tower.vidMax+' · Aura Global · +'+cad+'% cadencia · +'+dmg+'% daño.'+next+'</span></div><span class="chip">'+(tower.nivel<4?'UPG':'MAX')+'</span>';
+    }else if(tower.tp==='t5'){
+      const sc=tower.i.cadenas>=30?'30∞':tower.i.cadenas;
+      p.innerHTML='<div><strong>'+info.nombre+' Nv'+nv+'</strong><span>Vida '+tower.vid+'/'+tower.vidMax+' · '+(tower.i.global?'Global':'Rango '+tower.i.rango)+' · Daño '+tower.i.dmg+' · '+sc+' saltos.'+next+'</span></div><span class="chip">'+(tower.nivel<4?'UPG':'MAX')+'</span>';
+    }else{
+      p.innerHTML='<div><strong>'+info.nombre+' Nv'+nv+'</strong><span>Vida '+tower.vid+'/'+tower.vidMax+' · Rango '+(tower.i.global?'Global':tower.i.rango)+' · Danio '+tower.i.dmg+'.'+next+'</span></div><span class="chip">'+(tower.nivel<4?'UPG':'MAX')+'</span>';
+    }
   }else{
-    const info=TI[ts], kind=ts==='t1'?'Rango global, anti-blindaje y remate':(ts==='t2'?'Slow, veneno y debilita':'Explosion en area');
+    const info=TI[ts],kind=ts==='t1'?'Rango global, anti-blindaje y remate':ts==='t2'?'Slow, veneno y debilita':ts==='t3'?'Explosion en area':ts==='t5'?'Cadena de rayos que salta entre enemigos':'Aura global que acelera y potencia TODAS las torres';
     p.innerHTML='<div><strong>Torre '+info.nombre+' seleccionada</strong><span>'+kind+'. Clic en celda vacia para colocar.</span></div><span class="chip">$'+info.baseCosto+'</span>';
   }
 }
@@ -703,7 +821,8 @@ function placeTower(col,row,tp){
   for(let t of tr) if(t.cl==col&&t.ro==row) return false;
   let info=TI[tp];if(dn<info.baseCosto)return false;
   dn-=info.baseCosto;
-  tr.push({cl:col,ro:row,x:col*CL+CL/2,y:row*CL+CL/2,tp,nivel:0,i:info.niveles[0],cd:0,ang:0,vid:3,vidMax:3});
+  const vd0=tp==='t4'?6:3;
+  tr.push({cl:col,ro:row,x:col*CL+CL/2,y:row*CL+CL/2,tp,nivel:0,i:info.niveles[0],cd:0,ang:0,vid:vd0,vidMax:vd0});
   flashRange(col,row);sndPlace();floatText(col*CL+CL/2,row*CL+CL/2-18,'-$'+info.baseCosto,'#ffe391');ui();setTowerPanel();return true;
 }
 function upgradeTower(col,row){
@@ -748,7 +867,7 @@ c.onclick=function(e){
     col=Math.floor(x/CL),row=Math.floor(y/CL);
   if(col<0||col>=20||row<0||row>=20)return;
   if(tr.find(t=>t.cl==col&&t.ro==row)){upgradeTower(col,row);return;}
-  if(placeTower(col,row,ts))ms('Torre '+TI[ts].nombre+' Nv1 colocada');
+  if(placeTower(col,row,ts)){if(ts==='t4')ms('¡AURA DORADA ACTIVA! Todas las torres reciben buff global');else ms('Torre '+TI[ts].nombre+' Nv1 colocada');}
   else ms('No se puede colocar aquí (sin dinero o celda ocupada)');
 };
 c.onmousemove=function(e){
@@ -761,16 +880,21 @@ c.onmousemove=function(e){
     let info=TI[t.tp],nv=t.nivel;
     if(nv<4) ms(info.nombre+' Nv'+(nv+1)+' → Nv'+(nv+2)+' cuesta $'+info.niveles[nv].upgCosto);
     else ms(info.nombre+' NIVEL MÁXIMO ★');
+  }else{
+    setTowerPanel();
   }
 };
+c.onmouseleave=function(){mx=-999;my=-999;setTowerPanel();};
 
 document.getElementById('bT1').onclick=()=>sel('t1');
 document.getElementById('bT2').onclick=()=>sel('t2');
 document.getElementById('bT3').onclick=()=>sel('t3');
+document.getElementById('bT5').onclick=()=>sel('t5');
+document.getElementById('bT4').onclick=()=>sel('t4');
 document.getElementById('bOleada').onclick=function(){
   hideScreens();
   if(vi){ms('¡Ya ganaste!');return;}if(go){ms('Game Over!');return;}
-  if(en.length==0)gob(ol+1);else ms('Espera que termine la oleada');
+  if(en.length==0&&spawnPend==0)gob(ol+1);else ms('Espera que termine la oleada');
 };
 document.getElementById('bAuto').onclick=function(){
   hideScreens();
@@ -838,21 +962,24 @@ setInterval(function(){
     }
     if(e.dist>=ruta.PL){e.vivo=0;vd-=e.boss?5:1;ui();if(vd<=0){go=1;ms('GAME OVER');sndGameOver();showEnd('GAME OVER');}}
   }
+  const db=getDoradaBuff();
   for(let t of tr){
+    if(t.tp==='t4')continue;
     if(t.cd>0){t.cd--;continue;}
     let obs=[];
     for(let e of en){if(!e.vivo)continue;let p=posR(e.dist,e.ruta),d=Math.hypot(p.x-t.x,p.y-t.y);if(d<t.i.rango)obs.push({e,d});}
     obs.sort((a,b)=>a.d-b.d);
     let nb=Math.min(t.i.balas,obs.length);
     if(nb>0){
-      t.cd=t.i.vel;
-      if(t.tp=='t1')sndShoot1();else if(t.tp=='t2')sndShoot2();else sndShoot3();
+      t.cd=db?Math.max(1,Math.floor(t.i.vel*db.velMult)):t.i.vel;
+      if(t.tp=='t1')sndShoot1();else if(t.tp=='t2')sndShoot2();else if(t.tp=='t3')sndShoot3();else sndShoot5();
       for(let j=0;j<nb;j++){
         let o=obs[j].e,p=posR(o.dist,o.ruta);
         t.ang=Math.atan2(p.y-t.y,p.x-t.x);
         let ao=(j-(nb-1)/2)*0.08;
         let ral=(t.tp=='t2'),slowF=(ral?t.i.slow:1),aoe=(t.tp=='t3'?t.i.aoe:0);
-        bl.push({x:t.x,y:t.y,o,dmg:t.i.dmg,vel:6,color:TI[t.tp].color,vivo:1,ao,isEnemy:0,ral,slowF,aoe,towerTp:t.tp,pierce:t.i.pierce||0,execute:t.i.execute||0,amp:t.i.amp||0,poison:t.i.poison||0});
+        const dmg=db?Math.round(t.i.dmg*db.dmgMult):t.i.dmg;
+        bl.push({x:t.x,y:t.y,o,dmg,vel:6,color:TI[t.tp].color,vivo:1,ao,isEnemy:0,ral,slowF,aoe,towerTp:t.tp,pierce:t.i.pierce||0,execute:t.i.execute||0,amp:t.i.amp||0,poison:t.i.poison||0,cadenas:t.tp==='t5'?t.i.cadenas:0,chainHit:t.tp==='t5'?new Set([o]):null,chainRange:t.i.chainRange||0,chainSlow:t.i.chainSlow||0,chainPoison:t.i.chainPoison||0});
       }
     }
   }
@@ -863,7 +990,7 @@ setInterval(function(){
       if(d<10){
         if(b.obj.tr&&tr.includes(b.obj.tr)){
           let t=b.obj.tr;t.vid-=b.dmg;
-          if(t.vid<=0){tr.splice(tr.indexOf(t),1);ms('¡Torre '+TI[t.tp].nombre+' destruida!');sndTowerDead();}
+          if(t.vid<=0){tr.splice(tr.indexOf(t),1);ms(t.tp==='t4'?'¡AURA DORADA PERDIDA! El buff global se apagó':'¡Torre '+TI[t.tp].nombre+' destruida!');sndTowerDead();}
           else ms('Torre dañada — vida: '+t.vid+'/'+t.vidMax);
           floatText(t.x,t.y-18,'-'+b.dmg,'#ff7a45');
           ui();
@@ -881,7 +1008,18 @@ setInterval(function(){
         }
         if(b.amp){b.o.vuln=Math.max(b.o.vuln||0,b.amp);b.o.vulnCd=150;floatText(p.x,p.y-24,'DEBIL','#44cc44');}
         if(b.poison){b.o.poison=Math.max(b.o.poison||0,b.poison);b.o.poisonCd=120;}
-        damageEnemy(b.o,b.dmg,p.x,p.y-12,b.color,{pierce:b.pierce,execute:b.execute});b.vivo=0;
+        damageEnemy(b.o,b.dmg,p.x,p.y-12,b.color,{pierce:b.pierce,execute:b.execute});
+        if(b.cadenas>0){
+          let nxE=null,nxD=1e9;
+          for(let e of en){if(!e.vivo||(b.chainHit&&b.chainHit.has(e)))continue;let ep=posR(e.dist,e.ruta),dd=Math.hypot(ep.x-p.x,ep.y-p.y);if(dd<(b.chainRange||0)&&dd<nxD){nxD=dd;nxE=e;}}
+          if(nxE){
+            const ch=b.chainHit?new Set(b.chainHit):new Set([b.o]);ch.add(nxE);
+            if(b.chainSlow&&!nxE.ralentizado){nxE.vel=nxE.velOrig*(nxE.tipo==='blindado'?Math.max(.78,b.chainSlow):b.chainSlow);nxE.ralentizado=true;setTimeout(()=>{if(nxE.vivo){nxE.vel=nxE.velOrig;nxE.ralentizado=false;}},1200);}
+            if(b.chainPoison){nxE.poison=Math.max(nxE.poison||0,b.chainPoison);nxE.poisonCd=100;}
+            bl.push({x:p.x,y:p.y,o:nxE,dmg:b.dmg,vel:9,color:b.color,vivo:1,ao:0,isEnemy:0,towerTp:'t5',cadenas:b.cadenas-1,chainHit:ch,chainRange:b.chainRange||0,chainSlow:b.chainSlow||0,chainPoison:b.chainPoison||0,pierce:0,execute:0,amp:0,poison:0,ral:false,slowF:1,aoe:0});
+          }
+        }
+        b.vivo=0;
         if(b.aoe>0)aoeHit(p.x,p.y,b.dmg,b.aoe,b.o);
       }else{let an=Math.atan2(dy,dx)+(b.ao||0);b.x+=Math.cos(an)*b.vel;b.y+=Math.sin(an)*b.vel;}
     }
@@ -891,7 +1029,7 @@ setInterval(function(){
   updateWaveProgress();
 },33);
 
-setInterval(function(){if(au&&en.length==0&&!go&&!vi&&ol<30)gob(ol+1);},2000);
+setInterval(function(){if(au&&en.length==0&&spawnPend==0&&!go&&!vi&&ol<30)gob(ol+1);},2000);
 
 // RENDER
 setInterval(function(){
@@ -968,6 +1106,9 @@ setInterval(function(){
     }else if(b.aoe){
       ctx.beginPath();ctx.arc(b.x,b.y,6,0,Math.PI*2);ctx.fill();
       ctx.strokeStyle='#dffbff';ctx.lineWidth=1;ctx.beginPath();ctx.arc(b.x,b.y,9,0,Math.PI*2);ctx.stroke();
+    }else if(b.towerTp==='t5'){
+      ctx.beginPath();ctx.arc(b.x,b.y,4,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#dbb0ff';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(b.x,b.y,7,0,Math.PI*2);ctx.stroke();
     }else{
       ctx.beginPath();ctx.ellipse(b.x,b.y,6,3,0,0,Math.PI*2);ctx.fill();
     }
