@@ -146,7 +146,7 @@ h1 span{color:var(--gold-lt)}
 <div class="drawer" id="drawer">
   <div class="drawer-header">
     <span class="drawer-title">Menú</span>
-    <button class="drawer-close" id="close-drawer">x</button>
+    <button class="drawer-close" id="close-drawer">✕</button>
   </div>
   <a class="drawer-link" href="index.html">Lista de Precios</a>
   <a class="drawer-link" href="dashboard.html">Dashboard</a>
@@ -199,15 +199,19 @@ function closeDrawer(){drawer.classList.remove('open');navOverlay.classList.remo
 document.getElementById('close-drawer').addEventListener('click',closeDrawer);
 navOverlay.addEventListener('click',closeDrawer);
 
+// Tema (se guarda y se comparte entre páginas)
+function applyTheme(t){
+  if(t==='obsidiana') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme',t);
+  document.querySelectorAll('.theme-dot').forEach(b=>b.classList.toggle('active',b.dataset.theme===t));
+}
 document.querySelectorAll('.theme-dot').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.theme-dot').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const t=btn.dataset.theme;
-    if(t==='obsidiana') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme',t);
+    applyTheme(btn.dataset.theme);
+    localStorage.setItem('bo-theme',btn.dataset.theme);
   });
 });
+applyTheme(localStorage.getItem('bo-theme')||'obsidiana');
 </script>
 </body>
 </html>

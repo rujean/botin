@@ -162,7 +162,7 @@ mark{background:rgba(var(--accent-rgb),.25);color:var(--gold-lt);border-radius:3
 
 /* PRINT STYLES */
 @media print {
-  .topnav,.controls,.stats,.print-btn{display:none!important;}
+  .topnav,.controls,.stats,.print-btn,.pagination{display:none!important;}
   .payment-reminder{position:static!important;box-shadow:none!important;margin:0 0 18px!important;border-color:#ccc!important;color:black!important;}
   body{background:white!important;color:black!important;}
   .price-table{box-shadow:none!important;}
@@ -268,6 +268,7 @@ let productos = [];
 let currentQuery = '';
 let currentCat = 'all';
 let currentPage = 1;
+let printing = false;
 const pageSize = 10;
 
 function parseCSV(text) {
@@ -338,7 +339,7 @@ function render() {
   const totalPages = Math.ceil(filtered.length / pageSize);
   if (currentPage > totalPages) currentPage = totalPages;
   const start = (currentPage - 1) * pageSize;
-  const pageItems = filtered.slice(start, start + pageSize);
+  const pageItems = printing ? filtered : filtered.slice(start, start + pageSize);
 
   document.getElementById('tbody').innerHTML = pageItems.map(p => `
     <tr>
@@ -348,8 +349,12 @@ function render() {
       <td class="price-cell"><span>S/</span>${fmt(p.venta)}</td>
     </tr>`).join('');
 
-  buildPagination(totalPages);
+  buildPagination(printing ? 1 : totalPages);
 }
+
+// Al imprimir se muestra la lista completa (sin paginación) y luego se restaura
+window.addEventListener('beforeprint', () => { printing = true; render(); });
+window.addEventListener('afterprint',  () => { printing = false; render(); });
 
 function buildPagination(totalPages) {
   const el = document.getElementById('pagination');
@@ -390,16 +395,19 @@ function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remo
 document.getElementById('close-drawer').addEventListener('click', closeDrawer);
 overlay.addEventListener('click', closeDrawer);
 
-// Theme dots
+// Theme dots (el tema elegido se guarda y se comparte entre páginas)
+function applyTheme(t) {
+  if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-dot').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+}
 document.querySelectorAll('.theme-dot').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const t = btn.dataset.theme;
-    if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', t);
+    applyTheme(btn.dataset.theme);
+    localStorage.setItem('bo-theme', btn.dataset.theme);
   });
 });
+applyTheme(localStorage.getItem('bo-theme') || 'obsidiana');
 </script>
 </body>
 </html>

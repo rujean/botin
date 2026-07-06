@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masacre - Botin de Oro</title>
+<title>Masacre — Botín de Oro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -256,7 +256,7 @@ canvas{display:block;margin:0 auto;border-radius:8px;border:1px solid rgba(var(-
     &nbsp;|&nbsp;
     <span class="dot" style="background:#44cc44"></span><b>Verde $100</b> — slow, veneno y debilita para que otras torres peguen más
     &nbsp;|&nbsp;
-    <span class="dot" style="background:#00d2ff"></span><b>Azul $190</b> — explosión en área, fuerte pero más cara
+    <span class="dot" style="background:#00d2ff"></span><b>Azul $150</b> — explosión en área, fuerte pero más cara
     &nbsp;|&nbsp;
     <span class="dot" style="background:#9b5cff"></span><b>Morada $120</b> — cadena de rayos que salta entre enemigos; Nv5: 30 saltos + slow + veneno
     &nbsp;|&nbsp;
@@ -697,11 +697,12 @@ function bossSkill(b){
   }
   let radius=kind==='corrosivo'?170:kind==='destructor'?118:96,dmg=kind==='corrosivo'?1:2;
   let hit=0;
-  for(let t of tr){
+  for(let ti=tr.length-1;ti>=0;ti--){
+    const t=tr[ti];
     if(Math.hypot(p.x-t.x,p.y-t.y)<radius){
       t.vid-=dmg;hit++;
       floatText(t.x,t.y-18,kind==='corrosivo'?'ACIDO':'GOLPE',bt.color);
-      if(t.vid<=0){tr.splice(tr.indexOf(t),1);if(t.tp==='t4')ms('¡AURA DORADA PERDIDA! El buff global se apagó');sndTowerDead();}
+      if(t.vid<=0){tr.splice(ti,1);if(t.tp==='t4')ms('¡AURA DORADA PERDIDA! El buff global se apagó');sndTowerDead();}
     }
   }
   if(kind==='escudo'){b.armor=.62;setTimeout(()=>{if(b.vivo)b.armor=b.phase===2?.32:.42;},1800);floatText(p.x,p.y-30,'ESCUDO',bt.color);}
@@ -1184,16 +1185,19 @@ function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove(
 document.getElementById('close-drawer').addEventListener('click',closeDrawer);
 overlay.addEventListener('click',closeDrawer);
 
-// Selector de tema
+// Selector de tema (se guarda y se comparte entre páginas)
+function applyTheme(t){
+  if(t==='obsidiana') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme',t);
+  document.querySelectorAll('.theme-dot').forEach(b=>b.classList.toggle('active',b.dataset.theme===t));
+}
 document.querySelectorAll('.theme-dot').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.theme-dot').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const t=btn.dataset.theme;
-    if(t==='obsidiana') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme',t);
+    applyTheme(btn.dataset.theme);
+    localStorage.setItem('bo-theme',btn.dataset.theme);
   });
 });
+applyTheme(localStorage.getItem('bo-theme')||'obsidiana');
 </script>
 </body>
 </html>

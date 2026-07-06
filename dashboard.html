@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Reporte Ejecutivo - Botin de Oro</title>
+<title>Reporte Ejecutivo — Botín de Oro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -199,7 +199,7 @@ h1 span{color:var(--gold-lt);}
 </div>
 
 <header>
-  <p class="eyebrow">Catalogo de insumos</p>
+  <p class="eyebrow">Resumen de precios</p>
   <h1>Reporte <span>Ejecutivo</span></h1>
 </header>
 
@@ -381,16 +381,19 @@ fetch('productos.csv')
     document.getElementById('main').innerHTML = '<p style="color:#ef5350;padding:20px">Error al cargar productos.csv</p>';
   });
 
-// Theme dots
+// Theme dots (el tema elegido se guarda y se comparte entre páginas)
+function applyTheme(t) {
+  if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-dot').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+}
 document.querySelectorAll('.theme-dot').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const t = btn.dataset.theme;
-    if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', t);
+    applyTheme(btn.dataset.theme);
+    localStorage.setItem('bo-theme', btn.dataset.theme);
   });
 });
+applyTheme(localStorage.getItem('bo-theme') || 'obsidiana');
 
 // Menú drawer (móvil)
 const drawer = document.getElementById('drawer');

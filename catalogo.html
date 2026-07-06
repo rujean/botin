@@ -676,16 +676,19 @@
   `).join('');
     }
 
-    // Theme switcher
+    // Theme switcher (el tema elegido se guarda y se comparte entre páginas)
+    function applyTheme(t) {
+      if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', t);
+      document.querySelectorAll('.theme-dot').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+    }
     document.querySelectorAll('.theme-dot').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.theme-dot').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const t = btn.dataset.theme;
-        if (t === 'obsidiana') document.documentElement.removeAttribute('data-theme');
-        else document.documentElement.setAttribute('data-theme', t);
+        applyTheme(btn.dataset.theme);
+        localStorage.setItem('bo-theme', btn.dataset.theme);
       });
     });
+    applyTheme(localStorage.getItem('bo-theme') || 'obsidiana');
 
     // Drawer
     const drawer = document.getElementById('drawer');
